@@ -11,11 +11,13 @@ Steps:
 """
 
 import json
+import warnings
 from pathlib import Path
 from urllib.request import urlopen
 
 import pandas as pd
 import requests
+import urllib3
 
 SERVICE_REGISTRY_URL = (
     "https://raw.githubusercontent.com/gcperformance/utilities/master/goc-service-id-registry.csv"
@@ -66,18 +68,11 @@ def filter_placeholder(df: pd.DataFrame) -> pd.DataFrame:
     return df[~df["service_en"].str.strip().isin(PLACEHOLDER_SERVICE_NAMES)].reset_index(drop=True)
 
 
-def build_program_lookup(df: pd.DataFrame) -> dict[str, str]:
-    """Return {service_id: program_id} using the most recent fiscal year per service."""
-    duplicates = df.duplicated(subset=["service_id", "fiscal_yr"], keep=False)
-    if duplicates.any():
-        count = duplicates.sum()
-        print(
-            f"WARNING: {count} duplicate (service_id, fiscal_yr) rows"
-            " in program data - keeping first"
-        )
-        df = df.drop_duplicates(subset=["service_id", "fiscal_yr"], keep="first")
-    latest = df.sort_values("fiscal_yr").groupby("service_id", as_index=False).last()
-    return {str(row["service_id"]): row["program_id"] for _, row in latest.iterrows()}
+def build_program_lookup(df: pd.DataFrame) -> dict[str, list[str]]:
+    """Return {service_id: [program_id, ...]} for all programs in the most recent fiscal year."""
+    latest_yr = df.groupby("service_id")["fiscal_yr"].transform("max")
+    latest = df[df["fiscal_yr"] == latest_yr]
+    return {str(sid): group["program_id"].tolist() for sid, group in latest.groupby("service_id")}
 
 
 def resolve_orgs(org_names: list[str]) -> dict[str, dict]:
@@ -111,7 +106,7 @@ def resolve_orgs(org_names: list[str]) -> dict[str, dict]:
 
 def build_records(
     services: pd.DataFrame,
-    program_lookup: dict[str, str],
+    program_lookup: dict[str, list[str]],
     org_lookup: dict[str, dict],
 ) -> list[dict]:
     """Join program and org data onto each service row and return as a list of dicts."""
@@ -137,3 +132,35 @@ def write_json(records: list[dict], path: Path) -> None:
     """Write records to a JSON file and print a summary."""
     path.write_text(json.dumps(records, ensure_ascii=False, indent=2), encoding="utf-8")
     print(f"Wrote {len(records):,} records to {path}")
+
+
+if __name__ == "__main__":
+    warnings.filterwarnings("ignore", category=urllib3.exceptions.InsecureRequestWarning)
+
+    print("Downloading service registry...")
+    services = download_csv(SERVICE_REGISTRY_URL)
+    print(f"  {len(services):,} rows")
+
+    print("Downloading program data...")
+    programs = download_csv(SERVICE_PROGRAM_URL)
+    print(f"  {len(programs):,} rows")
+
+    print("Filtering services...")
+    services = filter_transferred(services)
+    services = filter_placeholder(services)
+    services = apply_org_corrections(services)
+    print(f"  {len(services):,} rows after filtering")
+
+    print("Building program_id lookup...")
+    program_lookup = build_program_lookup(programs)
+    print(f"  {len(program_lookup):,} services with program_id")
+
+    print("Resolving org names...")
+    unique_orgs = services["org_name_en"].unique().tolist()
+    print(f"  {len(unique_orgs):,} unique orgs")
+    org_lookup = resolve_orgs(unique_orgs)
+
+    print("Building output records...")
+    records = build_records(services, program_lookup, org_lookup)
+
+    write_json(records, OUT_PATH)

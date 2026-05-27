@@ -124,7 +124,7 @@ def test_build_program_lookup_takes_most_recent_fiscal_year():
         }
     )
     result = build_program_lookup(df)
-    assert result["1"] == "NEW01"
+    assert result["1"] == ["NEW01"]
 
 
 def test_build_program_lookup_handles_single_entry():
@@ -136,7 +136,7 @@ def test_build_program_lookup_handles_single_entry():
         }
     )
     result = build_program_lookup(df)
-    assert result["42"] == "ABC01"
+    assert result["42"] == ["ABC01"]
 
 
 def test_build_program_lookup_returns_string_keys():
@@ -161,8 +161,20 @@ def test_build_program_lookup_handles_multiple_services():
         }
     )
     result = build_program_lookup(df)
-    assert result["1"] == "A02"
-    assert result["2"] == "B02"
+    assert result["1"] == ["A02"]
+    assert result["2"] == ["B02"]
+
+
+def test_build_program_lookup_collects_multiple_programs_in_same_year():
+    df = pd.DataFrame(
+        {
+            "service_id": [1, 1, 1],
+            "fiscal_yr": ["2022-2023", "2022-2023", "2022-2023"],
+            "program_id": ["BUH04", "BUH08", "BUH12"],
+        }
+    )
+    result = build_program_lookup(df)
+    assert sorted(result["1"]) == ["BUH04", "BUH08", "BUH12"]
 
 
 def _mock_post(mocker, results: list[dict]):
@@ -237,7 +249,7 @@ SAMPLE_SERVICES = pd.DataFrame(
     }
 )
 
-SAMPLE_PROGRAM_LOOKUP = {"4158": "BWM06"}
+SAMPLE_PROGRAM_LOOKUP = {"4158": ["BWM06"]}
 
 SAMPLE_ORG_LOOKUP = {
     "Canada Border Services Agency": {
@@ -258,7 +270,7 @@ def test_build_records_produces_correct_schema():
     assert first["gc_orgID"] == 26
     assert first["org_name_en"] == "Canada Border Services Agency"
     assert first["org_name_fr"] == "Agence des services frontaliers du Canada"
-    assert first["program_id"] == "BWM06"
+    assert first["program_id"] == ["BWM06"]
 
 
 def test_build_records_program_id_is_none_when_missing():
