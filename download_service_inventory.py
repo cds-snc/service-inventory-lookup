@@ -10,6 +10,7 @@ Steps:
 7. Write services.json
 """
 
+import json
 from pathlib import Path
 from urllib.request import urlopen
 
@@ -106,3 +107,33 @@ def resolve_orgs(org_names: list[str]) -> dict[str, dict]:
             else:
                 raise ValueError(f"gcorg-resolver could not match org: '{result['input']}'")
     return lookup
+
+
+def build_records(
+    services: pd.DataFrame,
+    program_lookup: dict[str, str],
+    org_lookup: dict[str, dict],
+) -> list[dict]:
+    """Join program and org data onto each service row and return as a list of dicts."""
+    records = []
+    for _, row in services.iterrows():
+        sid = str(row["service_id"])
+        org = org_lookup.get(row["org_name_en"], {})
+        records.append(
+            {
+                "service_id": sid,
+                "service_en": row["service_en"],
+                "service_fr": row["service_fr"],
+                "gc_orgID": org.get("gc_orgID"),
+                "org_name_en": org.get("org_name_en", row["org_name_en"]),
+                "org_name_fr": org.get("org_name_fr"),
+                "program_id": program_lookup.get(sid),
+            }
+        )
+    return records
+
+
+def write_json(records: list[dict], path: Path) -> None:
+    """Write records to a JSON file and print a summary."""
+    path.write_text(json.dumps(records, ensure_ascii=False, indent=2), encoding="utf-8")
+    print(f"Wrote {len(records):,} records to {path}")

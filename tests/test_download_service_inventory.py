@@ -1,5 +1,8 @@
 """Tests for download_service_inventory.py pipeline functions."""
 
+import json
+import tempfile
+from pathlib import Path
 from unittest.mock import MagicMock
 
 import pandas as pd
@@ -8,10 +11,12 @@ import pytest
 from download_service_inventory import (
     apply_org_corrections,
     build_program_lookup,
+    build_records,
     download_csv,
     filter_placeholder,
     filter_transferred,
     resolve_orgs,
+    write_json,
 )
 
 
@@ -218,3 +223,65 @@ def test_resolve_orgs_batches_when_over_limit(mocker):
     assert mock_post.call_count == 2
     assert len(mock_post.call_args_list[0][1]["json"]["names"]) == 1000
     assert len(mock_post.call_args_list[1][1]["json"]["names"]) == 500
+
+
+SAMPLE_SERVICES = pd.DataFrame(
+    {
+        "service_id": [4158, 4159],
+        "service_en": ["Customs Brokers Professional Examination", "Customs Brokers Licensing"],
+        "service_fr": [
+            "Examen de compétences professionnelles",
+            "Agrément des courtiers en douane",
+        ],
+        "org_name_en": ["Canada Border Services Agency", "Canada Border Services Agency"],
+    }
+)
+
+SAMPLE_PROGRAM_LOOKUP = {"4158": "BWM06"}
+
+SAMPLE_ORG_LOOKUP = {
+    "Canada Border Services Agency": {
+        "gc_orgID": 26,
+        "org_name_en": "Canada Border Services Agency",
+        "org_name_fr": "Agence des services frontaliers du Canada",
+    }
+}
+
+
+def test_build_records_produces_correct_schema():
+    records = build_records(SAMPLE_SERVICES, SAMPLE_PROGRAM_LOOKUP, SAMPLE_ORG_LOOKUP)
+    assert len(records) == 2
+    first = records[0]
+    assert first["service_id"] == "4158"
+    assert first["service_en"] == "Customs Brokers Professional Examination"
+    assert first["service_fr"] == "Examen de compétences professionnelles"
+    assert first["gc_orgID"] == 26
+    assert first["org_name_en"] == "Canada Border Services Agency"
+    assert first["org_name_fr"] == "Agence des services frontaliers du Canada"
+    assert first["program_id"] == "BWM06"
+
+
+def test_build_records_program_id_is_none_when_missing():
+    records = build_records(SAMPLE_SERVICES, SAMPLE_PROGRAM_LOOKUP, SAMPLE_ORG_LOOKUP)
+    assert records[1]["service_id"] == "4159"
+    assert records[1]["program_id"] is None
+
+
+def test_build_records_service_id_is_string():
+    records = build_records(SAMPLE_SERVICES, SAMPLE_PROGRAM_LOOKUP, SAMPLE_ORG_LOOKUP)
+    for record in records:
+        assert isinstance(record["service_id"], str)
+
+
+def test_write_json_produces_valid_json_file():
+    records = [{"service_id": "1", "service_en": "Test"}]
+    with tempfile.TemporaryDirectory() as tmpdir:
+        out_path = Path(tmpdir) / "services.json"
+        write_json(records, out_path)
+        assert json.loads(out_path.read_text()) == records
+
+
+def test_write_json_prints_record_count(capsys):
+    with tempfile.TemporaryDirectory() as tmpdir:
+        write_json([{"a": 1}, {"a": 2}], Path(tmpdir) / "services.json")
+    assert "2" in capsys.readouterr().out
