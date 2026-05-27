@@ -14,6 +14,7 @@ from pathlib import Path
 from urllib.request import urlopen
 
 import pandas as pd
+import requests
 
 SERVICE_REGISTRY_URL = (
     "https://raw.githubusercontent.com/gcperformance/utilities/master/goc-service-id-registry.csv"
@@ -22,6 +23,7 @@ SERVICE_PROGRAM_URL = (
     "https://raw.githubusercontent.com/gcperformance/utilities/master/goc-service-program.csv"
 )
 GCORG_RESOLVER_URL = "https://gcorgs.cdssandbox.xyz/resolve"
+RESOLVER_BATCH_SIZE = 1000
 OUT_PATH = Path(__file__).parent / "services.json"
 
 
@@ -34,12 +36,28 @@ def download_csv(url: str) -> pd.DataFrame:
 
 PLACEHOLDER_SERVICE_NAMES = ["id not used"]
 
+# Known errors in the source data: wrong org name -> correct canonical name.
+
+ORG_NAME_CORRECTIONS = {
+    # "Offices of the Information and Privacy Commissioners of Canada" is a combined
+    # entry that should be two separate orgs; services here are predominantly Privacy
+    # Commissioner in nature so we remap to that until the source data is corrected.
+    "Offices of the Information and Privacy Commissioners of Canada": (
+        "Office of the Privacy Commissioner of Canada"
+    ),
+}
+
 
 def filter_transferred(df: pd.DataFrame) -> pd.DataFrame:
     """Drop services that have been transferred to another org."""
     # fillna("") first so .str accessor works on all-NaN float columns
     mask = df["date_transferred"].fillna("").str.strip() == ""
     return df[mask].reset_index(drop=True)
+
+
+def apply_org_corrections(df: pd.DataFrame) -> pd.DataFrame:
+    """Remap known bad org names in the source data to their correct canonical names."""
+    return df.assign(org_name_en=df["org_name_en"].replace(ORG_NAME_CORRECTIONS))
 
 
 def filter_placeholder(df: pd.DataFrame) -> pd.DataFrame:
@@ -57,9 +75,34 @@ def build_program_lookup(df: pd.DataFrame) -> dict[str, str]:
             " in program data - keeping first"
         )
         df = df.drop_duplicates(subset=["service_id", "fiscal_yr"], keep="first")
-    latest = (
-        df.sort_values("fiscal_yr")
-        .groupby("service_id", as_index=False)
-        .last()
-    )
+    latest = df.sort_values("fiscal_yr").groupby("service_id", as_index=False).last()
     return {str(row["service_id"]): row["program_id"] for _, row in latest.iterrows()}
+
+
+def resolve_orgs(org_names: list[str]) -> dict[str, dict]:
+    """Resolve org names to gc_orgID and canonical bilingual names via gcorg-resolver.
+
+    Returns {input_name: {gc_orgID, org_name_en, org_name_fr}}.
+    Raises ValueError if any org name cannot be resolved.
+    Batches requests if org_names exceeds RESOLVER_BATCH_SIZE.
+    """
+    lookup = {}
+    for i in range(0, max(len(org_names), 1), RESOLVER_BATCH_SIZE):
+        batch = org_names[i : i + RESOLVER_BATCH_SIZE]
+        response = requests.post(
+            GCORG_RESOLVER_URL,
+            json={"names": batch},
+            headers={"Content-Type": "application/json"},
+            verify=False,
+        )
+        response.raise_for_status()
+        for result in response.json()["results"]:
+            if result["matched"]:
+                lookup[result["input"]] = {
+                    "gc_orgID": result["gc_orgID"],
+                    "org_name_en": result["harmonized_name"],
+                    "org_name_fr": result["nom_harmonise"],
+                }
+            else:
+                raise ValueError(f"gcorg-resolver could not match org: '{result['input']}'")
+    return lookup
