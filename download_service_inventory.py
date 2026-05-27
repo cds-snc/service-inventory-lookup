@@ -3,7 +3,7 @@
 Steps:
 1. Download goc-service-id-registry.csv (service registry)
 2. Download goc-service-program.csv (program mappings)
-3. Filter out transferred services (non-empty date_transferred)
+3. Filter out transferred services (non-empty date_transferred) and placeholder rows
 4. Build program_id lookup: most recent fiscal year per service_id
 5. Resolve unique org names via gcorg-resolver -> org lookup table
 6. Join program_id and org info onto service rows
@@ -45,3 +45,21 @@ def filter_transferred(df: pd.DataFrame) -> pd.DataFrame:
 def filter_placeholder(df: pd.DataFrame) -> pd.DataFrame:
     """Drop placeholder rows that reserve a service_id without a real service."""
     return df[~df["service_en"].str.strip().isin(PLACEHOLDER_SERVICE_NAMES)].reset_index(drop=True)
+
+
+def build_program_lookup(df: pd.DataFrame) -> dict[str, str]:
+    """Return {service_id: program_id} using the most recent fiscal year per service."""
+    duplicates = df.duplicated(subset=["service_id", "fiscal_yr"], keep=False)
+    if duplicates.any():
+        count = duplicates.sum()
+        print(
+            f"WARNING: {count} duplicate (service_id, fiscal_yr) rows"
+            " in program data - keeping first"
+        )
+        df = df.drop_duplicates(subset=["service_id", "fiscal_yr"], keep="first")
+    latest = (
+        df.sort_values("fiscal_yr")
+        .groupby("service_id", as_index=False)
+        .last()
+    )
+    return {str(row["service_id"]): row["program_id"] for _, row in latest.iterrows()}
