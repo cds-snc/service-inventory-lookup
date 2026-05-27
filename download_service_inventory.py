@@ -30,3 +30,18 @@ def download_csv(url: str) -> pd.DataFrame:
     with urlopen(url) as response:
         body = response.read()
     return pd.read_csv(pd.io.common.BytesIO(body))
+
+
+PLACEHOLDER_SERVICE_NAMES = ["id not used"]
+
+
+def filter_transferred(df: pd.DataFrame) -> pd.DataFrame:
+    """Drop services that have been transferred to another org."""
+    # fillna("") first so .str accessor works on all-NaN float columns
+    mask = df["date_transferred"].fillna("").str.strip() == ""
+    return df[mask].reset_index(drop=True)
+
+
+def filter_placeholder(df: pd.DataFrame) -> pd.DataFrame:
+    """Drop placeholder rows that reserve a service_id without a real service."""
+    return df[~df["service_en"].str.strip().isin(PLACEHOLDER_SERVICE_NAMES)].reset_index(drop=True)
