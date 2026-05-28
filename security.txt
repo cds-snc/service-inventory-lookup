@@ -1,0 +1,6 @@
+Contact: mailto:ZZTBSCYBERS@tbs-sct.gc.ca
+Contact: https://hackerone.com/tbs-sct/
+Policy: https://hackerone.com/tbs-sct/policy
+Canonical: https://cdssandbox.xyz/.well-known/security.txt
+Preferred-Languages: en, fr
+Expires: 2027-04-01T00:00:00Z

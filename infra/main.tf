@@ -56,6 +56,14 @@ resource "aws_s3_object" "services_json" {
   etag         = filemd5("${path.module}/../services.json")
 }
 
+resource "aws_s3_object" "security_txt" {
+  bucket       = module.website.s3_bucket_id
+  key          = ".well-known/security.txt"
+  source       = "${path.module}/../security.txt"
+  content_type = "text/plain"
+  etag         = filemd5("${path.module}/../security.txt")
+}
+
 output "website_url" {
   value = "https://service-inventory-lookup.gcorgs.cdssandbox.xyz"
 }
