@@ -45,6 +45,8 @@
         border-radius: 2px;
       }
 
+      #dept-suggestion { margin-top: 0.75rem; }
+
       #result {
         margin-top: 1.5rem;
         padding: 1.25rem 1.5rem;
@@ -98,14 +100,13 @@
       </div>
 
       <div id="app" hidden>
-        <gcds-select
-          select-id="dept-select"
+        <gcds-input
+          input-id="dept-input"
           name="department"
           label="Department"
-          hint="Select your department to search for services"
-        >
-          <option value="">-- Select a department --</option>
-        </gcds-select>
+          hint="Start typing your department name"
+        ></gcds-input>
+        <div id="dept-suggestion" hidden></div>
 
         <div class="search-wrapper">
           <gcds-input
@@ -179,7 +180,8 @@
         let debounceTimer = null;
 
         // --- DOM refs ---
-        const deptSelect = document.querySelector('gcds-select[select-id="dept-select"]');
+        const deptInput = document.querySelector('gcds-input[input-id="dept-input"]');
+        const deptSuggestion = document.getElementById('dept-suggestion');
         const serviceInput = document.querySelector('gcds-input[input-id="service-input"]');
         const dropdown = document.getElementById('dropdown');
         const resultDiv = document.getElementById('result');
@@ -192,27 +194,69 @@
         }
 
         // -----------------------------------------------
-        // Department dropdown
+        // Department freeform input with resolver suggestion
         // -----------------------------------------------
-        const depts = [...new Set(services.map(s => s.org_name_en))].sort();
-        depts.forEach(dept => {
-          const opt = document.createElement('option');
-          opt.value = dept;
-          opt.textContent = dept;
-          deptSelect.appendChild(opt);
-        });
+        let deptDebounceTimer = null;
 
-        deptSelect.addEventListener('gcdsChange', e => onDeptChange(readValue(e)));
-        deptSelect.addEventListener('change', e => onDeptChange(readValue(e)));
+        deptInput.addEventListener('gcdsInput', e => onDeptInput(readValue(e)));
+        deptInput.addEventListener('input', e => onDeptInput(readValue(e)));
 
-        function onDeptChange(value) {
-          if (value === currentDept) return;
-          currentDept = value;
-          serviceInput.value = '';
-          lastQuery = '';
-          hideDropdown();
-          hideResult();
-          serviceInput.disabled = !currentDept;
+        function onDeptInput(value) {
+          if (currentDept) {
+            currentDept = '';
+            serviceInput.disabled = true;
+            serviceInput.value = '';
+            lastQuery = '';
+            hideDropdown();
+            hideResult();
+          }
+          deptSuggestion.hidden = true;
+          deptSuggestion.textContent = '';
+          clearTimeout(deptDebounceTimer);
+          if (!value.trim()) return;
+          deptDebounceTimer = setTimeout(() => resolveDept(value.trim()), 500);
+        }
+
+        async function resolveDept(name) {
+          try {
+            const resp = await fetch('https://gcorgs.cdssandbox.xyz/resolve', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ names: [name] }),
+            });
+            if (!resp.ok) return;
+            const { results } = await resp.json();
+            const result = results[0];
+            if (!result?.matched) return;
+            const harmonized = result.harmonized_name;
+            if (harmonized.toLowerCase() === name.toLowerCase()) {
+              acceptDept(harmonized);
+              return;
+            }
+            // Build suggestion safely without innerHTML
+            deptSuggestion.textContent = '';
+            deptSuggestion.append('Did you mean ');
+            const link = document.createElement('gcds-link');
+            link.setAttribute('href', '#');
+            link.textContent = harmonized;
+            deptSuggestion.appendChild(link);
+            deptSuggestion.append('?');
+            deptSuggestion.hidden = false;
+            link.addEventListener('click', e => {
+              e.preventDefault();
+              deptInput.value = harmonized;
+              acceptDept(harmonized);
+            }, { once: true });
+          } catch (_) {
+            // Ignore network errors silently
+          }
+        }
+
+        function acceptDept(name) {
+          currentDept = name;
+          deptSuggestion.hidden = true;
+          deptSuggestion.textContent = '';
+          serviceInput.disabled = false;
         }
 
         // -----------------------------------------------
