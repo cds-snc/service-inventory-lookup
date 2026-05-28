@@ -139,13 +139,13 @@
             <div>
               <dt class="result-label">Service inventory ID</dt>
               <dd id="r-service-id" class="result-id"></dd>
+              <gcds-button id="copy-btn" type="button">Copy Service ID</gcds-button>
             </div>
             <div>
               <dt class="result-label">Program ID(s)</dt>
               <dd id="r-program-id" class="result-value"></dd>
             </div>
           </dl>
-          <gcds-button id="copy-btn" type="button">Copy ID</gcds-button>
         </div>
       </div>
 
@@ -416,7 +416,7 @@
             Array.isArray(pid) && pid.length > 0 ? pid.join(', ') : 'None found';
 
           const copyBtn = document.getElementById('copy-btn');
-          copyBtn.textContent = 'Copy ID';
+          copyBtn.textContent = 'Copy Service ID';
           resultDiv.hidden = false;
         }
 
