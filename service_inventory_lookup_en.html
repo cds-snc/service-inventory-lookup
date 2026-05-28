@@ -8,6 +8,74 @@
     <link rel="stylesheet" href="https://cdn.design-system.canada.ca/@gcds-core/css-shortcuts@1.0.1/dist/gcds-css-shortcuts.min.css" />
     <link rel="stylesheet" href="https://cdn.design-system.canada.ca/@gcds-core/components@1.1.0/dist/gcds/gcds.css" />
     <script type="module" src="https://cdn.design-system.canada.ca/@gcds-core/components@1.1.0/dist/gcds/gcds.esm.js"></script>
+    <style>
+      .search-wrapper { position: relative; }
+
+      #dropdown {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: #fff;
+        border: 1.5px solid #b0b8c1;
+        border-radius: 4px;
+        max-height: 260px;
+        overflow-y: auto;
+        z-index: 100;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+      }
+
+      .dropdown-item {
+        padding: 10px 14px;
+        font-size: 0.875rem;
+        cursor: pointer;
+        border-bottom: 1px solid #eef1f5;
+        line-height: 1.4;
+      }
+
+      .dropdown-item:last-child { border-bottom: none; }
+
+      .dropdown-item.active,
+      .dropdown-item:hover { background: #e8f2fd; }
+
+      mark {
+        background: #fde8e6;
+        padding: 0 2px;
+        border-radius: 2px;
+      }
+
+      #result {
+        margin-top: 1.5rem;
+        padding: 1.25rem 1.5rem;
+        background: #f8f9fb;
+        border: 1.5px solid #dce3ec;
+        border-radius: 4px;
+      }
+
+      .result-label {
+        font-size: 0.6875rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: #5a6a7e;
+        margin-bottom: 2px;
+      }
+
+      .result-value {
+        font-size: 0.9375rem;
+        margin: 0 0 0.875rem;
+      }
+
+      .result-id {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: #26374a;
+        font-family: 'Courier New', monospace;
+        letter-spacing: 0.04em;
+        margin: 0 0 0.875rem;
+      }
+    </style>
   </head>
   <body>
     <gcds-header lang-href="service_inventory_lookup_fr.html" skip-to-href="#main-content">
@@ -20,6 +88,62 @@
     <gcds-container id="main-content" layout="page" tag="main">
       <gcds-heading tag="h1">Service Inventory Lookup</gcds-heading>
       <gcds-text>Find your service inventory ID by selecting your department and searching for your service.</gcds-text>
+
+      <div id="loading-msg">
+        <gcds-text>Loading services...</gcds-text>
+      </div>
+
+      <div id="error-msg" hidden>
+        <gcds-text>
+          Unable to load services. This page must be served from a web server —
+          open it via <code>python -m http.server</code> rather than directly from your filesystem.
+        </gcds-text>
+      </div>
+
+      <div id="app" hidden>
+        <gcds-select
+          select-id="dept-select"
+          name="department"
+          label="Department"
+          hint="Select your department to search for services"
+        >
+          <option value="">-- Select a department --</option>
+        </gcds-select>
+
+        <div class="search-wrapper">
+          <gcds-input
+            input-id="service-input"
+            name="service"
+            label="Service name"
+            hint="Type to search services in the selected department"
+            disabled
+          ></gcds-input>
+          <div id="dropdown" role="listbox"></div>
+        </div>
+
+        <div id="result" hidden>
+          <gcds-heading tag="h2">Result</gcds-heading>
+          <dl style="margin: 0.75rem 0 1rem;">
+            <div>
+              <dt class="result-label">Canonical service name</dt>
+              <dd id="r-service-en" class="result-value"></dd>
+            </div>
+            <div>
+              <dt class="result-label">Department</dt>
+              <dd id="r-org-en" class="result-value"></dd>
+            </div>
+            <div>
+              <dt class="result-label">Service inventory ID</dt>
+              <dd id="r-service-id" class="result-id"></dd>
+            </div>
+            <div id="r-program-row" hidden>
+              <dt class="result-label">Program ID</dt>
+              <dd id="r-program-id" class="result-value"></dd>
+            </div>
+          </dl>
+          <gcds-button id="copy-btn" type="button">Copy ID</gcds-button>
+        </div>
+      </div>
 
       <gcds-date-modified>2026-05-27</gcds-date-modified>
     </gcds-container>
