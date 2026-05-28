@@ -11,6 +11,7 @@
     <style>
       .search-wrapper { position: relative; }
 
+      #dept-dropdown,
       #dropdown {
         display: none;
         position: absolute;
@@ -45,10 +46,9 @@
         border-radius: 2px;
       }
 
-      #dept-suggestion { margin-top: 0.75rem; }
 
       #result {
-        margin-top: 1.5rem;
+        margin-top: 0.5rem;
         padding: 1.25rem 1.5rem;
         background: #f8f9fb;
         border: 1.5px solid #dce3ec;
@@ -100,13 +100,15 @@
       </div>
 
       <div id="app" hidden>
-        <gcds-input
-          input-id="dept-input"
-          name="department"
-          label="Department"
-          hint="Start typing your department name"
-        ></gcds-input>
-        <div id="dept-suggestion" hidden></div>
+        <div class="search-wrapper">
+          <gcds-input
+            input-id="dept-input"
+            name="department"
+            label="Department"
+            hint="Start typing your department name"
+          ></gcds-input>
+          <div id="dept-dropdown" role="listbox"></div>
+        </div>
 
         <div class="search-wrapper">
           <gcds-input
@@ -123,19 +125,23 @@
           <gcds-heading tag="h2">Result</gcds-heading>
           <dl style="margin: 0.75rem 0 1rem;">
             <div>
-              <dt class="result-label">Canonical service name</dt>
+              <dt class="result-label">Service name (English)</dt>
               <dd id="r-service-en" class="result-value"></dd>
             </div>
             <div>
-              <dt class="result-label">Department</dt>
+              <dt class="result-label">Service name (French)</dt>
+              <dd id="r-service-fr" class="result-value"></dd>
+            </div>
+            <div>
+              <dt class="result-label">Department (gc_orgID)</dt>
               <dd id="r-org-en" class="result-value"></dd>
             </div>
             <div>
               <dt class="result-label">Service inventory ID</dt>
               <dd id="r-service-id" class="result-id"></dd>
             </div>
-            <div id="r-program-row" hidden>
-              <dt class="result-label">Program ID</dt>
+            <div>
+              <dt class="result-label">Program ID(s)</dt>
               <dd id="r-program-id" class="result-value"></dd>
             </div>
           </dl>
@@ -181,7 +187,7 @@
 
         // --- DOM refs ---
         const deptInput = document.querySelector('gcds-input[input-id="dept-input"]');
-        const deptSuggestion = document.getElementById('dept-suggestion');
+        const deptDropdown = document.getElementById('dept-dropdown');
         const serviceInput = document.querySelector('gcds-input[input-id="service-input"]');
         const dropdown = document.getElementById('dropdown');
         const resultDiv = document.getElementById('result');
@@ -194,14 +200,25 @@
         }
 
         // -----------------------------------------------
-        // Department freeform input with resolver suggestion
+        // Department autocomplete
         // -----------------------------------------------
+        const allDepts = [...new Set(services.map(s => s.org_name_en))].sort();
+        let deptMatches = [];
+        let deptActiveIndex = -1;
+        let deptLastQuery = '';
         let deptDebounceTimer = null;
 
-        deptInput.addEventListener('gcdsInput', e => onDeptInput(readValue(e)));
-        deptInput.addEventListener('input', e => onDeptInput(readValue(e)));
+        deptInput.addEventListener('focus', () => runDeptSearch(deptLastQuery));
+        deptInput.addEventListener('gcdsInput', e => scheduleDept(readValue(e)));
+        deptInput.addEventListener('input', e => scheduleDept(readValue(e)));
 
-        function onDeptInput(value) {
+        function scheduleDept(value) {
+          clearTimeout(deptDebounceTimer);
+          deptDebounceTimer = setTimeout(() => runDeptSearch(value.trim()), 120);
+        }
+
+        function runDeptSearch(q) {
+          deptLastQuery = q;
           if (currentDept) {
             currentDept = '';
             serviceInput.disabled = true;
@@ -210,54 +227,67 @@
             hideDropdown();
             hideResult();
           }
-          deptSuggestion.hidden = true;
-          deptSuggestion.textContent = '';
-          clearTimeout(deptDebounceTimer);
-          if (!value.trim()) return;
-          deptDebounceTimer = setTimeout(() => resolveDept(value.trim()), 500);
+          deptMatches = allDepts
+            .filter(d => !q || d.toLowerCase().includes(q.toLowerCase()))
+            .slice(0, 10);
+          deptActiveIndex = -1;
+          renderDeptDropdown();
         }
 
-        async function resolveDept(name) {
-          try {
-            const resp = await fetch('https://gcorgs.cdssandbox.xyz/resolve', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ names: [name] }),
-            });
-            if (!resp.ok) return;
-            const { results } = await resp.json();
-            const result = results[0];
-            if (!result?.matched) return;
-            const harmonized = result.harmonized_name;
-            if (harmonized.toLowerCase() === name.toLowerCase()) {
-              acceptDept(harmonized);
-              return;
-            }
-            // Build suggestion safely without innerHTML
-            deptSuggestion.textContent = '';
-            deptSuggestion.append('Did you mean ');
-            const link = document.createElement('gcds-link');
-            link.setAttribute('href', '#');
-            link.textContent = harmonized;
-            deptSuggestion.appendChild(link);
-            deptSuggestion.append('?');
-            deptSuggestion.hidden = false;
-            link.addEventListener('click', e => {
+        function renderDeptDropdown() {
+          deptDropdown.textContent = '';
+          deptMatches.forEach((dept, i) => {
+            const item = document.createElement('div');
+            item.className = 'dropdown-item' + (i === deptActiveIndex ? ' active' : '');
+            item.setAttribute('role', 'option');
+            // innerHTML is safe: highlight() only inserts text through escHtml()
+            item.innerHTML = highlight(dept, deptLastQuery);
+            item.addEventListener('mousedown', e => {
               e.preventDefault();
-              deptInput.value = harmonized;
-              acceptDept(harmonized);
-            }, { once: true });
-          } catch (_) {
-            // Ignore network errors silently
-          }
+              selectDept(dept);
+            });
+            deptDropdown.appendChild(item);
+          });
+          deptDropdown.style.display = deptMatches.length ? 'block' : 'none';
         }
 
-        function acceptDept(name) {
+        function hideDeptDropdown() {
+          deptDropdown.style.display = 'none';
+          deptDropdown.textContent = '';
+          deptActiveIndex = -1;
+          deptMatches = [];
+        }
+
+        function selectDept(name) {
+          deptInput.value = name;
           currentDept = name;
-          deptSuggestion.hidden = true;
-          deptSuggestion.textContent = '';
+          hideDeptDropdown();
           serviceInput.disabled = false;
         }
+
+        deptInput.addEventListener('keydown', e => {
+          if (deptDropdown.style.display === 'none') return;
+          switch (e.key) {
+            case 'ArrowDown':
+              e.preventDefault();
+              deptActiveIndex = Math.min(deptActiveIndex + 1, deptMatches.length - 1);
+              renderDeptDropdown();
+              break;
+            case 'ArrowUp':
+              e.preventDefault();
+              deptActiveIndex = Math.max(deptActiveIndex - 1, -1);
+              renderDeptDropdown();
+              break;
+            case 'Enter':
+              if (deptActiveIndex >= 0 && deptMatches[deptActiveIndex]) {
+                selectDept(deptMatches[deptActiveIndex]);
+              }
+              break;
+            case 'Escape':
+              hideDeptDropdown();
+              break;
+          }
+        });
 
         // -----------------------------------------------
         // Service search
@@ -363,7 +393,11 @@
         });
 
         document.addEventListener('click', e => {
-          if (!e.composedPath().some(n => n.classList?.contains('search-wrapper'))) hideDropdown();
+          const inWrapper = e.composedPath().some(n => n.classList?.contains('search-wrapper'));
+          if (!inWrapper) {
+            hideDeptDropdown();
+            hideDropdown();
+          }
         });
 
         // -----------------------------------------------
@@ -374,17 +408,12 @@
           hideDropdown();
 
           document.getElementById('r-service-en').textContent = service.service_en;
-          document.getElementById('r-org-en').textContent = service.org_name_en;
+          document.getElementById('r-service-fr').textContent = service.service_fr;
+          document.getElementById('r-org-en').textContent = `${service.org_name_en} (${service.gc_orgID})`;
           document.getElementById('r-service-id').textContent = service.service_id;
-
-          const programRow = document.getElementById('r-program-row');
-          const programId = document.getElementById('r-program-id');
-          if (service.program_id && service.program_id.length > 0) {
-            programId.textContent = service.program_id.join(', ');
-            programRow.hidden = false;
-          } else {
-            programRow.hidden = true;
-          }
+          const pid = service.program_id;
+          document.getElementById('r-program-id').textContent =
+            Array.isArray(pid) && pid.length > 0 ? pid.join(', ') : 'None found';
 
           const copyBtn = document.getElementById('copy-btn');
           copyBtn.textContent = 'Copy ID';
