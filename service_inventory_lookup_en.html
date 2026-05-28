@@ -262,6 +262,7 @@
         // -----------------------------------------------
         // Service search
         // -----------------------------------------------
+        serviceInput.addEventListener('focus', () => { if (currentDept) runSearch(lastQuery); });
         serviceInput.addEventListener('gcdsInput', e => schedule(readValue(e)));
         serviceInput.addEventListener('input', e => schedule(readValue(e)));
 
@@ -273,12 +274,12 @@
         function runSearch(q) {
           lastQuery = q;
           hideResult();
-          if (!q || !currentDept) { hideDropdown(); return; }
+          if (!currentDept) { hideDropdown(); return; }
 
           currentMatches = services
             .filter(s =>
               s.org_name_en === currentDept &&
-              s.service_en.toLowerCase().includes(q.toLowerCase())
+              (!q || s.service_en.toLowerCase().includes(q.toLowerCase()))
             )
             .slice(0, 10);
 
@@ -291,6 +292,7 @@
         }
 
         function highlight(text, query) {
+          if (!query) return escHtml(text);
           const idx = text.toLowerCase().indexOf(query.toLowerCase());
           if (idx === -1) return escHtml(text);
           return (
