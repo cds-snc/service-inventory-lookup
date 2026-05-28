@@ -94,10 +94,7 @@
       </div>
 
       <div id="error-msg" hidden>
-        <gcds-text>
-          Unable to load services. This page must be served from a web server —
-          open it via <code>python -m http.server</code> rather than directly from your filesystem.
-        </gcds-text>
+        <gcds-text>Unable to load services.json. Make sure the file is available and the page is being served from a web server.</gcds-text>
       </div>
 
       <div id="app" hidden>
@@ -153,5 +150,219 @@
       contextual-heading="Canadian Digital Service"
       contextual-links='{"Contact CDS": "mailto:cds-snc@servicecanada.gc.ca", "LinkedIn": "https://www.linkedin.com/company/cds-snc", "Newsletter": "https://canada.us15.list-manage.com/subscribe?u=729a207773f7324e217a1d945&id=eb357181d2"}'
     ></gcds-footer>
+
+    <script>
+      (async function init() {
+        const loadingMsg = document.getElementById('loading-msg');
+        const errorMsg = document.getElementById('error-msg');
+        const app = document.getElementById('app');
+
+        let services;
+        try {
+          const resp = await fetch('services.json');
+          if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+          services = await resp.json();
+        } catch (_) {
+          loadingMsg.hidden = true;
+          errorMsg.hidden = false;
+          return;
+        }
+
+        loadingMsg.hidden = true;
+        app.hidden = false;
+
+        // --- State ---
+        let currentDept = '';
+        let currentMatches = [];
+        let activeIndex = -1;
+        let lastQuery = '';
+        let debounceTimer = null;
+
+        // --- DOM refs ---
+        const deptSelect = document.querySelector('gcds-select[select-id="dept-select"]');
+        const serviceInput = document.querySelector('gcds-input[input-id="service-input"]');
+        const dropdown = document.getElementById('dropdown');
+        const resultDiv = document.getElementById('result');
+
+        // --- Shared value reader for GCDS events ---
+        function readValue(e) {
+          if (e.detail && typeof e.detail.value === 'string') return e.detail.value;
+          if (e.target && 'value' in e.target) return e.target.value;
+          return '';
+        }
+
+        // -----------------------------------------------
+        // Department dropdown
+        // -----------------------------------------------
+        const depts = [...new Set(services.map(s => s.org_name_en))].sort();
+        depts.forEach(dept => {
+          const opt = document.createElement('option');
+          opt.value = dept;
+          opt.textContent = dept;
+          deptSelect.appendChild(opt);
+        });
+
+        deptSelect.addEventListener('gcdsChange', e => onDeptChange(readValue(e)));
+        deptSelect.addEventListener('change', e => onDeptChange(readValue(e)));
+
+        function onDeptChange(value) {
+          if (value === currentDept) return;
+          currentDept = value;
+          serviceInput.value = '';
+          lastQuery = '';
+          hideDropdown();
+          hideResult();
+          serviceInput.disabled = !currentDept;
+        }
+
+        // -----------------------------------------------
+        // Service search
+        // -----------------------------------------------
+        serviceInput.addEventListener('gcdsInput', e => schedule(readValue(e)));
+        serviceInput.addEventListener('input', e => schedule(readValue(e)));
+
+        function schedule(value) {
+          clearTimeout(debounceTimer);
+          debounceTimer = setTimeout(() => runSearch(value.trim()), 120);
+        }
+
+        function runSearch(q) {
+          lastQuery = q;
+          hideResult();
+          if (!q || !currentDept) { hideDropdown(); return; }
+
+          currentMatches = services
+            .filter(s =>
+              s.org_name_en === currentDept &&
+              s.service_en.toLowerCase().includes(q.toLowerCase())
+            )
+            .slice(0, 10);
+
+          activeIndex = -1;
+          renderDropdown(q);
+        }
+
+        function escHtml(s) {
+          return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        }
+
+        function highlight(text, query) {
+          const idx = text.toLowerCase().indexOf(query.toLowerCase());
+          if (idx === -1) return escHtml(text);
+          return (
+            escHtml(text.slice(0, idx)) +
+            '<mark>' + escHtml(text.slice(idx, idx + query.length)) + '</mark>' +
+            escHtml(text.slice(idx + query.length))
+          );
+        }
+
+        function renderDropdown(query) {
+          dropdown.textContent = '';
+          if (currentMatches.length === 0) {
+            const msg = document.createElement('div');
+            msg.className = 'dropdown-item';
+            msg.style.fontStyle = 'italic';
+            msg.style.color = '#5a6a7e';
+            msg.textContent = 'No matching services found.';
+            dropdown.appendChild(msg);
+          } else {
+            currentMatches.forEach((match, i) => {
+              const item = document.createElement('div');
+              item.className = 'dropdown-item' + (i === activeIndex ? ' active' : '');
+              item.setAttribute('role', 'option');
+              // innerHTML is safe: highlight() only inserts text through escHtml()
+              item.innerHTML = highlight(match.service_en, query);
+              item.addEventListener('mousedown', e => {
+                e.preventDefault();
+                selectService(match);
+              });
+              dropdown.appendChild(item);
+            });
+          }
+          dropdown.style.display = 'block';
+        }
+
+        function hideDropdown() {
+          dropdown.style.display = 'none';
+          dropdown.textContent = '';
+          activeIndex = -1;
+          currentMatches = [];
+        }
+
+        // -----------------------------------------------
+        // Keyboard navigation
+        // -----------------------------------------------
+        serviceInput.addEventListener('keydown', e => {
+          if (dropdown.style.display === 'none') return;
+          switch (e.key) {
+            case 'ArrowDown':
+              e.preventDefault();
+              activeIndex = Math.min(activeIndex + 1, currentMatches.length - 1);
+              renderDropdown(lastQuery);
+              break;
+            case 'ArrowUp':
+              e.preventDefault();
+              activeIndex = Math.max(activeIndex - 1, -1);
+              renderDropdown(lastQuery);
+              break;
+            case 'Enter':
+              if (activeIndex >= 0 && currentMatches[activeIndex]) {
+                selectService(currentMatches[activeIndex]);
+              }
+              break;
+            case 'Escape':
+              hideDropdown();
+              break;
+          }
+        });
+
+        document.addEventListener('click', e => {
+          if (!e.composedPath().some(n => n.classList?.contains('search-wrapper'))) hideDropdown();
+        });
+
+        // -----------------------------------------------
+        // Result panel
+        // -----------------------------------------------
+        function selectService(service) {
+          serviceInput.value = service.service_en;
+          hideDropdown();
+
+          document.getElementById('r-service-en').textContent = service.service_en;
+          document.getElementById('r-org-en').textContent = service.org_name_en;
+          document.getElementById('r-service-id').textContent = service.service_id;
+
+          const programRow = document.getElementById('r-program-row');
+          const programId = document.getElementById('r-program-id');
+          if (service.program_id && service.program_id.length > 0) {
+            programId.textContent = service.program_id.join(', ');
+            programRow.hidden = false;
+          } else {
+            programRow.hidden = true;
+          }
+
+          const copyBtn = document.getElementById('copy-btn');
+          copyBtn.textContent = 'Copy ID';
+          resultDiv.hidden = false;
+        }
+
+        function hideResult() {
+          resultDiv.hidden = true;
+        }
+
+        // -----------------------------------------------
+        // Copy button
+        // -----------------------------------------------
+        document.getElementById('copy-btn').addEventListener('click', () => {
+          const id = document.getElementById('r-service-id').textContent;
+          navigator.clipboard.writeText(id).then(() => {
+            const btn = document.getElementById('copy-btn');
+            btn.textContent = 'Copied!';
+            setTimeout(() => { btn.textContent = 'Copy ID'; }, 2000);
+          }).catch(() => {
+            document.getElementById('copy-btn').textContent = 'Copy failed';
+          });
+        });
+      })();
+    </script>
   </body>
 </html>
