@@ -1,8 +1,12 @@
 # Service Inventory Lookup
 
-A small HTML file that helps you figure out your service ID. Its currently hosted [here](http://service-inventory-lookup-kxbrxa.s3-website.ca-central-1.amazonaws.com/).
+A small HTML file that helps you figure out your service ID. A version of it is 
+available [here](https://service-inventory-lookup.gcorgs.cdssandbox.xyz/). 
 
-The script `download_service_inventory.py` pulls from the [service id registry](https://raw.githubusercontent.com/gcperformance/utilities/master/goc-service-id-registry.csv) and parallel [service/program list](https://raw.githubusercontent.com/gcperformance/utilities/master/goc-service-program.csv) and creates `services.json`.
+The script `download_service_inventory.py` pulls from the 
+[service id registry](https://raw.githubusercontent.com/gcperformance/utilities/master/goc-service-id-registry.csv) 
+and parallel [service/program list](https://raw.githubusercontent.com/gcperformance/utilities/master/goc-service-program.csv) 
+and creates `services.json`.
 
 **This is a work in progress.** 
 
