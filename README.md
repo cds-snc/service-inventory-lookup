@@ -1,10 +1,9 @@
-# Generic Project Template
+# Service Inventory Lookup
 
-This repository provides some base files for setting up a repository at
-CDS. Plan is to create more project template for specific technologies:
+A small HTML file that helps you figure out your service ID.
 
-- project-template-terraform
-- project-template-python
-- project-template-nodejs
+The script `download_service_inventory.py` pulls from the [service id registry](https://raw.githubusercontent.com/gcperformance/utilities/master/goc-service-id-registry.csv) and parallel [service/program list](https://raw.githubusercontent.com/gcperformance/utilities/master/goc-service-program.csv) and creates `services.json`.
 
-Note that default community health files are maintained at https://github.com/cds-snc/.github 
+**This is a work in progress.**
+
+Reach out to [Colin](mailto:colin.douglas@cds-snc.ca) if you have questions.
