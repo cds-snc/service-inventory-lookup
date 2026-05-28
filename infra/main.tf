@@ -29,7 +29,7 @@ module "website" {
 
   domain_name_source    = "service-inventory-lookup.gcorgs.cdssandbox.xyz"
   billing_tag_value     = "service-inventory-lookup"
-  index_document        = "service_inventory_lookup_en.html"
+  index_document        = "lookup_en.html"
   hosted_zone_id        = "Z01243811HX0ZVPGI6SN0"
   is_create_hosted_zone = false
 
@@ -42,10 +42,10 @@ module "website" {
 
 resource "aws_s3_object" "html_en" {
   bucket       = module.website.s3_bucket_id
-  key          = "service_inventory_lookup_en.html"
-  source       = "${path.module}/../service_inventory_lookup_en.html"
+  key          = "lookup_en.html"
+  source       = "${path.module}/../lookup_en.html"
   content_type = "text/html; charset=utf-8"
-  etag         = filemd5("${path.module}/../service_inventory_lookup_en.html")
+  etag         = filemd5("${path.module}/../lookup_en.html")
 }
 
 resource "aws_s3_object" "services_json" {
