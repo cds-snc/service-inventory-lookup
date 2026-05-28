@@ -8,61 +8,40 @@ terraform {
 }
 
 provider "aws" {
-  region = var.aws_region
+  region = "ca-central-1"
 }
 
-variable "aws_region" {
-  description = "AWS region to deploy into"
-  default     = "ca-central-1"
+provider "aws" {
+  alias  = "dns"
+  region = "ca-central-1"
 }
 
-variable "bucket_name" {
-  description = "S3 bucket name (must be globally unique)"
-  type        = string
-  default     = "service-inventory-lookup-kxbrxa"
+provider "aws" {
+  alias  = "us-east-1"
+  region = "us-east-1"
 }
 
-resource "aws_s3_bucket" "site" {
-  bucket = var.bucket_name
-}
+module "website" {
+  # Using v10.6.2 because later versions have a bug in waf.tf where dots in the
+  # domain name are used directly in WAF resource names, which only allow
+  # alphanumeric, hyphen, and underscore characters.
+  source = "github.com/cds-snc/terraform-modules//simple_static_website?ref=v10.6.2"
 
-resource "aws_s3_bucket_public_access_block" "site" {
-  bucket = aws_s3_bucket.site.id
+  domain_name_source    = "service-inventory-lookup.gcorgs.cdssandbox.xyz"
+  billing_tag_value     = "service-inventory-lookup"
+  index_document        = "service_inventory_lookup_en.html"
+  hosted_zone_id        = "Z01243811HX0ZVPGI6SN0"
+  is_create_hosted_zone = false
 
-  block_public_acls       = false
-  block_public_policy     = false
-  ignore_public_acls      = false
-  restrict_public_buckets = false
-}
-
-resource "aws_s3_bucket_website_configuration" "site" {
-  bucket = aws_s3_bucket.site.id
-
-  index_document {
-    suffix = "service_inventory_lookup_en.html"
+  providers = {
+    aws           = aws
+    aws.dns       = aws.dns
+    aws.us-east-1 = aws.us-east-1
   }
 }
 
-resource "aws_s3_bucket_policy" "site" {
-  bucket     = aws_s3_bucket.site.id
-  depends_on = [aws_s3_bucket_public_access_block.site]
-
-  policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Sid       = "PublicReadGetObject"
-        Effect    = "Allow"
-        Principal = "*"
-        Action    = "s3:GetObject"
-        Resource  = "${aws_s3_bucket.site.arn}/*"
-      }
-    ]
-  })
-}
-
 resource "aws_s3_object" "html_en" {
-  bucket       = aws_s3_bucket.site.id
+  bucket       = module.website.s3_bucket_id
   key          = "service_inventory_lookup_en.html"
   source       = "${path.module}/../service_inventory_lookup_en.html"
   content_type = "text/html; charset=utf-8"
@@ -70,7 +49,7 @@ resource "aws_s3_object" "html_en" {
 }
 
 resource "aws_s3_object" "services_json" {
-  bucket       = aws_s3_bucket.site.id
+  bucket       = module.website.s3_bucket_id
   key          = "services.json"
   source       = "${path.module}/../services.json"
   content_type = "application/json"
@@ -78,5 +57,5 @@ resource "aws_s3_object" "services_json" {
 }
 
 output "website_url" {
-  value = "http://${aws_s3_bucket_website_configuration.site.website_endpoint}"
+  value = "https://service-inventory-lookup.gcorgs.cdssandbox.xyz"
 }
