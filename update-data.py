@@ -98,6 +98,8 @@ def resolve_orgs(org_names: list[str]) -> dict[str, dict]:
                     "gc_orgID": result["gc_orgID"],
                     "org_name_en": result["harmonized_name"],
                     "org_name_fr": result["nom_harmonise"],
+                    "acronym_en": result.get("abbreviation"),
+                    "acronym_fr": result.get("abreviation"),
                 }
             else:
                 raise ValueError(f"gcorg-resolver could not match org: '{result['input']}'")
@@ -122,6 +124,8 @@ def build_records(
                 "gc_orgID": org.get("gc_orgID"),
                 "org_name_en": org.get("org_name_en", row["org_name_en"]),
                 "org_name_fr": org.get("org_name_fr"),
+                "acronym_en": org.get("acronym_en"),
+                "acronym_fr": org.get("acronym_fr"),
                 "program_id": program_lookup.get(sid),
             }
         )

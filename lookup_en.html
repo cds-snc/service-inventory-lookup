@@ -230,7 +230,12 @@
             hideResult();
           }
           deptMatches = allDepts
-            .filter(d => !q || d.toLowerCase().includes(q.toLowerCase()))
+            .filter(d => {
+              if (!q) return true;
+              const rec = services.find(s => s.org_name_en === d);
+              const searchable = rec?.acronym_en ? `${d} ${rec.acronym_en}` : d;
+              return searchable.toLowerCase().includes(q.toLowerCase());
+            })
             .slice(0, 10);
           deptActiveIndex = -1;
           renderDeptDropdown();
@@ -243,7 +248,9 @@
             item.className = 'dropdown-item' + (i === deptActiveIndex ? ' active' : '');
             item.setAttribute('role', 'option');
             // innerHTML is safe: highlight() only inserts text through escHtml()
-            item.innerHTML = highlight(dept, deptLastQuery);
+            const rec = services.find(s => s.org_name_en === dept);
+            const label = rec?.acronym_en ? `${dept} (${rec.acronym_en})` : dept;
+            item.innerHTML = highlight(label, deptLastQuery);
             item.addEventListener('mousedown', e => {
               e.preventDefault();
               selectDept(dept);
@@ -411,7 +418,8 @@
 
           document.getElementById('r-service-en').textContent = service.service_en;
           document.getElementById('r-service-fr').textContent = service.service_fr;
-          document.getElementById('r-org-en').textContent = `${service.org_name_en} (${service.gc_orgID})`;
+          const orgLabel = service.acronym_en ? `${service.org_name_en} (${service.acronym_en})` : service.org_name_en;
+          document.getElementById('r-org-en').textContent = `${orgLabel} (${service.gc_orgID})`;
           document.getElementById('r-service-id').textContent = service.service_id;
           const pid = service.program_id;
           document.getElementById('r-program-id').textContent =
