@@ -133,8 +133,11 @@ def build_records(
 
 
 def write_json(records: list[dict], path: Path) -> None:
-    """Write records to a JSON file and print a summary."""
-    path.write_text(json.dumps(records, ensure_ascii=False, indent=2), encoding="utf-8")
+    output = {
+        "generated_at": pd.Timestamp.now(tz="UTC").isoformat(),
+        "services": records,
+    }
+    path.write_text(json.dumps(output, ensure_ascii=False, indent=2), encoding="utf-8")
     print(f"Wrote {len(records):,} records to {path}")
 
 

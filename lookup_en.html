@@ -89,8 +89,7 @@
 
     <gcds-container id="main-content" layout="page" tag="main">
       <gcds-heading tag="h1">Service Inventory Lookup</gcds-heading>
-      <gcds-text><em>This is a prototype. It uses data from a TBS-managed <a href="https://github.com/gcperformance/service-data">public repository</a>.</em></gcds-text>
-
+      <gcds-text><em>This is a prototype. It uses data from a TBS-managed <a href="https://github.com/gcperformance/service-data">public repository</a>. <span id="last-updated" hidden></span></em></gcds-text>
       <gcds-text>Find your service inventory ID by selecting your department and searching for your service.</gcds-text>
 
       <div id="loading-msg">
@@ -166,21 +165,28 @@
         const errorMsg = document.getElementById('error-msg');
         const app = document.getElementById('app');
 
-        let services;
-        try {
-          const resp = await fetch('services.json');
-          if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
-          services = await resp.json();
-        } catch (_) {
-          loadingMsg.hidden = true;
-          errorMsg.hidden = false;
-          return;
-        }
+      let services;
+      let generatedAt;
+      try {
+        const resp = await fetch('services.json');
+        if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+        const data = await resp.json();
+        services = data.services;
+        generatedAt = data.generated_at;
+      } catch (_) {
+        loadingMsg.hidden = true;
+        errorMsg.hidden = false;
+        return;
+      }
 
         const acronymMap = new Map(services.map(s => [s.org_name_en, s.acronym_en]));
 
         loadingMsg.hidden = true;
         app.hidden = false;
+
+        const lastUpdated = document.getElementById('last-updated');
+        lastUpdated.textContent = `Last refreshed on ${new Date(generatedAt).toLocaleDateString('en-CA', { year: 'numeric', month: 'long', day: 'numeric' })}`;
+        lastUpdated.hidden = false;
 
         // --- State ---
         let currentDept = '';
