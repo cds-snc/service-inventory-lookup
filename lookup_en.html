@@ -49,7 +49,7 @@
 
       #result {
         margin-top: 0.5rem;
-        padding: 1.25rem 1.5rem;
+        padding: 0.5rem 1.5rem 1.25rem;
         background: #f8f9fb;
         border: 1.5px solid #dce3ec;
         border-radius: 4px;
@@ -126,28 +126,28 @@
         <div id="result" hidden>
           <gcds-heading tag="h2">Result</gcds-heading>
           <dl style="margin: 0.75rem 0 1rem;">
-            <div>
-              <dt class="result-label">Service name (English)</dt>
-              <dd id="r-service-en" class="result-value"></dd>
-            </div>
-            <div>
-              <dt class="result-label">Service name (French)</dt>
-              <dd id="r-service-fr" class="result-value"></dd>
-            </div>
-            <div>
-              <dt class="result-label">Department (gc_orgID)</dt>
-              <dd id="r-org-en" class="result-value"></dd>
-            </div>
-            <div>
-              <dt class="result-label">Service inventory ID</dt>
-              <dd id="r-service-id" class="result-id"></dd>
-              <gcds-button id="copy-btn" type="button">Copy Service ID</gcds-button>
-            </div>
-            <div>
-              <dt class="result-label">Program ID(s)</dt>
-              <dd id="r-program-id" class="result-value"></dd>
-            </div>
-          </dl>
+          <div>
+            <dt class="result-label">Service inventory ID</dt>
+            <dd id="r-service-id" class="result-id"></dd>
+            <gcds-button id="copy-btn" type="button">Copy Service ID</gcds-button>
+          </div>
+          <div>
+            <dt class="result-label">Service name (English)</dt>
+            <dd id="r-service-en" class="result-value"></dd>
+          </div>
+          <div>
+            <dt class="result-label">Service name (French)</dt>
+            <dd id="r-service-fr" class="result-value"></dd>
+          </div>
+          <div>
+            <dt class="result-label">Department (gc_orgID)</dt>
+            <dd id="r-org-en" class="result-value"></dd>
+          </div>
+          <div>
+            <dt class="result-label">Program ID(s)</dt>
+            <dd id="r-program-id" class="result-value"></dd>
+          </div>
+        </dl>
         </div>
       </div>
 
@@ -176,6 +176,8 @@
           errorMsg.hidden = false;
           return;
         }
+
+        const acronymMap = new Map(services.map(s => [s.org_name_en, s.acronym_en]));
 
         loadingMsg.hidden = true;
         app.hidden = false;
@@ -232,8 +234,8 @@
           deptMatches = allDepts
             .filter(d => {
               if (!q) return true;
-              const rec = services.find(s => s.org_name_en === d);
-              const searchable = rec?.acronym_en ? `${d} ${rec.acronym_en}` : d;
+              const acronym = acronymMap.get(d);
+              const searchable = acronym ? `${d} ${acronym}` : d;
               return searchable.toLowerCase().includes(q.toLowerCase());
             })
             .slice(0, 10);
@@ -248,8 +250,8 @@
             item.className = 'dropdown-item' + (i === deptActiveIndex ? ' active' : '');
             item.setAttribute('role', 'option');
             // innerHTML is safe: highlight() only inserts text through escHtml()
-            const rec = services.find(s => s.org_name_en === dept);
-            const label = rec?.acronym_en ? `${dept} (${rec.acronym_en})` : dept;
+            const acronym = acronymMap.get(dept);
+            const label = acronym ? `${dept} (${acronym})` : dept;
             item.innerHTML = highlight(label, deptLastQuery);
             item.addEventListener('mousedown', e => {
               e.preventDefault();
