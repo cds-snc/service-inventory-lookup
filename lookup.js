@@ -272,9 +272,7 @@
     document.getElementById('r-service-en').textContent = service.service_en;
     document.getElementById('r-service-fr').textContent = service.service_fr;
     const acronym = service[`acronym_${lang}`];
-    const orgName = service[`org_name_${lang}`];
-    const orgLabel = acronym ? `${orgName} (${acronym})` : orgName;
-    document.getElementById('r-org-en').textContent = `${orgLabel} (${service.gc_orgID})`;
+    document.getElementById('r-org-en').textContent = `${service[`org_name_${lang}`]} (${service.gc_orgID})`;
     document.getElementById('r-service-id').textContent = service.service_id;
     const pid = service.program_id;
     document.getElementById('r-program-id').textContent =
