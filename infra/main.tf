@@ -48,6 +48,22 @@ resource "aws_s3_object" "html_en" {
   etag         = filemd5("${path.module}/../lookup_en.html")
 }
 
+resource "aws_s3_object" "html_fr" {
+  bucket       = module.website.s3_bucket_id
+  key          = "lookup_fr.html"
+  source       = "${path.module}/../lookup_fr.html"
+  content_type = "text/html; charset=utf-8"
+  etag         = filemd5("${path.module}/../lookup_fr.html")
+}
+
+resource "aws_s3_object" "lookup_js" {
+  bucket       = module.website.s3_bucket_id
+  key          = "lookup.js"
+  source       = "${path.module}/../lookup.js"
+  content_type = "text/html; charset=utf-8"
+  etag         = filemd5("${path.module}/../lookup.js")
+}
+
 resource "aws_s3_object" "services_json" {
   bucket       = module.website.s3_bucket_id
   key          = "services.json"
