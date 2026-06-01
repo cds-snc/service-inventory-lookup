@@ -22,10 +22,7 @@ provider "aws" {
 }
 
 module "website" {
-  # Using v10.6.2 because later versions have a bug in waf.tf where dots in the
-  # domain name are used directly in WAF resource names, which only allow
-  # alphanumeric, hyphen, and underscore characters.
-  source = "github.com/cds-snc/terraform-modules//simple_static_website?ref=v10.6.2"
+  source = "github.com/cds-snc/terraform-modules//simple_static_website?ref=v11.3.2"
 
   domain_name_source    = "service-inventory-lookup.gcorgs.cdssandbox.xyz"
   billing_tag_value     = "service-inventory-lookup"
