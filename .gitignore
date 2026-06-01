@@ -4,6 +4,7 @@ __pycache__/
 *.csv
 old
 **/.DS_Store
+.vscode
 
 # Local .terraform directories
 **/.terraform/*

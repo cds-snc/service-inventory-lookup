@@ -1,4 +1,4 @@
-"""Tests for download_service_inventory.py pipeline functions."""
+"""Tests for update_data.py pipeline functions."""
 
 import json
 import tempfile
@@ -8,7 +8,7 @@ from unittest.mock import MagicMock
 import pandas as pd
 import pytest
 
-from download_service_inventory import (
+from update_data import (
     apply_org_corrections,
     build_program_lookup,
     build_records,
@@ -21,7 +21,7 @@ from download_service_inventory import (
 
 
 def _mock_urlopen(mocker, csv_bytes: bytes):
-    mock = mocker.patch("download_service_inventory.urlopen")
+    mock = mocker.patch("update_data.urlopen")
     mock.return_value.__enter__.return_value.read.return_value = csv_bytes
     return mock
 
@@ -181,10 +181,35 @@ def _mock_post(mocker, results: list[dict]):
     mock = MagicMock()
     mock.json.return_value = {"results": results}
     mock.raise_for_status = MagicMock()
-    return mocker.patch("download_service_inventory.requests.post", return_value=mock)
+    return mocker.patch("update_data.requests.post", return_value=mock)
 
 
 def test_resolve_orgs_builds_lookup_from_matched_result(mocker):
+    _mock_post(
+        mocker,
+        [
+            {
+                "input": "Canada Border Services Agency",
+                "gc_orgID": 26,
+                "harmonized_name": "Canada Border Services Agency",
+                "nom_harmonise": "Agence des services frontaliers du Canada",
+                "abbreviation": "CBSA",
+                "abreviation": "ASFC",
+                "matched": True,
+            }
+        ],
+    )
+    result = resolve_orgs(["Canada Border Services Agency"])
+    assert result["Canada Border Services Agency"] == {
+        "gc_orgID": 26,
+        "org_name_en": "Canada Border Services Agency",
+        "org_name_fr": "Agence des services frontaliers du Canada",
+        "acronym_en": "CBSA",
+        "acronym_fr": "ASFC",
+    }
+
+
+def test_resolve_orgs_acronyms_default_to_none_when_absent(mocker):
     _mock_post(
         mocker,
         [
@@ -198,11 +223,8 @@ def test_resolve_orgs_builds_lookup_from_matched_result(mocker):
         ],
     )
     result = resolve_orgs(["Canada Border Services Agency"])
-    assert result["Canada Border Services Agency"] == {
-        "gc_orgID": 26,
-        "org_name_en": "Canada Border Services Agency",
-        "org_name_fr": "Agence des services frontaliers du Canada",
-    }
+    assert result["Canada Border Services Agency"]["acronym_en"] is None
+    assert result["Canada Border Services Agency"]["acronym_fr"] is None
 
 
 def test_resolve_orgs_raises_on_unmatched_org(mocker):
@@ -256,6 +278,8 @@ SAMPLE_ORG_LOOKUP = {
         "gc_orgID": 26,
         "org_name_en": "Canada Border Services Agency",
         "org_name_fr": "Agence des services frontaliers du Canada",
+        "acronym_en": "CBSA",
+        "acronym_fr": "ASFC",
     }
 }
 
@@ -270,6 +294,8 @@ def test_build_records_produces_correct_schema():
     assert first["gc_orgID"] == 26
     assert first["org_name_en"] == "Canada Border Services Agency"
     assert first["org_name_fr"] == "Agence des services frontaliers du Canada"
+    assert first["acronym_en"] == "CBSA"
+    assert first["acronym_fr"] == "ASFC"
     assert first["program_id"] == ["BWM06"]
 
 
@@ -290,7 +316,9 @@ def test_write_json_produces_valid_json_file():
     with tempfile.TemporaryDirectory() as tmpdir:
         out_path = Path(tmpdir) / "services.json"
         write_json(records, out_path)
-        assert json.loads(out_path.read_text()) == records
+        loaded = json.loads(out_path.read_text())
+        assert loaded["services"] == records
+        assert "generated_at" in loaded
 
 
 def test_write_json_prints_record_count(capsys):
