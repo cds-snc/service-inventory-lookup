@@ -6,6 +6,6 @@ terraform {
     key          = "service-inventory-lookup/terraform.tfstate"
     region       = "ca-central-1"
     encrypt      = true
-    use_lockfile = true 
+    use_lockfile = true
   }
 }

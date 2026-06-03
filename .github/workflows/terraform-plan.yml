@@ -1,0 +1,56 @@
+name: Terraform plan
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "infra/**"
+      - "lookup_en.html"
+      - "lookup_fr.html"
+      - "lookup.js"
+      - "services.json"
+      - "security.txt"
+      - ".github/workflows/terraform-plan.yml"
+      - ".github/workflows/terraform-apply.yml"
+
+concurrency:
+  group: terraform-plan-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  id-token: write
+  contents: read
+  pull-requests: write
+
+env:
+  AWS_REGION: ca-central-1
+  TF_INPUT: "false"
+  TF_IN_AUTOMATION: "true"
+
+jobs:
+  plan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+
+      - name: Configure AWS credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v6
+        with:
+          role-to-assume: arn:aws:iam::${{ vars.SDR_AWS_ACCOUNT }}:role/service-inventory-lookup-plan
+          role-session-name: TFPlan
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Set up Terraform
+        uses: cds-snc/terraform-tools-setup@v1
+        env:
+          TERRAFORM_VERSION: 1.14.8
+
+      - name: Terraform plan
+        uses: cds-snc/terraform-plan@v5
+        with:
+          directory: infra
+          github-token: ${{ secrets.GITHUB_TOKEN }}

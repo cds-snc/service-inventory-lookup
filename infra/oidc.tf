@@ -1,10 +1,37 @@
+data "aws_iam_policy_document" "plan_state" {
+  statement {
+    sid       = "ListStateBucket"
+    actions   = ["s3:ListBucket"]
+    resources = ["arn:aws:s3:::sdr-tfstate-154541629452"]
+  }
+
+  statement {
+    sid = "ReadWriteStateObjects"
+    actions = [
+      "s3:GetObject",
+      "s3:PutObject",
+      "s3:DeleteObject",
+    ]
+    resources = ["arn:aws:s3:::sdr-tfstate-154541629452/service-inventory-lookup/*"]
+  }
+}
+
+resource "aws_iam_policy" "plan_state" {
+  name        = "service-inventory-lookup-plan-state"
+  description = "State bucket access for the service-inventory-lookup plan role."
+  policy      = data.aws_iam_policy_document.plan_state.json
+}
+
 locals {
   oidc_roles = [
     {
-      name        = "service-inventory-lookup-plan"
-      repo_name   = "service-inventory-lookup"
-      claim       = "*"
-      policy_arns = ["arn:aws:iam::aws:policy/ReadOnlyAccess"]
+      name      = "service-inventory-lookup-plan"
+      repo_name = "service-inventory-lookup"
+      claim     = "pull_request"
+      policy_arns = [
+        "arn:aws:iam::aws:policy/ReadOnlyAccess",
+        aws_iam_policy.plan_state.arn,
+      ]
     },
     {
       name        = "service-inventory-lookup-apply"
