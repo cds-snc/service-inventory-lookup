@@ -166,12 +166,13 @@
   function runSearch(q) {
     lastQuery = q;
     hideResult();
-    if (!currentDept) { hideDropdown(); return; }    
+    if (!currentDept) { hideDropdown(); return; }      
     currentMatches = services
       .filter(s =>
         s[`org_name_${lang}`] === currentDept &&
         (!q || s[`service_${lang}`].toLowerCase().includes(q.toLowerCase()))
-      );
+      )
+      .sort((a, b) => a[`service_${lang}`].localeCompare(b[`service_${lang}`]));
 
     activeIndex = -1;
     renderDropdown(q);
