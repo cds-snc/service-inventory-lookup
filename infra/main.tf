@@ -37,12 +37,19 @@ module "website" {
   }
 }
 
+locals {
+  common_tags = {
+    CostCentre = "service-inventory-lookup"
+  }
+}
+
 resource "aws_s3_object" "html_en" {
   bucket       = module.website.s3_bucket_id
   key          = "en"
   source       = "${path.module}/../lookup_en.html"
   content_type = "text/html; charset=utf-8"
   etag         = filemd5("${path.module}/../lookup_en.html")
+  tags         = local.common_tags
 }
 
 resource "aws_s3_object" "html_fr" {
@@ -51,6 +58,7 @@ resource "aws_s3_object" "html_fr" {
   source       = "${path.module}/../lookup_fr.html"
   content_type = "text/html; charset=utf-8"
   etag         = filemd5("${path.module}/../lookup_fr.html")
+  tags         = local.common_tags
 }
 
 resource "aws_s3_object" "lookup_js" {
@@ -59,6 +67,7 @@ resource "aws_s3_object" "lookup_js" {
   source       = "${path.module}/../lookup.js"
   content_type = "text/javascript; charset=utf-8"
   etag         = filemd5("${path.module}/../lookup.js")
+  tags         = local.common_tags
 }
 
 resource "aws_s3_object" "services_json" {
@@ -67,6 +76,7 @@ resource "aws_s3_object" "services_json" {
   source       = "${path.module}/../services.json"
   content_type = "application/json"
   etag         = filemd5("${path.module}/../services.json")
+  tags         = local.common_tags
 }
 
 resource "aws_s3_object" "security_txt" {
@@ -75,6 +85,7 @@ resource "aws_s3_object" "security_txt" {
   source       = "${path.module}/../security.txt"
   content_type = "text/plain"
   etag         = filemd5("${path.module}/../security.txt")
+  tags         = local.common_tags
 }
 
 output "website_url" {
