@@ -19,9 +19,9 @@ data "aws_iam_policy_document" "plan_state" {
 resource "aws_iam_policy" "plan_state" {
   name        = "service-inventory-lookup-plan-state"
   description = "State bucket access for the service-inventory-lookup plan role."
-  policy      = data.aws_iam_policy_document.plan_state.json  tags = {
+  policy      = data.aws_iam_policy_document.plan_state.json
+  tags = {
     CostCentre = "service-inventory-lookup"
-    Terraform  = "true"
   }
 }
 
