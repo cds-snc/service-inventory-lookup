@@ -40,6 +40,7 @@ module "website" {
 locals {
   common_tags = {
     CostCentre = "service-inventory-lookup"
+    Terraform  = "true"
   }
 }
 
