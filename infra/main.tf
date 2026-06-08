@@ -22,7 +22,7 @@ provider "aws" {
 }
 
 module "website" {
-  source = "github.com/cds-snc/terraform-modules//simple_static_website?ref=v11.3.2"
+  source = "github.com/cds-snc/terraform-modules//simple_static_website?ref=v11.3.5"
 
   domain_name_source    = "service-inventory-lookup.gcorgs.cdssandbox.xyz"
   billing_tag_value     = "service-inventory-lookup"
