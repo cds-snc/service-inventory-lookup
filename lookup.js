@@ -82,9 +82,15 @@
       hideDropdown();
       hideResult();
     }
+    if (!q) {
+      deptMatches = [];
+      deptActiveIndex = -1;
+      renderDeptDropdown();
+      return;
+    }
+
     deptMatches = allDepts
       .filter(d => {
-        if (!q) return true;
         const acronym = acronymMap.get(d);
         const searchable = acronym ? `${d} ${acronym}` : d;
         return searchable.toLowerCase().includes(q.toLowerCase());
@@ -96,6 +102,30 @@
 
   function renderDeptDropdown() {
     deptDropdown.textContent = '';
+    if (!deptLastQuery) {
+      const hint = document.createElement('div');
+      hint.className = 'dropdown-item dropdown-note';
+      hint.style.fontStyle = 'italic';
+      hint.style.color = '#5a6a7e';
+      hint.style.cursor = 'default';
+      hint.textContent = cfg.strings.deptHint;
+      deptDropdown.appendChild(hint);
+      deptDropdown.style.display = 'block';
+      return;
+    }
+
+    if (deptMatches.length === 0) {
+      const msg = document.createElement('div');
+      msg.className = 'dropdown-item dropdown-note';
+      msg.style.fontStyle = 'italic';
+      msg.style.color = '#5a6a7e';
+      msg.style.cursor = 'default';
+      msg.textContent = cfg.strings.noDeptMatches;
+      deptDropdown.appendChild(msg);
+      deptDropdown.style.display = 'block';
+      return;
+    }
+
     deptMatches.forEach((dept, i) => {
       const item = document.createElement('div');
       item.className = 'dropdown-item' + (i === deptActiveIndex ? ' active' : '');
@@ -129,6 +159,10 @@
 
   deptInput.addEventListener('keydown', e => {
     if (deptDropdown.style.display === 'none') return;
+    if (deptMatches.length === 0) {
+      if (e.key === 'Escape') hideDeptDropdown();
+      return;
+    }
     switch (e.key) {
       case 'ArrowDown':
         e.preventDefault();
