@@ -1,6 +1,28 @@
 {
-  "generated_at": "2026-06-29T12:35:05.933966+00:00",
+  "generated_at": "2026-07-06T12:21:31.325470+00:00",
   "services": [
+    {
+      "service_id": "4167",
+      "service_en": "Canada Housing Infrastructure Fund (CHIF)",
+      "service_fr": "Fonds canadien pour les infrastructures liées au logement (FCIL)",
+      "gc_orgID": 2269,
+      "org_name_en": "Housing, Infrastructure and Communities Canada",
+      "org_name_fr": "Logement, Infrastructures et Collectivités Canada",
+      "acronym_en": "HICC",
+      "acronym_fr": "LICC",
+      "program_id": null
+    },
+    {
+      "service_id": "4168",
+      "service_en": "Canada Public Transit Fund (CPTF)",
+      "service_fr": "Fonds pour le transport en commun du Canada (FTCC)",
+      "gc_orgID": 2269,
+      "org_name_en": "Housing, Infrastructure and Communities Canada",
+      "org_name_fr": "Logement, Infrastructures et Collectivités Canada",
+      "acronym_en": "HICC",
+      "acronym_fr": "LICC",
+      "program_id": null
+    },
     {
       "service_id": "4158",
       "service_en": "Customs Brokers Professional Examination",
