@@ -12,13 +12,11 @@ Steps:
 
 import json
 import re
-import warnings
 from pathlib import Path
 from urllib.request import urlopen
 
 import pandas as pd
 import requests
-import urllib3
 
 # Pinned to a fiscal year's Program codes list. Rolling to a new year is a
 # manual, deliberate edit to these three constants - see the data-source
@@ -78,7 +76,6 @@ def resolve_orgs(org_names: list[str]) -> dict[str, dict]:
             GCORG_RESOLVER_URL,
             json={"names": batch},
             headers={"Content-Type": "application/json"},
-            verify=False,
         )
         response.raise_for_status()
         for result in response.json()["results"]:

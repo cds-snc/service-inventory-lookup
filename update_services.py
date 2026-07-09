@@ -11,13 +11,11 @@ Steps:
 """
 
 import json
-import warnings
 from pathlib import Path
 from urllib.request import urlopen
 
 import pandas as pd
 import requests
-import urllib3
 
 SERVICE_REGISTRY_URL = (
     "https://raw.githubusercontent.com/gcperformance/utilities/master/goc-service-id-registry.csv"
@@ -89,7 +87,6 @@ def resolve_orgs(org_names: list[str]) -> dict[str, dict]:
             GCORG_RESOLVER_URL,
             json={"names": batch},
             headers={"Content-Type": "application/json"},
-            verify=False,
         )
         response.raise_for_status()
         for result in response.json()["results"]:
@@ -159,8 +156,6 @@ def write_json(records: list[dict], path: Path) -> None:
 
 
 if __name__ == "__main__":
-    warnings.filterwarnings("ignore", category=urllib3.exceptions.InsecureRequestWarning)
-
     print("Downloading service registry...")
     services = download_csv(SERVICE_REGISTRY_URL)
     print(f"  {len(services):,} rows")
