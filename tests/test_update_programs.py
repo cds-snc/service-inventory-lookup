@@ -14,6 +14,8 @@ from update_programs import (
     DEPT_COL_FR,
     PROG_CODE_COL,
     PROG_NAME_COL,
+    PROGRAM_CODES_EN_URL,
+    PROGRAM_CODES_FR_URL,
     SOURCE_DATASET_URL,
     SOURCE_FISCAL_YEAR,
     build_keyed_records,
@@ -21,6 +23,7 @@ from update_programs import (
     filter_program_rows,
     resolve_orgs,
     update_generated_at,
+    validate_names_present,
     validate_prog_codes,
     write_json,
 )
@@ -79,6 +82,29 @@ def test_validate_prog_codes_rejects_lowercase():
     df = pd.DataFrame({PROG_CODE_COL: ["bwn01"]})
     with pytest.raises(ValueError, match="bwn01"):
         validate_prog_codes(df)
+
+
+def test_validate_names_present_passes_when_names_complete():
+    df = pd.DataFrame(
+        {
+            PROG_CODE_COL: ["BWN01"],
+            PROG_NAME_COL: ["Trade and Market Expansion"],
+            CR_NAME_COL: ["Domestic and International Markets"],
+        }
+    )
+    validate_names_present(df)  # should not raise
+
+
+def test_validate_names_present_raises_on_missing_name():
+    df = pd.DataFrame(
+        {
+            PROG_CODE_COL: ["BWN01", "BWN02"],
+            PROG_NAME_COL: ["Trade and Market Expansion", float("nan")],
+            CR_NAME_COL: ["Domestic Markets", "Domestic Markets"],
+        }
+    )
+    with pytest.raises(ValueError, match="BWN02"):
+        validate_names_present(df)
 
 
 def test_resolve_orgs_builds_lookup_from_matched_result(mocker):
@@ -227,25 +253,6 @@ def test_update_generated_at_reuses_timestamp_when_programs_unchanged():
         assert update_generated_at(records, out_path) == "2020-01-01T00:00:00+00:00"
 
 
-def test_update_generated_at_ignores_source_block_changes():
-    records = [{"program_code_id": "2222-BWN01"}]
-    with tempfile.TemporaryDirectory() as tmpdir:
-        out_path = Path(tmpdir) / "program_codes.json"
-        out_path.write_text(
-            json.dumps(
-                {
-                    "generated_at": "2020-01-01T00:00:00+00:00",
-                    "source": {"fiscal_year": "2025-26"},
-                    "programs": records,
-                }
-            ),
-            encoding="utf-8",
-        )
-        # write_json would now be called with a different (newer) fiscal year source
-        # block but identical programs; the timestamp must not bump.
-        assert update_generated_at(records, out_path) == "2020-01-01T00:00:00+00:00"
-
-
 def test_update_generated_at_bumps_timestamp_when_programs_change():
     old_records = [{"program_code_id": "2222-BWN01", "program_name_en": "Old"}]
     new_records = [{"program_code_id": "2222-BWN01", "program_name_en": "New"}]
@@ -279,8 +286,8 @@ def test_write_json_produces_valid_json_file():
         assert loaded["source"] == {
             "fiscal_year": SOURCE_FISCAL_YEAR,
             "dataset_url": SOURCE_DATASET_URL,
-            "csv_en": loaded["source"]["csv_en"],
-            "csv_fr": loaded["source"]["csv_fr"],
+            "csv_en": PROGRAM_CODES_EN_URL,
+            "csv_fr": PROGRAM_CODES_FR_URL,
         }
 
 

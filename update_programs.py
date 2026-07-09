@@ -62,6 +62,18 @@ def validate_prog_codes(df: pd.DataFrame) -> None:
         raise ValueError(f"Program codes with unexpected format: {sorted(bad.unique())}")
 
 
+def validate_names_present(df: pd.DataFrame) -> None:
+    """Raise ValueError if any Program Inventory row is missing a program or CR name.
+
+    A missing name would serialize as NaN - invalid JSON that breaks the site
+    at load time - so fail loudly at build time instead.
+    """
+    missing = df[df[PROG_NAME_COL].isna() | df[CR_NAME_COL].isna()]
+    if not missing.empty:
+        codes = sorted(missing[PROG_CODE_COL].str.strip().unique())
+        raise ValueError(f"Program rows missing a program or core-responsibility name: {codes}")
+
+
 def resolve_orgs(org_names: list[str]) -> dict[str, dict]:
     """Resolve org names to gc_orgID and canonical bilingual names via gcorg-resolver.
 
@@ -188,8 +200,6 @@ def write_json(records: list[dict], path: Path) -> None:
 
 
 if __name__ == "__main__":
-    warnings.filterwarnings("ignore", category=urllib3.exceptions.InsecureRequestWarning)
-
     print("Downloading EN program codes...")
     en_df = download_csv(PROGRAM_CODES_EN_URL)
     print(f"  {len(en_df):,} rows")
@@ -206,6 +216,8 @@ if __name__ == "__main__":
     print("Validating program code format...")
     validate_prog_codes(en_df)
     validate_prog_codes(fr_df)
+    validate_names_present(en_df)
+    validate_names_present(fr_df)
 
     print("Resolving EN department names...")
     en_orgs = resolve_orgs(en_df[DEPT_COL_EN].unique().tolist())
