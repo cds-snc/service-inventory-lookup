@@ -16,6 +16,7 @@ from update_data import (
     filter_placeholder,
     filter_transferred,
     resolve_orgs,
+    update_generated_at,
     write_json,
 )
 
@@ -325,3 +326,50 @@ def test_write_json_prints_record_count(capsys):
     with tempfile.TemporaryDirectory() as tmpdir:
         write_json([{"a": 1}, {"a": 2}], Path(tmpdir) / "services.json")
     assert "2" in capsys.readouterr().out
+
+
+def test_update_generated_at_new_timestamp_when_file_absent():
+    with tempfile.TemporaryDirectory() as tmpdir:
+        out_path = Path(tmpdir) / "services.json"
+        assert update_generated_at([{"service_id": "1"}], out_path)
+
+
+def test_update_generated_at_reuses_timestamp_when_records_unchanged():
+    records = [{"service_id": "1", "service_en": "Test"}]
+    with tempfile.TemporaryDirectory() as tmpdir:
+        out_path = Path(tmpdir) / "services.json"
+        out_path.write_text(
+            json.dumps({"generated_at": "2020-01-01T00:00:00+00:00", "services": records}),
+            encoding="utf-8",
+        )
+        assert update_generated_at(records, out_path) == "2020-01-01T00:00:00+00:00"
+
+
+def test_update_generated_at_bumps_timestamp_when_records_change():
+    old_records = [{"service_id": "1", "service_en": "Old"}]
+    new_records = [{"service_id": "1", "service_en": "New"}]
+    with tempfile.TemporaryDirectory() as tmpdir:
+        out_path = Path(tmpdir) / "services.json"
+        out_path.write_text(
+            json.dumps({"generated_at": "2020-01-01T00:00:00+00:00", "services": old_records}),
+            encoding="utf-8",
+        )
+        assert update_generated_at(new_records, out_path) != "2020-01-01T00:00:00+00:00"
+
+
+def test_update_generated_at_bumps_timestamp_when_existing_file_corrupt():
+    records = [{"service_id": "1"}]
+    with tempfile.TemporaryDirectory() as tmpdir:
+        out_path = Path(tmpdir) / "services.json"
+        out_path.write_text("{ not valid json", encoding="utf-8")
+        assert update_generated_at(records, out_path)
+
+
+def test_write_json_is_idempotent_when_data_unchanged():
+    records = [{"service_id": "1", "service_en": "Test"}]
+    with tempfile.TemporaryDirectory() as tmpdir:
+        out_path = Path(tmpdir) / "services.json"
+        write_json(records, out_path)
+        first = out_path.read_text()
+        write_json(records, out_path)
+        assert out_path.read_text() == first

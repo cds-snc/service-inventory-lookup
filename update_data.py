@@ -132,9 +132,26 @@ def build_records(
     return records
 
 
+def update_generated_at(records: list[dict], path: Path) -> str:
+    """Return the generated_at timestamp to write.
+
+    Reuse the existing file's timestamp when the records are unchanged, so the
+    file (and the "last updated" date the site shows) only moves when the source
+    data actually changes. Reduces repo churn.
+    """
+    if path.exists():
+        try:
+            existing = json.loads(path.read_text(encoding="utf-8"))
+        except (json.JSONDecodeError, OSError):
+            existing = {}
+        if existing.get("services") == records and existing.get("generated_at"):
+            return existing["generated_at"]
+    return pd.Timestamp.now(tz="UTC").isoformat()
+
+
 def write_json(records: list[dict], path: Path) -> None:
     output = {
-        "generated_at": pd.Timestamp.now(tz="UTC").isoformat(),
+        "generated_at": update_generated_at(records, path),
         "services": records,
     }
     path.write_text(json.dumps(output, ensure_ascii=False, indent=2), encoding="utf-8")
