@@ -59,9 +59,11 @@ Open data, dataset **`3c371e57-d487-49fa-bb0d-352ae8dd6e4e`** ("Program codes
 list as per the Government-wide Chart of Accounts", published by PSPC) on
 open.canada.ca.
 
-The dataset is always pinned to the most recent published year. When a new year's
-list of program codes is published, we update as soon as it's available on the
-Open Data portal.
+The data source is pinned to a specific fiscal year through a hardcoded URL
+constant. Rolling to a new year's list is a manual, deliberate change to that
+constant, so the update is intentional and can be announced. It does not roll
+automatically when a new list appears, because program names can drift year over
+year even though codes do not.
 
 ## Accepted risks
 
