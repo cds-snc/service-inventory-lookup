@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Recherchez un identifiant de code de programme par ministère et nom de programme." />
+    <title>Recherche de code de programme</title>
+    <link rel="stylesheet" href="https://cdn.design-system.canada.ca/@gcds-core/css-shortcuts@1.0.1/dist/gcds-css-shortcuts.min.css" />
+    <link rel="stylesheet" href="https://cdn.design-system.canada.ca/@gcds-core/components@1.1.0/dist/gcds/gcds.css" />
+    <script type="module" src="https://cdn.design-system.canada.ca/@gcds-core/components@1.1.0/dist/gcds/gcds.esm.js"></script>
+    <style>
+      .search-wrapper { position: relative; }
+
+      #dept-dropdown,
+      #dropdown {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: #fff;
+        border: 1.5px solid #b0b8c1;
+        border-radius: 4px;
+        max-height: 260px;
+        overflow-y: auto;
+        z-index: 100;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+      }
+
+      .dropdown-item {
+        padding: 10px 14px;
+        font-size: 0.875rem;
+        cursor: pointer;
+        border-bottom: 1px solid #eef1f5;
+        line-height: 1.4;
+      }
+
+      .dropdown-item:last-child { border-bottom: none; }
+
+      .dropdown-item.active,
+      .dropdown-item:hover { background: #e8f2fd; }
+
+      .dropdown-note,
+      .dropdown-note:hover {
+        background: #fff;
+      }
+
+      mark {
+        background: #fde8e6;
+        padding: 0 2px;
+        border-radius: 2px;
+      }
+
+
+      #result {
+        margin-top: 0.5rem;
+        padding: 0.5rem 1.5rem 1.25rem;
+        background: #f8f9fb;
+        border: 1.5px solid #dce3ec;
+        border-radius: 4px;
+      }
+
+      .result-label {
+        font-size: 0.6875rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: #5a6a7e;
+        margin-bottom: 2px;
+      }
+
+      .result-value {
+        font-size: 0.9375rem;
+        margin: 0 0 0.875rem;
+      }
+
+      .result-id {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: #26374a;
+        font-family: 'Courier New', monospace;
+        letter-spacing: 0.04em;
+        margin: 0 0 0.875rem;
+      }
+    </style>
+  </head>
+  <body>
+    <gcds-header lang-href="/en" skip-to-href="#main-content">
+      <gcds-breadcrumbs slot="breadcrumb">
+        <gcds-breadcrumbs-item href="https://numerique.canada.ca/a-propos/">Service numérique canadien</gcds-breadcrumbs-item>
+        <gcds-breadcrumbs-item href="#">Recherche de code de programme</gcds-breadcrumbs-item>
+      </gcds-breadcrumbs>
+    </gcds-header>
+
+    <gcds-container id="main-content" layout="page" tag="main">
+      <gcds-heading tag="h1">Recherche de code de programme</gcds-heading>
+      <gcds-text><em>Ceci est un prototype. Il utilise la liste des codes de programme de l'exercice <span id="fiscal-year"></span> selon la Structure des comptes pangouvernementale, publiée par SPAC sur <a id="dataset-link" href="#">open.canada.ca</a>. <span id="last-updated" hidden></span></em></gcds-text>
+
+      <gcds-text>Trouvez votre identifiant de code de programme en sélectionnant votre ministère et en recherchant votre programme.</gcds-text>
+
+      <gcds-text>Vous cherchez plutôt un ID d'inventaire de services? Utilisez la <a href="https://service-inventory-lookup.gcorgs.cdssandbox.xyz/fr">Recherche dans l'inventaire des services</a>.</gcds-text>
+
+      <div id="loading-msg">
+        <gcds-text>Chargement des programmes...</gcds-text>
+      </div>
+
+      <div id="error-msg" hidden>
+        <gcds-text>Impossible de charger program_codes.json. Assurez-vous que le fichier est disponible et que la page est servie depuis un serveur web.</gcds-text>
+      </div>
+
+      <div id="app" hidden>
+        <div class="search-wrapper">
+          <gcds-input
+            input-id="dept-input"
+            name="department"
+            label="Ministère"
+            hint="Commencez à taper le nom de votre ministère"
+          ></gcds-input>
+          <div id="dept-dropdown" role="listbox"></div>
+        </div>
+
+        <div class="search-wrapper">
+          <gcds-input
+            input-id="service-input"
+            name="program"
+            label="Nom du programme"
+            hint="Tapez pour rechercher un programme dans le ministère sélectionné, par nom ou par code (p. ex. BWN01)"
+            disabled
+          ></gcds-input>
+          <div id="dropdown" role="listbox"></div>
+        </div>
+
+        <div id="result" hidden>
+          <gcds-heading tag="h2">Résultat</gcds-heading>
+          <dl style="margin: 0.75rem 0 1rem;">
+          <div>
+            <dt class="result-label">ID de code de programme</dt>
+            <dd id="r-program-code-id" class="result-id"></dd>
+            <gcds-button id="copy-btn" type="button">Copier l'ID du code de programme</gcds-button>
+          </div>
+          <div>
+            <dt class="result-label">Nom du programme (anglais)</dt>
+            <dd id="r-program-name-en" class="result-value"></dd>
+          </div>
+          <div>
+            <dt class="result-label">Nom du programme (français)</dt>
+            <dd id="r-program-name-fr" class="result-value"></dd>
+          </div>
+          <div>
+            <dt class="result-label">Responsabilité essentielle (anglais)</dt>
+            <dd id="r-core-responsibility-en" class="result-value"></dd>
+          </div>
+          <div>
+            <dt class="result-label">Responsabilité essentielle (français)</dt>
+            <dd id="r-core-responsibility-fr" class="result-value"></dd>
+          </div>
+          <div>
+            <dt class="result-label">Ministère (gc_orgID)</dt>
+            <dd id="r-org-en" class="result-value"></dd>
+          </div>
+          <div>
+            <dt class="result-label">Code de programme</dt>
+            <dd id="r-prog-code" class="result-value"></dd>
+          </div>
+        </dl>
+        </div>
+      </div>
+
+      <gcds-date-modified>2026-07-09</gcds-date-modified>
+    </gcds-container>
+
+    <gcds-footer
+      display="full"
+      contextual-heading="Service numérique canadien"
+      contextual-links='{"Contactez le SNC": "mailto:cds-snc@servicecanada.gc.ca", "LinkedIn": "https://www.linkedin.com/company/cds-snc", "Infolettre": "https://canada.us15.list-manage.com/subscribe?u=729a207773f7324e217a1d945&id=eb357181d2"}'
+    ></gcds-footer>
+
+    <script>
+      window.LOOKUP_CONFIG = {
+        lang: 'fr',
+        locale: 'fr-CA',
+        strings: {
+          lastUpdated: 'Données mises à jour le',
+          deptHint: 'Commencez à taper pour rechercher un ministère.',
+          noDeptMatches: 'Aucun ministère correspondant trouvé.',
+          noMatches: 'Aucun programme correspondant trouvé.',
+          copyDefault: 'Copier l\'ID du code de programme',
+          copied: 'Copié !',
+          copyFailed: 'Échec de la copie',
+        },
+      };
+    </script>
+    <script src="program.js"></script>
+  </body>
+</html>
