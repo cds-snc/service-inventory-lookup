@@ -6,9 +6,9 @@ on:
       - main
     paths:
       - "infra/**"
-      - "lookup_en.html"
-      - "lookup_fr.html"
-      - "lookup.js"
+      - "service_en.html"
+      - "service_fr.html"
+      - "service.js"
       - "services.json"
       - "security.txt"
       - ".github/workflows/terraform-plan.yml"

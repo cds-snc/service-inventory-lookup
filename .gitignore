@@ -6,8 +6,9 @@ old
 **/.DS_Store
 .vscode
 
-# Local working notes, not for publishing
-docs/future-work.md
+# docs/ - only the published spec is tracked; everything else stays local
+docs/*
+!docs/program-codes-spec.md
 
 # Local .terraform directories
 **/.terraform/*

@@ -1,4 +1,4 @@
-"""Tests for update_data.py pipeline functions."""
+"""Tests for update_services.py pipeline functions."""
 
 import json
 import tempfile
@@ -8,7 +8,7 @@ from unittest.mock import MagicMock
 import pandas as pd
 import pytest
 
-from update_data import (
+from update_services import (
     apply_org_corrections,
     build_program_lookup,
     build_records,
@@ -22,7 +22,7 @@ from update_data import (
 
 
 def _mock_urlopen(mocker, csv_bytes: bytes):
-    mock = mocker.patch("update_data.urlopen")
+    mock = mocker.patch("update_services.urlopen")
     mock.return_value.__enter__.return_value.read.return_value = csv_bytes
     return mock
 
@@ -182,7 +182,7 @@ def _mock_post(mocker, results: list[dict]):
     mock = MagicMock()
     mock.json.return_value = {"results": results}
     mock.raise_for_status = MagicMock()
-    return mocker.patch("update_data.requests.post", return_value=mock)
+    return mocker.patch("update_services.requests.post", return_value=mock)
 
 
 def test_resolve_orgs_builds_lookup_from_matched_result(mocker):

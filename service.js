@@ -1,7 +1,7 @@
 (async function init() {
   const cfg = window.LOOKUP_CONFIG;
   if (!cfg) {
-    console.error('LOOKUP_CONFIG is not defined. Set it before loading lookup.js.');
+    console.error('LOOKUP_CONFIG is not defined. Set it before loading service.js.');
     return;
   }
   const lang = cfg.lang; // 'en' or 'fr'

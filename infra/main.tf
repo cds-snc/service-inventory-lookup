@@ -44,30 +44,30 @@ locals {
   }
 }
 
-resource "aws_s3_object" "html_en" {
+resource "aws_s3_object" "service_html_en" {
   bucket       = module.website.s3_bucket_id
   key          = "en"
-  source       = "${path.module}/../lookup_en.html"
+  source       = "${path.module}/../service_en.html"
   content_type = "text/html; charset=utf-8"
-  etag         = filemd5("${path.module}/../lookup_en.html")
+  etag         = filemd5("${path.module}/../service_en.html")
   tags         = local.common_tags
 }
 
-resource "aws_s3_object" "html_fr" {
+resource "aws_s3_object" "service_html_fr" {
   bucket       = module.website.s3_bucket_id
   key          = "fr"
-  source       = "${path.module}/../lookup_fr.html"
+  source       = "${path.module}/../service_fr.html"
   content_type = "text/html; charset=utf-8"
-  etag         = filemd5("${path.module}/../lookup_fr.html")
+  etag         = filemd5("${path.module}/../service_fr.html")
   tags         = local.common_tags
 }
 
-resource "aws_s3_object" "lookup_js" {
+resource "aws_s3_object" "service_js" {
   bucket       = module.website.s3_bucket_id
-  key          = "lookup.js"
-  source       = "${path.module}/../lookup.js"
+  key          = "service.js"
+  source       = "${path.module}/../service.js"
   content_type = "text/javascript; charset=utf-8"
-  etag         = filemd5("${path.module}/../lookup.js")
+  etag         = filemd5("${path.module}/../service.js")
   tags         = local.common_tags
 }
 
