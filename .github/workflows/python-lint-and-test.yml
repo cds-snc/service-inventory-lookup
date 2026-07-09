@@ -9,6 +9,7 @@ on:
   push:
     paths:
       - "update_services.py"
+      - "update_programs.py"
       - "tests/**"
       - "pyproject.toml"
       - "uv.lock"
@@ -16,6 +17,7 @@ on:
   pull_request:
     paths:
       - "update_services.py"
+      - "update_programs.py"
       - "tests/**"
       - "pyproject.toml"
       - "uv.lock"

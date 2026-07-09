@@ -1,9 +1,11 @@
-name: Update services.json
+# This name is referenced by terraform-apply.yml's workflow_run trigger;
+# rename them together or the deploy chain silently breaks.
+name: Update data
 
 on:
   schedule:
     - cron: '0 11 * * 1'
-  workflow_dispatch: 
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -20,17 +22,19 @@ jobs:
         with:
           enable-cache: true
 
-      - name: Run update script
-        run: uv run update_services.py
+      - name: Run update scripts
+        run: |
+          uv run update_services.py
+          uv run update_programs.py
 
       - name: Commit and push if changed
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add services.json
+          git add services.json program_codes.json
           if git diff --staged --quiet; then
-            echo "No changes to services.json; nothing to commit."
+            echo "No changes to data files; nothing to commit."
           else
-            git commit -m "chore: refresh services.json" -m "Automated weekly refresh via GitHub Actions."
+            git commit -m "chore: refresh data files" -m "Automated weekly refresh via GitHub Actions."
             git push
           fi

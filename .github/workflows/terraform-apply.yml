@@ -10,11 +10,16 @@ on:
       - "service_fr.html"
       - "service.js"
       - "services.json"
+      - "program_en.html"
+      - "program_fr.html"
+      - "program.js"
+      - "program_codes.json"
       - "security.txt"
       - ".github/workflows/terraform-apply.yml"
   workflow_run:
     workflows:
-      - "Update services.json"
+      # Must match the name in update-data.yml exactly; rename them together.
+      - "Update data"
     types:
       - completed
     branches:
