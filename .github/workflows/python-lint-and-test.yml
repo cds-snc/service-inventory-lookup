@@ -8,14 +8,14 @@ permissions:
 on:
   push:
     paths:
-      - "update_data.py"
+      - "update_services.py"
       - "tests/**"
       - "pyproject.toml"
       - "uv.lock"
       - ".github/workflows/python-lint-and-test.yml"
   pull_request:
     paths:
-      - "update_data.py"
+      - "update_services.py"
       - "tests/**"
       - "pyproject.toml"
       - "uv.lock"

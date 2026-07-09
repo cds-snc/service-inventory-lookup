@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="fr">
+<html dir="ltr" lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Recherchez un identifiant d'inventaire de service par département et nom de service." />
-    <title>Recherche dans l'inventaire des services</title>
+    <meta name="description" content="Look up a service inventory ID by department and service name." />
+    <title>Service Inventory Lookup</title>
     <link rel="stylesheet" href="https://cdn.design-system.canada.ca/@gcds-core/css-shortcuts@1.0.1/dist/gcds-css-shortcuts.min.css" />
     <link rel="stylesheet" href="https://cdn.design-system.canada.ca/@gcds-core/components@1.1.0/dist/gcds/gcds.css" />
     <script type="module" src="https://cdn.design-system.canada.ca/@gcds-core/components@1.1.0/dist/gcds/gcds.esm.js"></script>
@@ -85,25 +85,25 @@
     </style>
   </head>
   <body>
-    <gcds-header lang-href="/en" skip-to-href="#main-content">
+    <gcds-header lang-href="/fr" skip-to-href="#main-content">
       <gcds-breadcrumbs slot="breadcrumb">
-        <gcds-breadcrumbs-item href="https://numerique.canada.ca/a-propos/">Service numérique canadien</gcds-breadcrumbs-item>
-        <gcds-breadcrumbs-item href="#">Recherche dans l'inventaire des services</gcds-breadcrumbs-item>
+        <gcds-breadcrumbs-item href="https://digital.canada.ca/about/">Canadian Digital Service</gcds-breadcrumbs-item>
+        <gcds-breadcrumbs-item href="#">Service Inventory Lookup</gcds-breadcrumbs-item>
       </gcds-breadcrumbs>
     </gcds-header>
 
     <gcds-container id="main-content" layout="page" tag="main">
-      <gcds-heading tag="h1">Recherche dans l'inventaire des services</gcds-heading>
-      <gcds-text><em>Ceci est un prototype. Il utilise des données provenant d'un <a href="https://github.com/gcperformance/service-data">dépôt public</a> géré par le SCT. <span id="last-updated" hidden></span></em></gcds-text>
+      <gcds-heading tag="h1">Service Inventory Lookup</gcds-heading>
+      <gcds-text><em>This is a prototype. It uses data from a TBS-managed <a href="https://github.com/gcperformance/service-data">public repository</a>. <span id="last-updated" hidden></span></em></gcds-text>
 
-      <gcds-text>Trouvez votre ID d'inventaire de services en sélectionnant votre ministère et en recherchant votre service.</gcds-text>
+      <gcds-text>Find your service inventory ID by selecting your department and searching for your service.</gcds-text>
 
       <div id="loading-msg">
-        <gcds-text>Chargement des services...</gcds-text>
+        <gcds-text>Loading services...</gcds-text>
       </div>
 
       <div id="error-msg" hidden>
-        <gcds-text>Impossible de charger services.json. Assurez-vous que le fichier est disponible et que la page est servie depuis un serveur web.</gcds-text>
+        <gcds-text>Unable to load services.json. Make sure the file is available and the page is being served from a web server.</gcds-text>
       </div>
 
       <div id="app" hidden>
@@ -111,8 +111,8 @@
           <gcds-input
             input-id="dept-input"
             name="department"
-            label="Ministère"
-            hint="Commencez à taper le nom de votre ministère"
+            label="Department"
+            hint="Start typing your department name"
           ></gcds-input>
           <div id="dept-dropdown" role="listbox"></div>
         </div>
@@ -121,35 +121,35 @@
           <gcds-input
             input-id="service-input"
             name="service"
-            label="Service"
-            hint="Commencez à taper le nom de votre service dans le ministère sélectionné"
+            label="Service name"
+            hint="Type to search services in the selected department"
             disabled
           ></gcds-input>
           <div id="dropdown" role="listbox"></div>
         </div>
 
         <div id="result" hidden>
-          <gcds-heading tag="h2">Résultat</gcds-heading>
+          <gcds-heading tag="h2">Result</gcds-heading>
           <dl style="margin: 0.75rem 0 1rem;">
           <div>
-            <dt class="result-label">ID d'inventaire de services</dt>
+            <dt class="result-label">Service inventory ID</dt>
             <dd id="r-service-id" class="result-id"></dd>
-            <gcds-button id="copy-btn" type="button">Copier l'ID du service</gcds-button>
+            <gcds-button id="copy-btn" type="button">Copy Service ID</gcds-button>
           </div>
           <div>
-            <dt class="result-label">Nom du service (anglais)</dt>
+            <dt class="result-label">Service name (English)</dt>
             <dd id="r-service-en" class="result-value"></dd>
           </div>
           <div>
-            <dt class="result-label">Nom du service (français)</dt>
+            <dt class="result-label">Service name (French)</dt>
             <dd id="r-service-fr" class="result-value"></dd>
           </div>
           <div>
-            <dt class="result-label">Ministère (gc_orgID)</dt>
+            <dt class="result-label">Department (gc_orgID)</dt>
             <dd id="r-org-en" class="result-value"></dd>
           </div>
           <div>
-            <dt class="result-label">ID du programme</dt>
+            <dt class="result-label">Program ID(s)</dt>
             <dd id="r-program-id" class="result-value"></dd>
           </div>
         </dl>
@@ -161,26 +161,26 @@
 
     <gcds-footer
       display="full"
-      contextual-heading="Service numérique canadien"
-      contextual-links='{"Contactez le SNC": "mailto:cds-snc@servicecanada.gc.ca", "LinkedIn": "https://www.linkedin.com/company/cds-snc", "Infolettre": "https://canada.us15.list-manage.com/subscribe?u=729a207773f7324e217a1d945&id=eb357181d2"}'
+      contextual-heading="Canadian Digital Service"
+      contextual-links='{"Contact CDS": "mailto:cds-snc@servicecanada.gc.ca", "LinkedIn": "https://www.linkedin.com/company/cds-snc", "Newsletter": "https://canada.us15.list-manage.com/subscribe?u=729a207773f7324e217a1d945&id=eb357181d2"}'
     ></gcds-footer>
 
     <script>
       window.LOOKUP_CONFIG = {
-        lang: 'fr',
-        locale: 'fr-CA',
+        lang: 'en',
+        locale: 'en-CA',
         strings: {
-          lastUpdated: 'Données mises à jour le',
-          deptHint: 'Commencez à taper pour rechercher un ministère.',
-          noDeptMatches: 'Aucun ministère correspondant trouvé.',
-          noMatches: 'Aucun service correspondant trouvé.',
-          noProgram: 'Aucun trouvé',
-          copyDefault: 'Copier l\'ID du service',
-          copied: 'Copié !',
-          copyFailed: 'Échec de la copie',
+          lastUpdated: 'Data last refreshed on',
+          deptHint: 'Start typing to search departments.',
+          noDeptMatches: 'No matching departments found.',
+          noMatches: 'No matching services found.',
+          noProgram: 'None found',
+          copyDefault: 'Copy Service ID',
+          copied: 'Copied!',
+          copyFailed: 'Copy failed',
         },
       };
     </script>
-    <script src="lookup.js"></script>
+    <script src="service.js"></script>
   </body>
 </html>
