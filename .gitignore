@@ -6,6 +6,9 @@ old
 **/.DS_Store
 .vscode
 
+# Local working notes, not for publishing
+docs/future-work.md
+
 # Local .terraform directories
 **/.terraform/*
 
