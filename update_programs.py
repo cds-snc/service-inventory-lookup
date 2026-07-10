@@ -127,8 +127,8 @@ def build_keyed_records(
             "org_name_fr": org["org_name_fr"],
             "acronym_en": org["acronym_en"],
             "acronym_fr": org["acronym_fr"],
-            f"program_name_{lang}": row[PROG_NAME_COL],
-            f"core_responsibility_{lang}": row[CR_NAME_COL],
+            f"program_name_{lang}": row[PROG_NAME_COL].strip(),
+            f"core_responsibility_{lang}": row[CR_NAME_COL].strip(),
         }
     return records
 

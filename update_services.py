@@ -116,8 +116,8 @@ def build_records(
         records.append(
             {
                 "service_id": sid,
-                "service_en": row["service_en"],
-                "service_fr": row["service_fr"],
+                "service_en": row["service_en"].strip(),
+                "service_fr": row["service_fr"].strip(),
                 "gc_orgID": org.get("gc_orgID"),
                 "org_name_en": org.get("org_name_en", row["org_name_en"]),
                 "org_name_fr": org.get("org_name_fr"),

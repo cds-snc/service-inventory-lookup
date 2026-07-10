@@ -312,6 +312,20 @@ def test_build_records_service_id_is_string():
         assert isinstance(record["service_id"], str)
 
 
+def test_build_records_strips_whitespace_from_names():
+    services = pd.DataFrame(
+        {
+            "service_id": [4158],
+            "service_en": ["  Customs Brokers Professional Examination "],
+            "service_fr": [" Examen de compétences professionnelles  "],
+            "org_name_en": ["Canada Border Services Agency"],
+        }
+    )
+    records = build_records(services, SAMPLE_PROGRAM_LOOKUP, SAMPLE_ORG_LOOKUP)
+    assert records[0]["service_en"] == "Customs Brokers Professional Examination"
+    assert records[0]["service_fr"] == "Examen de compétences professionnelles"
+
+
 def test_write_json_produces_valid_json_file():
     records = [{"service_id": "1", "service_en": "Test"}]
     with tempfile.TemporaryDirectory() as tmpdir:

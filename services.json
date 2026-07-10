@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-06T12:21:31.325470+00:00",
+  "generated_at": "2026-07-10T12:46:12.785034+00:00",
   "services": [
     {
       "service_id": "4167",
@@ -80,7 +80,7 @@
     },
     {
       "service_id": "4163",
-      "service_en": "Geomagnetic Monitoring and Space Weather Forecasting (GMSWF) ",
+      "service_en": "Geomagnetic Monitoring and Space Weather Forecasting (GMSWF)",
       "service_fr": "Surveillance géomagnétique et prévisions météorologiques spatiales",
       "gc_orgID": 2234,
       "org_name_en": "Natural Resources Canada",
@@ -125,7 +125,7 @@
     {
       "service_id": "4157",
       "service_en": "Quasi-judicial review of certain ministerial authorizations",
-      "service_fr": "Examen quasi judiciaire de certaines autorisations ",
+      "service_fr": "Examen quasi judiciaire de certaines autorisations",
       "gc_orgID": 2275,
       "org_name_en": "Office of the Intelligence Commissioner",
       "org_name_fr": "Bureau du commissaire au renseignement",
@@ -135,7 +135,7 @@
     },
     {
       "service_id": "4154",
-      "service_en": " Conduct a Review",
+      "service_en": "Conduct a Review",
       "service_fr": "Effectuer un examen",
       "gc_orgID": 2295,
       "org_name_en": "Secretariat of the National Security and Intelligence Committee of Parliamentarians",
@@ -578,7 +578,7 @@
     {
       "service_id": "4110",
       "service_en": "Certification and Market Access Program for Seals Contribution Agreement (CMAPS)",
-      "service_fr": "Le Programme de certification et d'accès aux marchés des produits du phoque (PCAMPP) ",
+      "service_fr": "Le Programme de certification et d'accès aux marchés des produits du phoque (PCAMPP)",
       "gc_orgID": 2226,
       "org_name_en": "Fisheries and Oceans Canada",
       "org_name_fr": "Pêches et Océans Canada",
@@ -732,7 +732,7 @@
     {
       "service_id": "4124",
       "service_en": "Sustainable Fisheries Contribution Program - Shared Ocean Fund (Indo-Pacific Strategy)",
-      "service_fr": "Programme de contribution aux pêches durables - Fonds commun pour les océans (Stratégie indo-pacifique) ",
+      "service_fr": "Programme de contribution aux pêches durables - Fonds commun pour les océans (Stratégie indo-pacifique)",
       "gc_orgID": 2226,
       "org_name_en": "Fisheries and Oceans Canada",
       "org_name_fr": "Pêches et Océans Canada",
@@ -830,7 +830,7 @@
     },
     {
       "service_id": "4095",
-      "service_en": "Oral health providers claims' and estimates' processing and payment as part of the Canadian Dental Care Plan ",
+      "service_en": "Oral health providers claims' and estimates' processing and payment as part of the Canadian Dental Care Plan",
       "service_fr": "Traitement des réclamations et des demandes d'autorisations préalables et paiement aux fournisseurs de soins buccodentaires dans le cadre du Régime canadien de soins dentaires",
       "gc_orgID": 2228,
       "org_name_en": "Health Canada",
@@ -864,7 +864,7 @@
     {
       "service_id": "4091",
       "service_en": "Oil Spill Response Challenge",
-      "service_fr": "Défi d’intervention en cas de déversement d’hydrocarbures ",
+      "service_fr": "Défi d’intervention en cas de déversement d’hydrocarbures",
       "gc_orgID": 2234,
       "org_name_en": "Natural Resources Canada",
       "org_name_fr": "Ressources naturelles Canada",
@@ -951,7 +951,7 @@
     },
     {
       "service_id": "4078",
-      "service_en": "Canadian Grain Sampling Program Sample Inspection ",
+      "service_en": "Canadian Grain Sampling Program Sample Inspection",
       "service_fr": "Inspection d’échantillon du Programme canadien d’échantillonnage des grains",
       "gc_orgID": 2306,
       "org_name_en": "Canadian Food Inspection Agency",
@@ -1017,7 +1017,7 @@
     },
     {
       "service_id": "4080",
-      "service_en": "Disability Benefits Program Benefits Administration ",
+      "service_en": "Disability Benefits Program Benefits Administration",
       "service_fr": "Administration des avantages du Programme de prestations d’invalidité",
       "gc_orgID": 2239,
       "org_name_en": "Veterans Affairs Canada",
@@ -1039,7 +1039,7 @@
     },
     {
       "service_id": "4082",
-      "service_en": " Commemorative Benefits and Services",
+      "service_en": "Commemorative Benefits and Services",
       "service_fr": "Avantages et services commémoratifs",
       "gc_orgID": 2239,
       "org_name_en": "Veterans Affairs Canada",
@@ -1061,7 +1061,7 @@
     },
     {
       "service_id": "4070",
-      "service_en": "Assault-Style Firearms Compensation Program ",
+      "service_en": "Assault-Style Firearms Compensation Program",
       "service_fr": "Programme d'indemnisation pour les armes à feu de style arme d'assaut (PIAFSAA)",
       "gc_orgID": 2235,
       "org_name_en": "Public Safety Canada",
@@ -1149,7 +1149,7 @@
     },
     {
       "service_id": "4069",
-      "service_en": "Parliamentary District Policing Program ",
+      "service_en": "Parliamentary District Policing Program",
       "service_fr": "Programme de services de police du district parlementaire",
       "gc_orgID": 2235,
       "org_name_en": "Public Safety Canada",
@@ -1171,8 +1171,8 @@
     },
     {
       "service_id": "4064",
-      "service_en": " Horizontal Policies (Greening) - strategic environmental and economic assessments, compliance management, public statements, and reporting mandatory for all departmental proposals to Cabinet (ie. Budget asks, TB subs, MCs, regulations)",
-      "service_fr": "Services d'appoint en matière de politiques (recherche, analyse et conseils en matière de politiques). ",
+      "service_en": "Horizontal Policies (Greening) - strategic environmental and economic assessments, compliance management, public statements, and reporting mandatory for all departmental proposals to Cabinet (ie. Budget asks, TB subs, MCs, regulations)",
+      "service_fr": "Services d'appoint en matière de politiques (recherche, analyse et conseils en matière de politiques).",
       "gc_orgID": 2236,
       "org_name_en": "Public Services and Procurement Canada",
       "org_name_fr": "Services publics et Approvisionnement Canada",
@@ -1436,7 +1436,7 @@
     {
       "service_id": "4021",
       "service_en": "Access to Canadian Top Secret Network",
-      "service_fr": " Accès au Réseau canadien très secret",
+      "service_fr": "Accès au Réseau canadien très secret",
       "gc_orgID": 2227,
       "org_name_en": "Global Affairs Canada",
       "org_name_fr": "Affaires mondiales Canada",
@@ -5573,7 +5573,7 @@
     {
       "service_id": "SRV03261",
       "service_en": "Authorized Service Provider Recognized Technician Training",
-      "service_fr": "Formation des fournisseur services autorisés techniciens reconnus ",
+      "service_fr": "Formation des fournisseur services autorisés techniciens reconnus",
       "gc_orgID": 2231,
       "org_name_en": "Innovation, Science and Economic Development Canada",
       "org_name_fr": "Innovation, Sciences et Développement économique Canada",
@@ -7230,7 +7230,7 @@
     {
       "service_id": "SRV03471",
       "service_en": "Coasting Trade inspections : Letters of Compliance Issued",
-      "service_fr": " Inspections des métiers du cabotage : Lettres de conformité émises",
+      "service_fr": "Inspections des métiers du cabotage : Lettres de conformité émises",
       "gc_orgID": 2238,
       "org_name_en": "Transport Canada",
       "org_name_fr": "Transports Canada",
@@ -9838,7 +9838,7 @@
     {
       "service_id": "SRV02748",
       "service_en": "Supply Management Processing Investment Fund",
-      "service_fr": "Le Fonds d'investissement pour la transformation des produits sous la gestion de l'offre ",
+      "service_fr": "Le Fonds d'investissement pour la transformation des produits sous la gestion de l'offre",
       "gc_orgID": 2222,
       "org_name_en": "Agriculture and Agri-Food Canada",
       "org_name_fr": "Agriculture et Agroalimentaire Canada",

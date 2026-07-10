@@ -204,6 +204,21 @@ def test_build_keyed_records_raises_on_duplicate_key_within_file():
         build_keyed_records(df, DEPT_COL_EN, ORG_LOOKUP, lang="en")
 
 
+def test_build_keyed_records_strips_whitespace_from_names():
+    df = pd.DataFrame(
+        {
+            DEPT_COL_EN: ["Agriculture and Agri-Food Canada"],
+            PROG_CODE_COL: ["BWN01"],
+            PROG_NAME_COL: ["  Trade and Market Expansion "],
+            CR_NAME_COL: [" Domestic and International Markets  "],
+        }
+    )
+    records = build_keyed_records(df, DEPT_COL_EN, ORG_LOOKUP, lang="en")
+    record = records[(2222, "BWN01")]
+    assert record["program_name_en"] == "Trade and Market Expansion"
+    assert record["core_responsibility_en"] == "Domestic and International Markets"
+
+
 def test_combine_records_composes_program_code_id():
     en_records = build_keyed_records(EN_DF, DEPT_COL_EN, ORG_LOOKUP, lang="en")
     fr_records = build_keyed_records(FR_DF, DEPT_COL_FR, ORG_LOOKUP_FR, lang="fr")
