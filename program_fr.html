@@ -9,27 +9,30 @@
     <link rel="stylesheet" href="https://cdn.design-system.canada.ca/@gcds-core/components@1.1.0/dist/gcds/gcds.css" />
     <script type="module" src="https://cdn.design-system.canada.ca/@gcds-core/components@1.1.0/dist/gcds/gcds.esm.js"></script>
     <style>
-      .search-wrapper { position: relative; }
+      .search-wrapper {
+        position: relative;
+        max-width: 42rem;
+      }
 
       #dept-dropdown,
       #dropdown {
         display: none;
         position: absolute;
-        top: 100%;
+        top: calc(100% + 0.25rem);
         left: 0;
         right: 0;
         background: #fff;
-        border: 1.5px solid #b0b8c1;
+        border: 1px solid #9ba5b1;
         border-radius: 4px;
         max-height: 260px;
         overflow-y: auto;
         z-index: 100;
-        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 6px 20px rgba(38, 55, 74, 0.16);
       }
 
       .dropdown-item {
-        padding: 10px 14px;
-        font-size: 0.875rem;
+        padding: 0.625rem 0.875rem;
+        font-size: 1rem;
         cursor: pointer;
         border-bottom: 1px solid #eef1f5;
         line-height: 1.4;
@@ -46,19 +49,32 @@
       }
 
       mark {
-        background: #fde8e6;
+        background: #ffe999;
         padding: 0 2px;
         border-radius: 2px;
       }
 
-
       #result {
-        margin-top: 0.5rem;
-        padding: 0.5rem 1.5rem 1.25rem;
-        background: #f8f9fb;
-        border: 1.5px solid #dce3ec;
-        border-radius: 4px;
+        margin-top: 1.5rem;
+        padding: 0.75rem 1.5rem 1.5rem;
+        background: #fafbfc;
+        border: 1px solid #dce3ec;
+        border-left: 6px solid #26374a;
+        border-radius: 0 4px 4px 0;
+        max-width: 42rem;
       }
+
+      .intro-note { opacity: 0.7; }
+
+      #app { margin-top: 2rem; }
+
+      .result-list { margin: 0.5rem 0 0; }
+
+      .result-list > div { margin: 0 0 1rem; }
+
+      .result-list > div:first-child { margin-bottom: 1.5rem; }
+
+      .result-list > div:last-child { margin-bottom: 0; }
 
       .result-label {
         font-size: 0.6875rem;
@@ -66,21 +82,24 @@
         text-transform: uppercase;
         letter-spacing: 0.05em;
         color: #5a6a7e;
-        margin-bottom: 2px;
+        line-height: 1.2;
+        margin: 0 0 0.125rem;
       }
 
       .result-value {
-        font-size: 0.9375rem;
-        margin: 0 0 0.875rem;
+        font-size: 1rem;
+        line-height: 1.4;
+        margin: 0;
       }
 
       .result-id {
-        font-size: 1.25rem;
+        font-size: 1.375rem;
         font-weight: 700;
         color: #26374a;
-        font-family: 'Courier New', monospace;
+        font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace;
         letter-spacing: 0.04em;
-        margin: 0 0 0.875rem;
+        line-height: 1.2;
+        margin: 0 0 0.75rem;
       }
     </style>
   </head>
@@ -94,11 +113,11 @@
 
     <gcds-container id="main-content" layout="page" tag="main">
       <gcds-heading tag="h1">Recherche de code de programme</gcds-heading>
-      <gcds-text><em>Ceci est un prototype. Il utilise la liste des codes de programme de l'exercice <span id="fiscal-year"></span> selon la Structure des comptes pangouvernementale, publiée par SPAC sur <a id="dataset-link" href="#">open.canada.ca</a>. <span id="last-updated" hidden></span></em></gcds-text>
+      <gcds-text size="small" text-role="secondary" class="intro-note">Ceci est un prototype. Il utilise la liste des codes de programme de l'exercice <span id="fiscal-year"></span> selon la Structure des comptes pangouvernementale, publiée par SPAC sur <a id="dataset-link" href="#">open.canada.ca</a>. <span id="last-updated" hidden></span></gcds-text>
 
       <gcds-text>Trouvez votre identifiant de code de programme en sélectionnant votre ministère et en recherchant votre programme.</gcds-text>
 
-      <gcds-text>Vous cherchez plutôt un ID d'inventaire de services? Utilisez la <a href="https://service-inventory-lookup.gcorgs.cdssandbox.xyz/fr">Recherche dans l'inventaire des services</a>.</gcds-text>
+      <gcds-text size="small">Vous cherchez plutôt un ID d'inventaire de services? Utilisez la <a href="https://service-inventory-lookup.gcorgs.cdssandbox.xyz/fr">Recherche dans l'inventaire des services</a>.</gcds-text>
 
       <div id="loading-msg">
         <gcds-text>Chargement des programmes...</gcds-text>
@@ -131,8 +150,8 @@
         </div>
 
         <div id="result" hidden>
-          <gcds-heading tag="h2">Résultat</gcds-heading>
-          <dl style="margin: 0.75rem 0 1rem;">
+          <gcds-heading tag="h2" margin-top="0" margin-bottom="200">Résultat</gcds-heading>
+          <dl class="result-list">
           <div>
             <dt class="result-label">ID de code de programme</dt>
             <dd id="r-program-code-id" class="result-id"></dd>
@@ -180,7 +199,7 @@
         lang: 'fr',
         locale: 'fr-CA',
         strings: {
-          lastUpdated: 'Données mises à jour le',
+          lastUpdated: 'Les données ont été actualisées le',
           deptHint: 'Commencez à taper pour rechercher un ministère.',
           noDeptMatches: 'Aucun ministère correspondant trouvé.',
           noMatches: 'Aucun programme correspondant trouvé.',

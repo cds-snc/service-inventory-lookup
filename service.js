@@ -30,7 +30,7 @@
   app.hidden = false;
 
   const lastUpdated = document.getElementById('last-updated');
-  lastUpdated.textContent = `${cfg.strings.lastUpdated} ${new Date(generatedAt).toLocaleDateString(cfg.locale, { year: 'numeric', month: 'long', day: 'numeric' })}`;
+  lastUpdated.textContent = `${cfg.strings.lastUpdated} ${new Date(generatedAt).toLocaleDateString(cfg.locale, { year: 'numeric', month: 'long', day: 'numeric' })}.`;
   lastUpdated.hidden = false;
 
   // --- State ---
