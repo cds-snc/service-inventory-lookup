@@ -33,7 +33,8 @@ Verified against the 2026-27 and 2025-26 lists:
   [gcorg-resolver](https://gcorgs.cdssandbox.xyz). Used verbatim, no zero-padding;
   `0` for organizations not on the TBS list of departments.
 - `PROG` - the `ProgramInventory-Répertoiredesprogrammes_code_PROG` value,
-  uppercase (e.g. `BWN01`). Always 3 letters + 2 digits.
+  uppercase (e.g. `BWN01`). 5 alphanumeric characters (3 letters + 2 alphanumeric
+  characters, e.g. `BWN01`, `ISS0Z`); never contains a hyphen.
 - Single hyphen delimiter. Neither part contains a hyphen, so the string splits
   back apart unambiguously.
 
