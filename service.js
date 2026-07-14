@@ -12,12 +12,14 @@
 
   let services;
   let generatedAt;
+  let source;
   try {
     const resp = await fetch('services.json');
     if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
     const data = await resp.json();
     services = data.services;
     generatedAt = data.generated_at;
+    source = data.source;
   } catch (_) {
     loadingMsg.hidden = true;
     errorMsg.hidden = false;
@@ -28,6 +30,9 @@
 
   loadingMsg.hidden = true;
   app.hidden = false;
+
+  document.getElementById('fiscal-year').textContent = source.fiscal_year;
+  document.getElementById('dataset-link').href = source.dataset_url;
 
   const lastUpdated = document.getElementById('last-updated');
   lastUpdated.textContent = `${cfg.strings.lastUpdated} ${new Date(generatedAt).toLocaleDateString(cfg.locale, { year: 'numeric', month: 'long', day: 'numeric' })}.`;
