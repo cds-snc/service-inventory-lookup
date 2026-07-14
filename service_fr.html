@@ -101,6 +101,13 @@
         line-height: 1.2;
         margin: 0 0 0.75rem;
       }
+
+      .result-sublist {
+        margin: 0;
+        padding-left: 1.25rem;
+      }
+
+      .result-sublist li { line-height: 1.4; }
     </style>
   </head>
   <body>
@@ -173,6 +180,26 @@
             <dt class="result-label">ID du programme</dt>
             <dd id="r-program-id" class="result-value"></dd>
           </div>
+          <div id="r-url-row" hidden>
+            <dt class="result-label">URL du service</dt>
+            <dd class="result-value"><a id="r-url" href="#"></a></dd>
+          </div>
+          <div>
+            <dt class="result-label">Type de service</dt>
+            <dd id="r-service-type" class="result-value"></dd>
+          </div>
+          <div>
+            <dt class="result-label">Étendue du service</dt>
+            <dd id="r-service-scope" class="result-value"></dd>
+          </div>
+          <div>
+            <dt class="result-label">Clients/groupes cibles</dt>
+            <dd id="r-target-groups" class="result-value"></dd>
+          </div>
+          <div>
+            <dt class="result-label">Type de bénéficiaire du service</dt>
+            <dd id="r-recipient-type" class="result-value"></dd>
+          </div>
         </dl>
         </div>
       </div>
@@ -196,6 +223,7 @@
           noDeptMatches: 'Aucun ministère correspondant trouvé.',
           noMatches: 'Aucun service correspondant trouvé.',
           noProgram: 'Aucun trouvé',
+          noValue: 'Aucun trouvé',
           copyDefault: 'Copier l\'ID du service',
           copied: 'Copié !',
           copyFailed: 'Échec de la copie',

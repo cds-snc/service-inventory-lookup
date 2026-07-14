@@ -312,13 +312,71 @@
     const acronym = service[`acronym_${lang}`];
     document.getElementById('r-org-en').textContent = `${service[`org_name_${lang}`]} (${service.gc_orgID})`;
     document.getElementById('r-service-id').textContent = service.service_id;
-    const pid = service.program_id;
-    document.getElementById('r-program-id').textContent =
-      Array.isArray(pid) && pid.length > 0 ? pid.join(', ') : cfg.strings.noProgram;
+    renderPrograms(service.programs);
+    renderUrl(service[`service_uri_${lang}`]);
+    renderCodes('r-service-type', service.service_type);
+    renderCodes('r-service-scope', service.service_scope);
+    renderCodes('r-target-groups', service.client_target_groups);
+    renderCodes('r-recipient-type', service.service_recipient_type);
 
     const copyBtn = document.getElementById('copy-btn');
     copyBtn.textContent = cfg.strings.copyDefault;
     resultDiv.hidden = false;
+  }
+
+  // A service can carry up to seven programs, so we list them one per line
+  // rather than running the codes together on one line.
+  function renderPrograms(programs) {
+    const dd = document.getElementById('r-program-id');
+    dd.textContent = '';
+    if (!Array.isArray(programs) || programs.length === 0) {
+      dd.textContent = cfg.strings.noProgram;
+      return;
+    }
+    const list = document.createElement('ul');
+    list.className = 'result-sublist';
+    programs.forEach(p => {
+      const item = document.createElement('li');
+      item.textContent = `${p.program_id} - ${p[`program_name_${lang}`]}`;
+      list.appendChild(item);
+    });
+    dd.appendChild(list);
+  }
+
+  function renderUrl(url) {
+    const row = document.getElementById('r-url-row');
+    const link = document.getElementById('r-url');
+    if (!url) {
+      row.hidden = true;
+      return;
+    }
+    link.href = url;
+    link.textContent = url;
+    row.hidden = false;
+  }
+
+  // Several published labels contain a comma ("Provinces, Territories or
+  // Communities"), so joining multiple values with ", " reads as ambiguous. We
+  // list them instead, and only fall back to plain text for a lone value.
+  function renderCodes(elementId, codes) {
+    const dd = document.getElementById(elementId);
+    dd.textContent = '';
+    if (!Array.isArray(codes) || codes.length === 0) {
+      dd.textContent = cfg.strings.noValue;
+      return;
+    }
+    if (codes.length === 1) {
+      dd.textContent = codes[0][`name_${lang}`];
+      return;
+    }
+    const list = document.createElement('ul');
+    list.className = 'result-sublist';
+    codes.forEach(c => {
+      const item = document.createElement('li');
+      item.textContent = c[`name_${lang}`];
+      list.appendChild(item);
+    });
+    dd.appendChild(list);
   }
 
   function hideResult() {

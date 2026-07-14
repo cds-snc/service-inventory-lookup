@@ -101,6 +101,13 @@
         line-height: 1.2;
         margin: 0 0 0.75rem;
       }
+
+      .result-sublist {
+        margin: 0;
+        padding-left: 1.25rem;
+      }
+
+      .result-sublist li { line-height: 1.4; }
     </style>
   </head>
   <body>
@@ -173,6 +180,26 @@
             <dt class="result-label">Program ID(s)</dt>
             <dd id="r-program-id" class="result-value"></dd>
           </div>
+          <div id="r-url-row" hidden>
+            <dt class="result-label">Service URL</dt>
+            <dd class="result-value"><a id="r-url" href="#"></a></dd>
+          </div>
+          <div>
+            <dt class="result-label">Service type</dt>
+            <dd id="r-service-type" class="result-value"></dd>
+          </div>
+          <div>
+            <dt class="result-label">Service scope</dt>
+            <dd id="r-service-scope" class="result-value"></dd>
+          </div>
+          <div>
+            <dt class="result-label">Client/target groups</dt>
+            <dd id="r-target-groups" class="result-value"></dd>
+          </div>
+          <div>
+            <dt class="result-label">Service recipient type</dt>
+            <dd id="r-recipient-type" class="result-value"></dd>
+          </div>
         </dl>
         </div>
       </div>
@@ -196,6 +223,7 @@
           noDeptMatches: 'No matching departments found.',
           noMatches: 'No matching services found.',
           noProgram: 'None found',
+          noValue: 'None found',
           copyDefault: 'Copy Service ID',
           copied: 'Copied!',
           copyFailed: 'Copy failed',

@@ -12,8 +12,12 @@ from update_services import (
     SOURCE_FISCAL_YEAR,
     build_records,
     download_csv,
+    fetch_code_labels,
     filter_fiscal_year,
-    parse_program_ids,
+    label_codes,
+    parse_list_cell,
+    parse_programs,
+    parse_uri,
     resolve_orgs,
     split_org_title,
     update_generated_at,
@@ -157,21 +161,171 @@ def test_split_org_title_raises_on_malformed_title(title):
         split_org_title(title)
 
 
-def test_parse_program_ids_returns_single_id_as_list():
-    assert parse_program_ids("BWM06") == ["BWM06"]
+def test_parse_list_cell_returns_single_value_as_list():
+    assert parse_list_cell("BWM06") == ["BWM06"]
 
 
-def test_parse_program_ids_splits_comma_separated_ids():
-    assert parse_program_ids("BED01,BED02,BED03") == ["BED01", "BED02", "BED03"]
+def test_parse_list_cell_splits_comma_separated_values():
+    assert parse_list_cell("BED01,BED02,BED03") == ["BED01", "BED02", "BED03"]
 
 
-def test_parse_program_ids_strips_whitespace_around_ids():
-    assert parse_program_ids(" BED01 , BED02 ") == ["BED01", "BED02"]
+def test_parse_list_cell_strips_whitespace_around_values():
+    assert parse_list_cell(" BED01 , BED02 ") == ["BED01", "BED02"]
+
+
+def test_parse_list_cell_strips_quotes_from_quoted_values():
+    assert parse_list_cell('"Business Growth", "Internal services"') == [
+        "Business Growth",
+        "Internal services",
+    ]
+
+
+def test_parse_list_cell_keeps_commas_inside_quoted_values():
+    # program_name_en quotes each value and 103 names contain a comma; splitting
+    # on "," instead of parsing as CSV misaligns them against program_id.
+    assert parse_list_cell('"Care, Education, Recreation", "Business Growth"') == [
+        "Care, Education, Recreation",
+        "Business Growth",
+    ]
 
 
 @pytest.mark.parametrize("value", [float("nan"), "", "   ", ","])
-def test_parse_program_ids_returns_none_when_no_ids(value):
-    assert parse_program_ids(value) is None
+def test_parse_list_cell_returns_empty_list_when_no_values(value):
+    assert parse_list_cell(value) == []
+
+
+def _program_row(program_id, name_en, name_fr, service_id="1"):
+    return pd.Series(
+        {
+            "service_id": service_id,
+            "program_id": program_id,
+            "program_name_en": name_en,
+            "program_name_fr": name_fr,
+        }
+    )
+
+
+def test_parse_programs_pairs_single_program_with_its_names():
+    row = _program_row("ISS00", '"Internal services"', '"Services internes"')
+    assert parse_programs(row) == [
+        {
+            "program_id": "ISS00",
+            "program_name_en": "Internal services",
+            "program_name_fr": "Services internes",
+        }
+    ]
+
+
+def test_parse_programs_pairs_each_id_with_its_own_name():
+    row = _program_row(
+        "BED01,BED02",
+        '"Inclusive Communities", "Business Growth"',
+        '"Collectivités inclusives", "Croissance des entreprises"',
+    )
+    programs = parse_programs(row)
+    assert [p["program_id"] for p in programs] == ["BED01", "BED02"]
+    assert [p["program_name_en"] for p in programs] == ["Inclusive Communities", "Business Growth"]
+    assert [p["program_name_fr"] for p in programs] == [
+        "Collectivités inclusives",
+        "Croissance des entreprises",
+    ]
+
+
+def test_parse_programs_keeps_pairing_when_a_name_contains_a_comma():
+    row = _program_row(
+        "CER01,BED01",
+        '"Care, Education, Recreation", "Business Growth"',
+        '"Soins, éducation, loisirs", "Croissance des entreprises"',
+    )
+    programs = parse_programs(row)
+    assert programs[0] == {
+        "program_id": "CER01",
+        "program_name_en": "Care, Education, Recreation",
+        "program_name_fr": "Soins, éducation, loisirs",
+    }
+    assert programs[1]["program_id"] == "BED01"
+
+
+def test_parse_programs_returns_none_when_service_has_no_programs():
+    assert parse_programs(_program_row(float("nan"), float("nan"), float("nan"))) is None
+
+
+def test_parse_programs_raises_when_ids_and_names_do_not_line_up():
+    row = _program_row("BED01,BED02", '"Only One Name"', '"Un seul nom"')
+    with pytest.raises(ValueError, match="2 program IDs"):
+        parse_programs(row)
+
+
+def test_parse_uri_returns_url_when_present():
+    assert parse_uri("https://example.gc.ca/service") == "https://example.gc.ca/service"
+
+
+def test_parse_uri_strips_surrounding_whitespace():
+    assert parse_uri("  https://example.gc.ca/service  ") == "https://example.gc.ca/service"
+
+
+@pytest.mark.parametrize("value", [float("nan"), "", "   "])
+def test_parse_uri_returns_none_when_blank(value):
+    assert parse_uri(value) is None
+
+
+SAMPLE_CODE_LABELS = {
+    "service_type": {
+        "INFO": {"en": "Information", "fr": "Information"},
+        "CER": {"en": "Care, Education, Recreation", "fr": "Soins, éducation, loisirs"},
+    },
+    "service_scope": {"EXTERN": {"en": "External Service", "fr": "Service externe"}},
+    "client_target_groups": {"PERSON": {"en": "Persons", "fr": "Personnes"}},
+    "service_recipient_type": {
+        "SOCIETY": {"en": "Untargeted, Societal-based service", "fr": "Service non-ciblé"}
+    },
+}
+
+
+def test_label_codes_expands_a_single_code():
+    assert label_codes("EXTERN", "service_scope", SAMPLE_CODE_LABELS) == [
+        {"code": "EXTERN", "name_en": "External Service", "name_fr": "Service externe"}
+    ]
+
+
+def test_label_codes_expands_each_code_in_a_multi_valued_cell():
+    labelled = label_codes("INFO,CER", "service_type", SAMPLE_CODE_LABELS)
+    assert [c["code"] for c in labelled] == ["INFO", "CER"]
+    assert labelled[1]["name_en"] == "Care, Education, Recreation"
+
+
+def test_label_codes_returns_empty_list_when_cell_is_blank():
+    assert label_codes(float("nan"), "service_scope", SAMPLE_CODE_LABELS) == []
+
+
+def test_label_codes_raises_on_code_missing_from_schema():
+    with pytest.raises(ValueError, match="NEWCODE"):
+        label_codes("NEWCODE", "service_scope", SAMPLE_CODE_LABELS)
+
+
+def test_fetch_code_labels_reads_choices_for_each_classification_field(mocker):
+    schema = {
+        "resources": [
+            {
+                "fields": [
+                    {"id": field, "choices": choices}
+                    for field, choices in SAMPLE_CODE_LABELS.items()
+                ]
+                + [{"id": "service_name_en"}]
+            }
+        ]
+    }
+    _mock_urlopen(mocker, json.dumps(schema).encode())
+    labels = fetch_code_labels("https://example.com/schema.json")
+    assert labels["service_scope"]["EXTERN"]["en"] == "External Service"
+    assert "service_name_en" not in labels
+
+
+def test_fetch_code_labels_raises_when_a_field_has_no_choices(mocker):
+    schema = {"resources": [{"fields": [{"id": "service_scope", "choices": {}}]}]}
+    _mock_urlopen(mocker, json.dumps(schema).encode())
+    with pytest.raises(ValueError, match="service_type"):
+        fetch_code_labels("https://example.com/schema.json")
 
 
 def _mock_post(mocker, results: list[dict]):
@@ -270,6 +424,14 @@ SAMPLE_SERVICES = pd.DataFrame(
             "Agrément des courtiers en douane",
         ],
         "program_id": ["BWM06", float("nan")],
+        "program_name_en": ['"Border Management"', float("nan")],
+        "program_name_fr": ['"Gestion de la frontière"', float("nan")],
+        "service_uri_en": ["https://example.gc.ca/exam", float("nan")],
+        "service_uri_fr": ["https://example.gc.ca/examen", float("nan")],
+        "service_type": ["INFO", "INFO"],
+        "service_scope": ["EXTERN", "EXTERN"],
+        "client_target_groups": ["PERSON", "PERSON"],
+        "service_recipient_type": ["SOCIETY", "SOCIETY"],
         "owner_org_title": [CBSA_TITLE, CBSA_TITLE],
     }
 )
@@ -286,7 +448,7 @@ SAMPLE_ORG_LOOKUP = {
 
 
 def test_build_records_produces_correct_schema():
-    records = build_records(SAMPLE_SERVICES, SAMPLE_ORG_LOOKUP)
+    records = build_records(SAMPLE_SERVICES, SAMPLE_ORG_LOOKUP, SAMPLE_CODE_LABELS)
     assert len(records) == 2
     first = records[0]
     assert first["service_id"] == "4158"
@@ -297,28 +459,76 @@ def test_build_records_produces_correct_schema():
     assert first["org_name_fr"] == "Agence des services frontaliers du Canada"
     assert first["acronym_en"] == "CBSA"
     assert first["acronym_fr"] == "ASFC"
-    assert first["program_id"] == ["BWM06"]
+    assert first["programs"] == [
+        {
+            "program_id": "BWM06",
+            "program_name_en": "Border Management",
+            "program_name_fr": "Gestion de la frontière",
+        }
+    ]
 
 
-def test_build_records_program_id_is_none_when_missing():
-    records = build_records(SAMPLE_SERVICES, SAMPLE_ORG_LOOKUP)
+def test_build_records_programs_is_none_when_missing():
+    records = build_records(SAMPLE_SERVICES, SAMPLE_ORG_LOOKUP, SAMPLE_CODE_LABELS)
     assert records[1]["service_id"] == "4159"
-    assert records[1]["program_id"] is None
+    assert records[1]["programs"] is None
 
 
-def test_build_records_collects_multiple_program_ids():
-    services = SAMPLE_SERVICES.assign(program_id=["BED01,BED02", float("nan")])
-    records = build_records(services, SAMPLE_ORG_LOOKUP)
-    assert records[0]["program_id"] == ["BED01", "BED02"]
+def test_build_records_pairs_multiple_programs_with_their_names():
+    services = SAMPLE_SERVICES.assign(
+        program_id=["BED01,BED02", float("nan")],
+        program_name_en=['"Inclusive Communities", "Business Growth"', float("nan")],
+        program_name_fr=['"Collectivités inclusives", "Croissance"', float("nan")],
+    )
+    records = build_records(services, SAMPLE_ORG_LOOKUP, SAMPLE_CODE_LABELS)
+    assert records[0]["programs"] == [
+        {
+            "program_id": "BED01",
+            "program_name_en": "Inclusive Communities",
+            "program_name_fr": "Collectivités inclusives",
+        },
+        {
+            "program_id": "BED02",
+            "program_name_en": "Business Growth",
+            "program_name_fr": "Croissance",
+        },
+    ]
+
+
+def test_build_records_includes_service_uris():
+    records = build_records(SAMPLE_SERVICES, SAMPLE_ORG_LOOKUP, SAMPLE_CODE_LABELS)
+    assert records[0]["service_uri_en"] == "https://example.gc.ca/exam"
+    assert records[0]["service_uri_fr"] == "https://example.gc.ca/examen"
+
+
+def test_build_records_service_uris_are_none_when_blank():
+    records = build_records(SAMPLE_SERVICES, SAMPLE_ORG_LOOKUP, SAMPLE_CODE_LABELS)
+    assert records[1]["service_uri_en"] is None
+    assert records[1]["service_uri_fr"] is None
+
+
+def test_build_records_labels_each_classification_field():
+    records = build_records(SAMPLE_SERVICES, SAMPLE_ORG_LOOKUP, SAMPLE_CODE_LABELS)
+    first = records[0]
+    assert first["service_type"] == [
+        {"code": "INFO", "name_en": "Information", "name_fr": "Information"}
+    ]
+    assert first["service_scope"] == [
+        {"code": "EXTERN", "name_en": "External Service", "name_fr": "Service externe"}
+    ]
+    assert first["client_target_groups"] == [
+        {"code": "PERSON", "name_en": "Persons", "name_fr": "Personnes"}
+    ]
+    assert first["service_recipient_type"][0]["code"] == "SOCIETY"
 
 
 def test_build_records_resolves_org_from_english_half_of_title():
-    records = build_records(SAMPLE_SERVICES, SAMPLE_ORG_LOOKUP)
+    records = build_records(SAMPLE_SERVICES, SAMPLE_ORG_LOOKUP, SAMPLE_CODE_LABELS)
     assert records[0]["gc_orgID"] == 26
 
 
 def test_build_records_service_id_is_string():
-    records = build_records(SAMPLE_SERVICES, SAMPLE_ORG_LOOKUP)
+    records = build_records(SAMPLE_SERVICES, SAMPLE_ORG_LOOKUP, SAMPLE_CODE_LABELS)
     for record in records:
         assert isinstance(record["service_id"], str)
 
@@ -331,7 +541,7 @@ def test_build_records_strips_whitespace_from_names():
         ],
         service_name_fr=[" Examen de compétences professionnelles  ", "Agrément des courtiers"],
     )
-    records = build_records(services, SAMPLE_ORG_LOOKUP)
+    records = build_records(services, SAMPLE_ORG_LOOKUP, SAMPLE_CODE_LABELS)
     assert records[0]["service_en"] == "Customs Brokers Professional Examination"
     assert records[0]["service_fr"] == "Examen de compétences professionnelles"
 
