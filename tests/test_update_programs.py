@@ -9,17 +9,13 @@ import pandas as pd
 import pytest
 
 from update_programs import (
-    CR_NAME_COL,
     DEPT_COL_EN,
-    DEPT_COL_FR,
+    NAME_COLS,
     PROG_CODE_COL,
-    PROG_NAME_COL,
-    PROGRAM_CODES_EN_URL,
-    PROGRAM_CODES_FR_URL,
+    PROGRAM_CODES_URL,
     SOURCE_DATASET_URL,
     SOURCE_FISCAL_YEAR,
-    build_keyed_records,
-    combine_records,
+    build_records,
     filter_program_rows,
     resolve_orgs,
     update_generated_at,
@@ -27,6 +23,11 @@ from update_programs import (
     validate_prog_codes,
     write_json,
 )
+
+PROG_NAME_EN = NAME_COLS["program_name_en"]
+PROG_NAME_FR = NAME_COLS["program_name_fr"]
+CR_NAME_EN = NAME_COLS["core_responsibility_en"]
+CR_NAME_FR = NAME_COLS["core_responsibility_fr"]
 
 
 def _mock_post(mocker, results: list[dict]):
@@ -38,11 +39,11 @@ def _mock_post(mocker, results: list[dict]):
 
 def test_filter_program_rows_drops_core_responsibility_rows():
     # Core-responsibility rows carry a CR code (e.g. BWN00) but have no
-    # ProgramInventory code of their own - that column is blank.
+    # Program Inventory code of their own - that column is blank.
     df = pd.DataFrame(
         {
             PROG_CODE_COL: ["", "BWN01"],
-            PROG_NAME_COL: ["", "Trade and Market Expansion"],
+            PROG_NAME_EN: ["", "Trade and Market Expansion"],
         }
     )
     result = filter_program_rows(df)
@@ -53,7 +54,7 @@ def test_filter_program_rows_drops_blank_code_rows():
     df = pd.DataFrame(
         {
             PROG_CODE_COL: ["BWN01", float("nan"), "  "],
-            PROG_NAME_COL: ["Trade and Market Expansion", "", ""],
+            PROG_NAME_EN: ["Trade and Market Expansion", "", ""],
         }
     )
     result = filter_program_rows(df)
@@ -62,7 +63,7 @@ def test_filter_program_rows_drops_blank_code_rows():
 
 
 def test_filter_program_rows_keeps_all_program_rows():
-    df = pd.DataFrame({PROG_CODE_COL: ["BWN01", "ISS0Z"], PROG_NAME_COL: ["A", "B"]})
+    df = pd.DataFrame({PROG_CODE_COL: ["BWN01", "ISS0Z"], PROG_NAME_EN: ["A", "B"]})
     result = filter_program_rows(df)
     assert len(result) == 2
 
@@ -84,26 +85,41 @@ def test_validate_prog_codes_rejects_lowercase():
         validate_prog_codes(df)
 
 
+def _names_df(**overrides) -> pd.DataFrame:
+    columns = {
+        PROG_CODE_COL: ["BWN01"],
+        PROG_NAME_EN: ["Trade and Market Expansion"],
+        PROG_NAME_FR: ["Commerce et expansion des marchés"],
+        CR_NAME_EN: ["Domestic and International Markets"],
+        CR_NAME_FR: ["Marchés nationaux et internationaux"],
+    }
+    columns.update(overrides)
+    return pd.DataFrame(columns)
+
+
 def test_validate_names_present_passes_when_names_complete():
-    df = pd.DataFrame(
-        {
-            PROG_CODE_COL: ["BWN01"],
-            PROG_NAME_COL: ["Trade and Market Expansion"],
-            CR_NAME_COL: ["Domestic and International Markets"],
-        }
-    )
-    validate_names_present(df)  # should not raise
+    validate_names_present(_names_df())  # should not raise
 
 
-def test_validate_names_present_raises_on_missing_name():
-    df = pd.DataFrame(
-        {
+def test_validate_names_present_raises_on_missing_english_name():
+    df = _names_df(
+        **{
             PROG_CODE_COL: ["BWN01", "BWN02"],
-            PROG_NAME_COL: ["Trade and Market Expansion", float("nan")],
-            CR_NAME_COL: ["Domestic Markets", "Domestic Markets"],
+            PROG_NAME_EN: ["Trade and Market Expansion", float("nan")],
+            PROG_NAME_FR: ["Commerce", "Commerce"],
+            CR_NAME_EN: ["Domestic Markets", "Domestic Markets"],
+            CR_NAME_FR: ["Marchés nationaux", "Marchés nationaux"],
         }
     )
     with pytest.raises(ValueError, match="BWN02"):
+        validate_names_present(df)
+
+
+def test_validate_names_present_raises_on_missing_french_name():
+    # The French columns are new to the bilingual file - a row complete in
+    # English must still fail if its French name is missing.
+    df = _names_df(**{PROG_NAME_FR: [float("nan")]})
+    with pytest.raises(ValueError, match="BWN01"):
         validate_names_present(df)
 
 
@@ -112,7 +128,7 @@ def test_resolve_orgs_builds_lookup_from_matched_result(mocker):
         mocker,
         [
             {
-                "input": "Agriculture and Agri-Food Canada",
+                "input": "Agriculture and Agri-Food (Department of)",
                 "gc_orgID": 2222,
                 "harmonized_name": "Agriculture and Agri-Food Canada",
                 "nom_harmonise": "Agriculture et Agroalimentaire Canada",
@@ -122,8 +138,8 @@ def test_resolve_orgs_builds_lookup_from_matched_result(mocker):
             }
         ],
     )
-    result = resolve_orgs(["Agriculture and Agri-Food Canada"])
-    assert result["Agriculture and Agri-Food Canada"] == {
+    result = resolve_orgs(["Agriculture and Agri-Food (Department of)"])
+    assert result["Agriculture and Agri-Food (Department of)"] == {
         "gc_orgID": 2222,
         "org_name_en": "Agriculture and Agri-Food Canada",
         "org_name_fr": "Agriculture et Agroalimentaire Canada",
@@ -159,70 +175,39 @@ def test_resolve_orgs_batches_when_over_limit(mocker):
 
 
 ORG_LOOKUP = {
-    "Agriculture and Agri-Food Canada": {
+    "Agriculture and Agri-Food (Department of)": {
         "gc_orgID": 2222,
         "org_name_en": "Agriculture and Agri-Food Canada",
         "org_name_fr": "Agriculture et Agroalimentaire Canada",
         "acronym_en": "AAFC",
         "acronym_fr": "AAC",
-    }
-}
-
-EN_DF = pd.DataFrame(
-    {
-        DEPT_COL_EN: ["Agriculture and Agri-Food Canada"],
-        PROG_CODE_COL: ["BWN01"],
-        PROG_NAME_COL: ["Trade and Market Expansion"],
-        CR_NAME_COL: ["Domestic and International Markets"],
-    }
-)
-
-FR_DF = pd.DataFrame(
-    {
-        DEPT_COL_FR: ["Agriculture et Agroalimentaire Canada"],
-        PROG_CODE_COL: ["BWN01"],
-        PROG_NAME_COL: ["Commerce et expansion des marchés"],
-        CR_NAME_COL: ["Marchés nationaux et internationaux"],
-    }
-)
-
-ORG_LOOKUP_FR = {
-    "Agriculture et Agroalimentaire Canada": ORG_LOOKUP["Agriculture and Agri-Food Canada"],
+    },
+    "Health (Department of)": {
+        "gc_orgID": 1111,
+        "org_name_en": "Health Canada",
+        "org_name_fr": "Santé Canada",
+        "acronym_en": "HC",
+        "acronym_fr": "SC",
+    },
 }
 
 
-def test_build_keyed_records_raises_on_duplicate_key_within_file():
-    df = pd.DataFrame(
-        {
-            DEPT_COL_EN: ["Agriculture and Agri-Food Canada", "Agriculture and Agri-Food Canada"],
-            PROG_CODE_COL: ["BWN01", "BWN01"],
-            PROG_NAME_COL: ["A", "B"],
-            CR_NAME_COL: ["C", "D"],
-        }
-    )
-    with pytest.raises(ValueError, match="Duplicate"):
-        build_keyed_records(df, DEPT_COL_EN, ORG_LOOKUP, lang="en")
+def _program_df(rows: list[dict]) -> pd.DataFrame:
+    return pd.DataFrame(rows)
 
 
-def test_build_keyed_records_strips_whitespace_from_names():
-    df = pd.DataFrame(
-        {
-            DEPT_COL_EN: ["Agriculture and Agri-Food Canada"],
-            PROG_CODE_COL: ["BWN01"],
-            PROG_NAME_COL: ["  Trade and Market Expansion "],
-            CR_NAME_COL: [" Domestic and International Markets  "],
-        }
-    )
-    records = build_keyed_records(df, DEPT_COL_EN, ORG_LOOKUP, lang="en")
-    record = records[(2222, "BWN01")]
-    assert record["program_name_en"] == "Trade and Market Expansion"
-    assert record["core_responsibility_en"] == "Domestic and International Markets"
+PROGRAM_ROW = {
+    DEPT_COL_EN: "Agriculture and Agri-Food (Department of)",
+    PROG_CODE_COL: "BWN01",
+    PROG_NAME_EN: "Trade and Market Expansion",
+    PROG_NAME_FR: "Commerce et expansion des marchés",
+    CR_NAME_EN: "Domestic and International Markets",
+    CR_NAME_FR: "Marchés nationaux et internationaux",
+}
 
 
-def test_combine_records_composes_program_code_id():
-    en_records = build_keyed_records(EN_DF, DEPT_COL_EN, ORG_LOOKUP, lang="en")
-    fr_records = build_keyed_records(FR_DF, DEPT_COL_FR, ORG_LOOKUP_FR, lang="fr")
-    records = combine_records(en_records, fr_records)
+def test_build_records_composes_program_code_id():
+    records = build_records(_program_df([PROGRAM_ROW]), ORG_LOOKUP)
     assert len(records) == 1
     record = records[0]
     assert record["program_code_id"] == "2222-BWN01"
@@ -238,11 +223,37 @@ def test_combine_records_composes_program_code_id():
     assert record["acronym_fr"] == "AAC"
 
 
-def test_combine_records_raises_on_key_mismatch():
-    en_records = build_keyed_records(EN_DF, DEPT_COL_EN, ORG_LOOKUP, lang="en")
-    fr_records = {}
-    with pytest.raises(ValueError, match=r"Only in EN.*2222.*BWN01"):
-        combine_records(en_records, fr_records)
+def test_build_records_raises_on_duplicate_key():
+    df = _program_df([PROGRAM_ROW, {**PROGRAM_ROW, PROG_NAME_EN: "A different name"}])
+    with pytest.raises(ValueError, match="Duplicate"):
+        build_records(df, ORG_LOOKUP)
+
+
+def test_build_records_strips_whitespace_from_names():
+    df = _program_df(
+        [
+            {
+                **PROGRAM_ROW,
+                PROG_NAME_EN: "  Trade and Market Expansion ",
+                CR_NAME_FR: " Marchés nationaux et internationaux  ",
+            }
+        ]
+    )
+    record = build_records(df, ORG_LOOKUP)[0]
+    assert record["program_name_en"] == "Trade and Market Expansion"
+    assert record["core_responsibility_fr"] == "Marchés nationaux et internationaux"
+
+
+def test_build_records_sorts_by_org_then_code():
+    df = _program_df(
+        [
+            PROGRAM_ROW,
+            {**PROGRAM_ROW, PROG_CODE_COL: "BWN02"},
+            {**PROGRAM_ROW, DEPT_COL_EN: "Health (Department of)", PROG_CODE_COL: "HHH01"},
+        ]
+    )
+    records = build_records(df, ORG_LOOKUP)
+    assert [r["program_code_id"] for r in records] == ["1111-HHH01", "2222-BWN01", "2222-BWN02"]
 
 
 def test_update_generated_at_new_timestamp_when_file_absent():
@@ -301,8 +312,7 @@ def test_write_json_produces_valid_json_file():
         assert loaded["source"] == {
             "fiscal_year": SOURCE_FISCAL_YEAR,
             "dataset_url": SOURCE_DATASET_URL,
-            "csv_en": PROGRAM_CODES_EN_URL,
-            "csv_fr": PROGRAM_CODES_FR_URL,
+            "csv": PROGRAM_CODES_URL,
         }
 
 

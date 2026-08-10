@@ -21,7 +21,9 @@ Verified against the 2026-27 and 2025-26 lists:
 - **Every department resolves.** [gcorg-resolver](https://gcorgs.cdssandbox.xyz) returns
   a numeric `gc_orgID` for every TBS-listed department; organizations in the Program
   Inventory but not on the TBS list of departments resolve to `0`.
-- **EN and FR lists carry identical codes** and join on `(gcorg_ID, PROG)`.
+- **Both languages travel on the same row.** For 2026-27 PSPC publishes a single
+  bilingual CSV, so English and French names come from one row and no EN/FR join
+  is needed. Earlier years were published as a separate file per language.
 
 ## Identifier format
 
@@ -32,7 +34,7 @@ Verified against the 2026-27 and 2025-26 lists:
 - `gcorg_ID` - the numeric GC organization ID for the department, as returned by
   [gcorg-resolver](https://gcorgs.cdssandbox.xyz). Used verbatim, no zero-padding;
   `0` for organizations not on the TBS list of departments.
-- `PROG` - the `ProgramInventory-Répertoiredesprogrammes_code_PROG` value,
+- `PROG` - the `Prog-inv-code_Code-rep-prog` value,
   uppercase (e.g. `BWN01`). 5 alphanumeric characters (3 letters + 2 alphanumeric
   characters, e.g. `BWN01`, `ISS0Z`); never contains a hyphen.
 - Single hyphen delimiter. Neither part contains a hyphen, so the string splits
@@ -43,10 +45,10 @@ Example: `2222-BWN01` (Agriculture and Agri-Food, "Trade and Market Expansion").
 ## What counts as a program
 
 Only **Program Inventory entries**: rows with a non-blank
-`ProgramInventory-Répertoiredesprogrammes_code_PROG` value. Exclude:
+`Prog-inv-code_Code-rep-prog` value. Exclude:
 
-- Core-responsibility rows (the `...CoreResponsibility_code_PROG` level, codes
-  ending in `00`) - these are groupings, not programs.
+- Core-responsibility rows (the `Prog-core-resp-code_Code-prog-resp-essent`
+  level, codes ending in `00`) - these are groupings, not programs.
 - Rows with a blank program-inventory code (entities that report no program
   inventory, e.g. some crown corporations).
 
