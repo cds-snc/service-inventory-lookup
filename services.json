@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-14T19:29:10.653517+00:00",
+  "generated_at": "2026-09-07T11:03:04.163451+00:00",
   "source": {
     "fiscal_year": "2024-2025",
     "dataset_url": "https://open.canada.ca/data/en/dataset/3ac0d080-6149-499a-8b06-7ce5f00ec56c",
@@ -4727,8 +4727,8 @@
       "programs": [
         {
           "program_id": "BXT02",
-          "program_name_en": "Management System and Industry Performance",
-          "program_name_fr": "Système de gestion et rendement du secteur"
+          "program_name_en": "Industry Performance",
+          "program_name_fr": "Système de rendement du secteur"
         }
       ],
       "service_type": [
@@ -19034,7 +19034,7 @@
         {
           "program_id": "BWV01",
           "program_name_en": "Conference Services",
-          "program_name_fr": "Services aux conférences"
+          "program_name_fr": "Services de conférences"
         }
       ],
       "service_type": [
@@ -23146,8 +23146,8 @@
       "programs": [
         {
           "program_id": "BWM05",
-          "program_name_en": "Consultation and Accommodation",
-          "program_name_fr": "Consultation et accommodement"
+          "program_name_en": "Guidance and Advice on Duty to Consult",
+          "program_name_fr": "Orientation et conseils sur l'obligation de consulter"
         }
       ],
       "service_type": [
@@ -23198,8 +23198,8 @@
       "programs": [
         {
           "program_id": "BWM05",
-          "program_name_en": "Consultation and Accommodation",
-          "program_name_fr": "Consultation et accommodement"
+          "program_name_en": "Guidance and Advice on Duty to Consult",
+          "program_name_fr": "Orientation et conseils sur l'obligation de consulter"
         }
       ],
       "service_type": [
@@ -23265,8 +23265,8 @@
       "programs": [
         {
           "program_id": "BWM05",
-          "program_name_en": "Consultation and Accommodation",
-          "program_name_fr": "Consultation et accommodement"
+          "program_name_en": "Guidance and Advice on Duty to Consult",
+          "program_name_fr": "Orientation et conseils sur l'obligation de consulter"
         }
       ],
       "service_type": [
@@ -23317,8 +23317,8 @@
       "programs": [
         {
           "program_id": "BWM05",
-          "program_name_en": "Consultation and Accommodation",
-          "program_name_fr": "Consultation et accommodement"
+          "program_name_en": "Guidance and Advice on Duty to Consult",
+          "program_name_fr": "Orientation et conseils sur l'obligation de consulter"
         }
       ],
       "service_type": [
@@ -23364,8 +23364,8 @@
       "programs": [
         {
           "program_id": "BWM04",
-          "program_name_en": "Management and Implementation of Agreements and Treaties",
-          "program_name_fr": "Gestion et mise en oeuvre des accords et traités"
+          "program_name_en": "Management of Treaties and Agreements",
+          "program_name_fr": "Gestion des traités et des ententes"
         }
       ],
       "service_type": [
@@ -24243,8 +24243,8 @@
       "programs": [
         {
           "program_id": "BWM16",
-          "program_name_en": "Indigenous-led Services",
-          "program_name_fr": "Services dirigés par les Autochtones"
+          "program_name_en": "Support for Indigenous-led Services and Programming",
+          "program_name_fr": "Soutien aux services et aux programmes dirigés par les Autochtones"
         }
       ],
       "service_type": [
@@ -24295,8 +24295,8 @@
       "programs": [
         {
           "program_id": "BWM15",
-          "program_name_en": "Indigenous Engagement and Capacity Support",
-          "program_name_fr": "Mobilisation et soutien de la capacité des Autochtones"
+          "program_name_en": "Support for Indigenous Engagement and Capacity",
+          "program_name_fr": "Soutien à la mobilisation et au renforcement des capacités des Autochtones"
         }
       ],
       "service_type": [
@@ -24347,8 +24347,8 @@
       "programs": [
         {
           "program_id": "BWM16",
-          "program_name_en": "Indigenous-led Services",
-          "program_name_fr": "Services dirigés par les Autochtones"
+          "program_name_en": "Support for Indigenous-led Services and Programming",
+          "program_name_fr": "Soutien aux services et aux programmes dirigés par les Autochtones"
         }
       ],
       "service_type": [
@@ -24399,13 +24399,13 @@
       "programs": [
         {
           "program_id": "BWM15",
-          "program_name_en": "Indigenous Engagement and Capacity Support",
-          "program_name_fr": "Mobilisation et soutien de la capacité des Autochtones"
+          "program_name_en": "Support for Indigenous Engagement and Capacity",
+          "program_name_fr": "Soutien à la mobilisation et au renforcement des capacités des Autochtones"
         },
         {
           "program_id": "BWM16",
-          "program_name_en": "Indigenous-led Services",
-          "program_name_fr": "Services dirigés par les Autochtones"
+          "program_name_en": "Support for Indigenous-led Services and Programming",
+          "program_name_fr": "Soutien aux services et aux programmes dirigés par les Autochtones"
         }
       ],
       "service_type": [
@@ -24471,8 +24471,8 @@
       "programs": [
         {
           "program_id": "BWM15",
-          "program_name_en": "Indigenous Engagement and Capacity Support",
-          "program_name_fr": "Mobilisation et soutien de la capacité des Autochtones"
+          "program_name_en": "Support for Indigenous Engagement and Capacity",
+          "program_name_fr": "Soutien à la mobilisation et au renforcement des capacités des Autochtones"
         }
       ],
       "service_type": [
@@ -24548,8 +24548,8 @@
       "programs": [
         {
           "program_id": "BWM15",
-          "program_name_en": "Indigenous Engagement and Capacity Support",
-          "program_name_fr": "Mobilisation et soutien de la capacité des Autochtones"
+          "program_name_en": "Support for Indigenous Engagement and Capacity",
+          "program_name_fr": "Soutien à la mobilisation et au renforcement des capacités des Autochtones"
         }
       ],
       "service_type": [
@@ -24620,8 +24620,8 @@
       "programs": [
         {
           "program_id": "BWM10",
-          "program_name_en": "First Nation Jurisdiction over Land and Fiscal Management",
-          "program_name_fr": "Juridiction des Premières Nations en matière de terre et de gestion fiscale"
+          "program_name_en": "Indigenous Institutional Development and Land Management",
+          "program_name_fr": "Développement institutionnel autochtone et gestion des terres"
         }
       ],
       "service_type": [
@@ -24682,8 +24682,8 @@
       "programs": [
         {
           "program_id": "BWM10",
-          "program_name_en": "First Nation Jurisdiction over Land and Fiscal Management",
-          "program_name_fr": "Juridiction des Premières Nations en matière de terre et de gestion fiscale"
+          "program_name_en": "Indigenous Institutional Development and Land Management",
+          "program_name_fr": "Développement institutionnel autochtone et gestion des terres"
         }
       ],
       "service_type": [
@@ -24848,8 +24848,8 @@
       "programs": [
         {
           "program_id": "BWM02",
-          "program_name_en": "Negotiations of Claims and Self-Government Agreements",
-          "program_name_fr": "Négociation des accords en matière de revendications et d'autonomie gouvernementale"
+          "program_name_en": "Negotiation of Treaties, Self-Government Agreements and Other Constructive Arrangements",
+          "program_name_fr": "Négociation des traités, des ententes sur l'autonomie gouvernementale et d'autres ententes constructives"
         }
       ],
       "service_type": [
@@ -24895,8 +24895,8 @@
       "programs": [
         {
           "program_id": "BWM02",
-          "program_name_en": "Negotiations of Claims and Self-Government Agreements",
-          "program_name_fr": "Négociation des accords en matière de revendications et d'autonomie gouvernementale"
+          "program_name_en": "Negotiation of Treaties, Self-Government Agreements and Other Constructive Arrangements",
+          "program_name_fr": "Négociation des traités, des ententes sur l'autonomie gouvernementale et d'autres ententes constructives"
         }
       ],
       "service_type": [
@@ -24952,8 +24952,8 @@
       "programs": [
         {
           "program_id": "BWM02",
-          "program_name_en": "Negotiations of Claims and Self-Government Agreements",
-          "program_name_fr": "Négociation des accords en matière de revendications et d'autonomie gouvernementale"
+          "program_name_en": "Negotiation of Treaties, Self-Government Agreements and Other Constructive Arrangements",
+          "program_name_fr": "Négociation des traités, des ententes sur l'autonomie gouvernementale et d'autres ententes constructives"
         }
       ],
       "service_type": [
@@ -25004,8 +25004,8 @@
       "programs": [
         {
           "program_id": "BWM02",
-          "program_name_en": "Negotiations of Claims and Self-Government Agreements",
-          "program_name_fr": "Négociation des accords en matière de revendications et d'autonomie gouvernementale"
+          "program_name_en": "Negotiation of Treaties, Self-Government Agreements and Other Constructive Arrangements",
+          "program_name_fr": "Négociation des traités, des ententes sur l'autonomie gouvernementale et d'autres ententes constructives"
         }
       ],
       "service_type": [
@@ -25061,8 +25061,8 @@
       "programs": [
         {
           "program_id": "BWM02",
-          "program_name_en": "Negotiations of Claims and Self-Government Agreements",
-          "program_name_fr": "Négociation des accords en matière de revendications et d'autonomie gouvernementale"
+          "program_name_en": "Negotiation of Treaties, Self-Government Agreements and Other Constructive Arrangements",
+          "program_name_fr": "Négociation des traités, des ententes sur l'autonomie gouvernementale et d'autres ententes constructives"
         }
       ],
       "service_type": [
@@ -30341,7 +30341,7 @@
       "service_uri_fr": "https://www.canada.ca/fr/environnement-changement-climatique/services/convention-commerce-international-especes-menacees-extinction/permis.html",
       "programs": [
         {
-          "program_id": "BTI02",
+          "program_id": "BTI02-INV",
           "program_name_en": "Marine Environmental and Hazards Response",
           "program_name_fr": "Réponse aux Intervention environnementale et dangers maritimes"
         }
@@ -31059,7 +31059,7 @@
       "service_uri_fr": null,
       "programs": [
         {
-          "program_id": "BWN03",
+          "program_id": "BWN03-INV",
           "program_name_en": "Farm Products Council of Canada",
           "program_name_fr": "Conseil des produits agricoles du Canada"
         }
@@ -31106,7 +31106,7 @@
       "service_uri_fr": null,
       "programs": [
         {
-          "program_id": "BWN03",
+          "program_id": "BWN03-INV",
           "program_name_en": "Farm Products Council of Canada",
           "program_name_fr": "Conseil des produits agricoles du Canada"
         }
@@ -31583,8 +31583,8 @@
       "programs": [
         {
           "program_id": "BUW01",
-          "program_name_en": "Compliance Program",
-          "program_name_fr": "Programme de conformité"
+          "program_name_en": "Supervision Program",
+          "program_name_fr": "Programme de surveillance"
         }
       ],
       "service_type": [
@@ -31635,8 +31635,8 @@
       "programs": [
         {
           "program_id": "BUW01",
-          "program_name_en": "Compliance Program",
-          "program_name_fr": "Programme de conformité"
+          "program_name_en": "Supervision Program",
+          "program_name_fr": "Programme de surveillance"
         },
         {
           "program_id": "BUW02",
@@ -31702,8 +31702,8 @@
       "programs": [
         {
           "program_id": "BUW01",
-          "program_name_en": "Compliance Program",
-          "program_name_fr": "Programme de conformité"
+          "program_name_en": "Supervision Program",
+          "program_name_fr": "Programme de surveillance"
         }
       ],
       "service_type": [
@@ -31749,8 +31749,8 @@
       "programs": [
         {
           "program_id": "BUW01",
-          "program_name_en": "Compliance Program",
-          "program_name_fr": "Programme de conformité"
+          "program_name_en": "Supervision Program",
+          "program_name_fr": "Programme de surveillance"
         },
         {
           "program_id": "BUW02",
@@ -31831,8 +31831,8 @@
       "programs": [
         {
           "program_id": "BUW01",
-          "program_name_en": "Compliance Program",
-          "program_name_fr": "Programme de conformité"
+          "program_name_en": "Supervision Program",
+          "program_name_fr": "Programme de surveillance"
         }
       ],
       "service_type": [
@@ -52436,7 +52436,7 @@
         {
           "program_id": "BNP01",
           "program_name_en": "Business Innovation",
-          "program_name_fr": "L'innovation en entreprises"
+          "program_name_fr": "Innovation en entreprise"
         }
       ],
       "service_type": [
@@ -52483,7 +52483,7 @@
         {
           "program_id": "BNP01",
           "program_name_en": "Business Innovation",
-          "program_name_fr": "L'innovation en entreprises"
+          "program_name_fr": "Innovation en entreprise"
         }
       ],
       "service_type": [
@@ -52535,7 +52535,7 @@
         {
           "program_id": "BNP01",
           "program_name_en": "Business Innovation",
-          "program_name_fr": "L'innovation en entreprises"
+          "program_name_fr": "Innovation en entreprise"
         }
       ],
       "service_type": [
@@ -52582,7 +52582,7 @@
         {
           "program_id": "BNP01",
           "program_name_en": "Business Innovation",
-          "program_name_fr": "L'innovation en entreprises"
+          "program_name_fr": "Innovation en entreprise"
         }
       ],
       "service_type": [
@@ -52629,7 +52629,7 @@
         {
           "program_id": "BNP01",
           "program_name_en": "Business Innovation",
-          "program_name_fr": "L'innovation en entreprises"
+          "program_name_fr": "Innovation en entreprise"
         }
       ],
       "service_type": [
@@ -52676,7 +52676,7 @@
         {
           "program_id": "BNP01",
           "program_name_en": "Business Innovation",
-          "program_name_fr": "L'innovation en entreprises"
+          "program_name_fr": "Innovation en entreprise"
         }
       ],
       "service_type": [
@@ -52728,7 +52728,7 @@
         {
           "program_id": "BNP01",
           "program_name_en": "Business Innovation",
-          "program_name_fr": "L'innovation en entreprises"
+          "program_name_fr": "Innovation en entreprise"
         }
       ],
       "service_type": [
@@ -52775,7 +52775,7 @@
         {
           "program_id": "BNP01",
           "program_name_en": "Business Innovation",
-          "program_name_fr": "L'innovation en entreprises"
+          "program_name_fr": "Innovation en entreprise"
         }
       ],
       "service_type": [
@@ -52827,7 +52827,7 @@
         {
           "program_id": "BNP01",
           "program_name_en": "Business Innovation",
-          "program_name_fr": "L'innovation en entreprises"
+          "program_name_fr": "Innovation en entreprise"
         }
       ],
       "service_type": [
@@ -52879,7 +52879,7 @@
         {
           "program_id": "BNP01",
           "program_name_en": "Business Innovation",
-          "program_name_fr": "L'innovation en entreprises"
+          "program_name_fr": "Innovation en entreprise"
         }
       ],
       "service_type": [
@@ -53045,7 +53045,7 @@
         {
           "program_id": "BNP01",
           "program_name_en": "Business Innovation",
-          "program_name_fr": "L'innovation en entreprises"
+          "program_name_fr": "Innovation en entreprise"
         }
       ],
       "service_type": [
@@ -54389,7 +54389,7 @@
         {
           "program_id": "BNP01",
           "program_name_en": "Business Innovation",
-          "program_name_fr": "L'innovation en entreprises"
+          "program_name_fr": "Innovation en entreprise"
         }
       ],
       "service_type": [
@@ -55632,8 +55632,8 @@
       "programs": [
         {
           "program_id": "BSJ01",
-          "program_name_en": "Public services",
-          "program_name_fr": "Services publics"
+          "program_name_en": "Access and Services",
+          "program_name_fr": "Accès et services"
         }
       ],
       "service_type": [
@@ -55726,8 +55726,8 @@
       "programs": [
         {
           "program_id": "BSJ01",
-          "program_name_en": "Public services",
-          "program_name_fr": "Services publics"
+          "program_name_en": "Access and Services",
+          "program_name_fr": "Accès et services"
         }
       ],
       "service_type": [
@@ -55773,8 +55773,8 @@
       "programs": [
         {
           "program_id": "BSJ01",
-          "program_name_en": "Public services",
-          "program_name_fr": "Services publics"
+          "program_name_en": "Access and Services",
+          "program_name_fr": "Accès et services"
         }
       ],
       "service_type": [
@@ -55820,8 +55820,8 @@
       "programs": [
         {
           "program_id": "BSJ01",
-          "program_name_en": "Public services",
-          "program_name_fr": "Services publics"
+          "program_name_en": "Access and Services",
+          "program_name_fr": "Accès et services"
         }
       ],
       "service_type": [
@@ -55867,8 +55867,8 @@
       "programs": [
         {
           "program_id": "BSJ01",
-          "program_name_en": "Public services",
-          "program_name_fr": "Services publics"
+          "program_name_en": "Access and Services",
+          "program_name_fr": "Accès et services"
         }
       ],
       "service_type": [
@@ -55914,8 +55914,8 @@
       "programs": [
         {
           "program_id": "BSJ01",
-          "program_name_en": "Public services",
-          "program_name_fr": "Services publics"
+          "program_name_en": "Access and Services",
+          "program_name_fr": "Accès et services"
         }
       ],
       "service_type": [
@@ -55961,8 +55961,8 @@
       "programs": [
         {
           "program_id": "BSJ01",
-          "program_name_en": "Public services",
-          "program_name_fr": "Services publics"
+          "program_name_en": "Access and Services",
+          "program_name_fr": "Accès et services"
         }
       ],
       "service_type": [
@@ -56008,8 +56008,8 @@
       "programs": [
         {
           "program_id": "BSJ01",
-          "program_name_en": "Public services",
-          "program_name_fr": "Services publics"
+          "program_name_en": "Access and Services",
+          "program_name_fr": "Accès et services"
         }
       ],
       "service_type": [
@@ -56055,8 +56055,8 @@
       "programs": [
         {
           "program_id": "BSJ01",
-          "program_name_en": "Public services",
-          "program_name_fr": "Services publics"
+          "program_name_en": "Access and Services",
+          "program_name_fr": "Accès et services"
         }
       ],
       "service_type": [
@@ -56102,8 +56102,8 @@
       "programs": [
         {
           "program_id": "BSJ01",
-          "program_name_en": "Public services",
-          "program_name_fr": "Services publics"
+          "program_name_en": "Access and Services",
+          "program_name_fr": "Accès et services"
         }
       ],
       "service_type": [
@@ -56149,8 +56149,8 @@
       "programs": [
         {
           "program_id": "BSJ01",
-          "program_name_en": "Public services",
-          "program_name_fr": "Services publics"
+          "program_name_en": "Access and Services",
+          "program_name_fr": "Accès et services"
         }
       ],
       "service_type": [
@@ -58426,7 +58426,7 @@
         {
           "program_id": "BXW01",
           "program_name_en": "National security and intelligence activity reviews and complaints investigations",
-          "program_name_fr": "Surveillance des activités de sécurité nationale et de renseignement et enquêtes sur les plaintes"
+          "program_name_fr": "Surveillance des activités en matière de sécurité nationale et de renseignement et enquêtes sur les plaintes"
         }
       ],
       "service_type": [
@@ -58473,7 +58473,7 @@
         {
           "program_id": "BXW01",
           "program_name_en": "National security and intelligence activity reviews and complaints investigations",
-          "program_name_fr": "Surveillance des activités de sécurité nationale et de renseignement et enquêtes sur les plaintes"
+          "program_name_fr": "Surveillance des activités en matière de sécurité nationale et de renseignement et enquêtes sur les plaintes"
         }
       ],
       "service_type": [
@@ -63057,8 +63057,8 @@
       "programs": [
         {
           "program_id": "BTM06",
-          "program_name_en": "Sustainable Forest Management",
-          "program_name_fr": "Aménagement forestier durable"
+          "program_name_en": "Integrated Landscape Dynamics",
+          "program_name_fr": "Dynamique intégrée des paysages"
         },
         {
           "program_id": "BTM07",
@@ -63119,8 +63119,8 @@
       "programs": [
         {
           "program_id": "BTO03",
-          "program_name_en": "Energy Safety and Security, and Petroleum Resources",
-          "program_name_fr": "Sûreté et sécurité énergétique, et ressources pétrolières"
+          "program_name_en": "Clean and Conventional Fuels",
+          "program_name_fr": "Combustibles propres et conventionnels"
         }
       ],
       "service_type": [
@@ -63892,8 +63892,8 @@
         },
         {
           "program_id": "BNR03",
-          "program_name_en": "Research Partnerships",
-          "program_name_fr": "Partenariats de recherche"
+          "program_name_en": "Research and Technology Partnerships",
+          "program_name_fr": "Partenariats en recherche et en technologie"
         }
       ],
       "service_type": [
@@ -63959,8 +63959,8 @@
         },
         {
           "program_id": "BNR03",
-          "program_name_en": "Research Partnerships",
-          "program_name_fr": "Partenariats de recherche"
+          "program_name_en": "Research and Technology Partnerships",
+          "program_name_fr": "Partenariats en recherche et en technologie"
         }
       ],
       "service_type": [
@@ -64135,8 +64135,8 @@
         },
         {
           "program_id": "BNR03",
-          "program_name_en": "Research Partnerships",
-          "program_name_fr": "Partenariats de recherche"
+          "program_name_en": "Research and Technology Partnerships",
+          "program_name_fr": "Partenariats en recherche et en technologie"
         }
       ],
       "service_type": [
@@ -64202,8 +64202,8 @@
         },
         {
           "program_id": "BNR03",
-          "program_name_en": "Research Partnerships",
-          "program_name_fr": "Partenariats de recherche"
+          "program_name_en": "Research and Technology Partnerships",
+          "program_name_fr": "Partenariats en recherche et en technologie"
         }
       ],
       "service_type": [
@@ -64696,7 +64696,7 @@
       "service_uri_fr": null,
       "programs": [
         {
-          "program_id": "ISSA1",
+          "program_id": "ISSA1-INV",
           "program_name_en": "Management and Oversight Services",
           "program_name_fr": "Services de gestion et de surveillance"
         }
@@ -64743,7 +64743,7 @@
       "service_uri_fr": null,
       "programs": [
         {
-          "program_id": "ISSA1",
+          "program_id": "ISSA1-INV",
           "program_name_en": "Management and Oversight Services",
           "program_name_fr": "Services de gestion et de surveillance"
         }
@@ -64885,7 +64885,7 @@
       "programs": [
         {
           "program_id": "BNZ02",
-          "program_name_en": "Federal Judicial Affairs",
+          "program_name_en": "Office of the Commissioner for Federal Judicial Affairs",
           "program_name_fr": "Commissariat à la magistrature fédérale"
         }
       ],
@@ -64947,7 +64947,7 @@
       "programs": [
         {
           "program_id": "BNZ02",
-          "program_name_en": "Federal Judicial Affairs",
+          "program_name_en": "Office of the Commissioner for Federal Judicial Affairs",
           "program_name_fr": "Commissariat à la magistrature fédérale"
         }
       ],
@@ -64994,7 +64994,7 @@
       "programs": [
         {
           "program_id": "BNZ02",
-          "program_name_en": "Federal Judicial Affairs",
+          "program_name_en": "Office of the Commissioner for Federal Judicial Affairs",
           "program_name_fr": "Commissariat à la magistrature fédérale"
         }
       ],
@@ -65457,8 +65457,8 @@
       "programs": [
         {
           "program_id": "BRG02",
-          "program_name_en": "Compliance Program",
-          "program_name_fr": "Programme de conformité"
+          "program_name_en": "Protection",
+          "program_name_fr": "Protection"
         }
       ],
       "service_type": [
@@ -65608,8 +65608,8 @@
       "programs": [
         {
           "program_id": "BRG02",
-          "program_name_en": "Compliance Program",
-          "program_name_fr": "Programme de conformité"
+          "program_name_en": "Protection",
+          "program_name_fr": "Protection"
         }
       ],
       "service_type": [
@@ -65660,8 +65660,8 @@
       "programs": [
         {
           "program_id": "BRG02",
-          "program_name_en": "Compliance Program",
-          "program_name_fr": "Programme de conformité"
+          "program_name_en": "Protection",
+          "program_name_fr": "Protection"
         }
       ],
       "service_type": [
@@ -65712,8 +65712,8 @@
       "programs": [
         {
           "program_id": "BRG02",
-          "program_name_en": "Compliance Program",
-          "program_name_fr": "Programme de conformité"
+          "program_name_en": "Protection",
+          "program_name_fr": "Protection"
         }
       ],
       "service_type": [
@@ -65764,8 +65764,8 @@
       "programs": [
         {
           "program_id": "BRG02",
-          "program_name_en": "Compliance Program",
-          "program_name_fr": "Programme de conformité"
+          "program_name_en": "Protection",
+          "program_name_fr": "Protection"
         }
       ],
       "service_type": [
@@ -66419,8 +66419,8 @@
         },
         {
           "program_id": "ISS10",
-          "program_name_en": "Internal services",
-          "program_name_fr": "Services internes"
+          "program_name_en": "Internal services – Office of the Privacy Commissioner",
+          "program_name_fr": "Services internes – Commissariat à la protection de la vie privée"
         }
       ],
       "service_type": [
@@ -68001,8 +68001,8 @@
       "programs": [
         {
           "program_id": "BUC01",
-          "program_name_en": "Record Suspension Decisions/Clemency Recommendations",
-          "program_name_fr": "Décisions relatives à la suspension du casier et recommandations concernant la clémence"
+          "program_name_en": "Record Suspension/Pardon and Expungement Decisions/Clemency Recommendations",
+          "program_name_fr": "Décisions relatives à la suspension du casier/au pardon et à la radiation et recommandations concernant la clémence"
         }
       ],
       "service_type": [
@@ -68048,8 +68048,8 @@
       "programs": [
         {
           "program_id": "BUC01",
-          "program_name_en": "Record Suspension Decisions/Clemency Recommendations",
-          "program_name_fr": "Décisions relatives à la suspension du casier et recommandations concernant la clémence"
+          "program_name_en": "Record Suspension/Pardon and Expungement Decisions/Clemency Recommendations",
+          "program_name_fr": "Décisions relatives à la suspension du casier/au pardon et à la radiation et recommandations concernant la clémence"
         }
       ],
       "service_type": [
@@ -68095,8 +68095,8 @@
       "programs": [
         {
           "program_id": "BUC01",
-          "program_name_en": "Record Suspension Decisions/Clemency Recommendations",
-          "program_name_fr": "Décisions relatives à la suspension du casier et recommandations concernant la clémence"
+          "program_name_en": "Record Suspension/Pardon and Expungement Decisions/Clemency Recommendations",
+          "program_name_fr": "Décisions relatives à la suspension du casier/au pardon et à la radiation et recommandations concernant la clémence"
         }
       ],
       "service_type": [
@@ -68142,8 +68142,8 @@
       "programs": [
         {
           "program_id": "BUC01",
-          "program_name_en": "Record Suspension Decisions/Clemency Recommendations",
-          "program_name_fr": "Décisions relatives à la suspension du casier et recommandations concernant la clémence"
+          "program_name_en": "Record Suspension/Pardon and Expungement Decisions/Clemency Recommendations",
+          "program_name_fr": "Décisions relatives à la suspension du casier/au pardon et à la radiation et recommandations concernant la clémence"
         }
       ],
       "service_type": [
@@ -69131,8 +69131,8 @@
         },
         {
           "program_id": "BVP02",
-          "program_name_en": "Chronic Disease Prevention",
-          "program_name_fr": "Prévention des maladies chroniques"
+          "program_name_en": "Chronic Diseases and Conditions",
+          "program_name_fr": "Maladies et affections chroniques"
         },
         {
           "program_id": "BVR01",
@@ -74697,8 +74697,8 @@
       "programs": [
         {
           "program_id": "BVX02",
-          "program_name_en": "Real Property Services",
-          "program_name_fr": "Services immobiliers"
+          "program_name_en": "Real Property and Infrastructure Services",
+          "program_name_fr": "Services immobiliers et d'infrastructure"
         }
       ],
       "service_type": [
@@ -74838,8 +74838,8 @@
       "programs": [
         {
           "program_id": "BVX02",
-          "program_name_en": "Real Property Services",
-          "program_name_fr": "Services immobiliers"
+          "program_name_en": "Real Property and Infrastructure Services",
+          "program_name_fr": "Services immobiliers et d'infrastructure"
         }
       ],
       "service_type": [
@@ -75150,8 +75150,8 @@
       "programs": [
         {
           "program_id": "BVX02",
-          "program_name_en": "Real Property Services",
-          "program_name_fr": "Services immobiliers"
+          "program_name_en": "Real Property and Infrastructure Services",
+          "program_name_fr": "Services immobiliers et d'infrastructure"
         }
       ],
       "service_type": [
@@ -75197,8 +75197,8 @@
       "programs": [
         {
           "program_id": "BVX02",
-          "program_name_en": "Real Property Services",
-          "program_name_fr": "Services immobiliers"
+          "program_name_en": "Real Property and Infrastructure Services",
+          "program_name_fr": "Services immobiliers et d'infrastructure"
         }
       ],
       "service_type": [
@@ -75244,8 +75244,8 @@
       "programs": [
         {
           "program_id": "BVX02",
-          "program_name_en": "Real Property Services",
-          "program_name_fr": "Services immobiliers"
+          "program_name_en": "Real Property and Infrastructure Services",
+          "program_name_fr": "Services immobiliers et d'infrastructure"
         }
       ],
       "service_type": [
@@ -75395,8 +75395,8 @@
       "programs": [
         {
           "program_id": "BVX02",
-          "program_name_en": "Real Property Services",
-          "program_name_fr": "Services immobiliers"
+          "program_name_en": "Real Property and Infrastructure Services",
+          "program_name_fr": "Services immobiliers et d'infrastructure"
         }
       ],
       "service_type": [
@@ -75452,8 +75452,8 @@
         },
         {
           "program_id": "BVX02",
-          "program_name_en": "Real Property Services",
-          "program_name_fr": "Services immobiliers"
+          "program_name_en": "Real Property and Infrastructure Services",
+          "program_name_fr": "Services immobiliers et d'infrastructure"
         }
       ],
       "service_type": [
@@ -75660,8 +75660,8 @@
       "programs": [
         {
           "program_id": "BVY03",
-          "program_name_en": "Government-wide Corporate Services",
-          "program_name_fr": "Services organisationnels pangouvernementaux"
+          "program_name_en": "Government-Wide Digital Solutions and Services",
+          "program_name_fr": "Solutions et services numériques pangouvernementaux"
         },
         {
           "program_id": "ISS07",
@@ -75712,8 +75712,8 @@
       "programs": [
         {
           "program_id": "BVY03",
-          "program_name_en": "Government-wide Corporate Services",
-          "program_name_fr": "Services organisationnels pangouvernementaux"
+          "program_name_en": "Government-Wide Digital Solutions and Services",
+          "program_name_fr": "Solutions et services numériques pangouvernementaux"
         },
         {
           "program_id": "ISS06",
@@ -75764,8 +75764,8 @@
       "programs": [
         {
           "program_id": "BVY03",
-          "program_name_en": "Government-wide Corporate Services",
-          "program_name_fr": "Services organisationnels pangouvernementaux"
+          "program_name_en": "Government-Wide Digital Solutions and Services",
+          "program_name_fr": "Solutions et services numériques pangouvernementaux"
         },
         {
           "program_id": "ISS07",
@@ -75816,8 +75816,8 @@
       "programs": [
         {
           "program_id": "BVY03",
-          "program_name_en": "Government-wide Corporate Services",
-          "program_name_fr": "Services organisationnels pangouvernementaux"
+          "program_name_en": "Government-Wide Digital Solutions and Services",
+          "program_name_fr": "Solutions et services numériques pangouvernementaux"
         },
         {
           "program_id": "ISS07",
@@ -75868,8 +75868,8 @@
       "programs": [
         {
           "program_id": "BVY03",
-          "program_name_en": "Government-wide Corporate Services",
-          "program_name_fr": "Services organisationnels pangouvernementaux"
+          "program_name_en": "Government-Wide Digital Solutions and Services",
+          "program_name_fr": "Solutions et services numériques pangouvernementaux"
         }
       ],
       "service_type": [
@@ -75915,8 +75915,8 @@
       "programs": [
         {
           "program_id": "BVY03",
-          "program_name_en": "Government-wide Corporate Services",
-          "program_name_fr": "Services organisationnels pangouvernementaux"
+          "program_name_en": "Government-Wide Digital Solutions and Services",
+          "program_name_fr": "Solutions et services numériques pangouvernementaux"
         }
       ],
       "service_type": [
@@ -76113,8 +76113,8 @@
       "programs": [
         {
           "program_id": "BVY03",
-          "program_name_en": "Government-wide Corporate Services",
-          "program_name_fr": "Services organisationnels pangouvernementaux"
+          "program_name_en": "Government-Wide Digital Solutions and Services",
+          "program_name_fr": "Solutions et services numériques pangouvernementaux"
         }
       ],
       "service_type": [
@@ -76160,8 +76160,8 @@
       "programs": [
         {
           "program_id": "BVY03",
-          "program_name_en": "Government-wide Corporate Services",
-          "program_name_fr": "Services organisationnels pangouvernementaux"
+          "program_name_en": "Government-Wide Digital Solutions and Services",
+          "program_name_fr": "Solutions et services numériques pangouvernementaux"
         }
       ],
       "service_type": [
@@ -76274,8 +76274,8 @@
       "programs": [
         {
           "program_id": "BXI04",
-          "program_name_en": "Contract and Indigenous Policing Operations Support",
-          "program_name_fr": "Soutien aux opérations des Services de police contractuels et autochtones"
+          "program_name_en": "Operational Policing Support",
+          "program_name_fr": "Soutien policier opérationnel"
         }
       ],
       "service_type": [
@@ -76331,8 +76331,8 @@
       "programs": [
         {
           "program_id": "BXI04",
-          "program_name_en": "Contract and Indigenous Policing Operations Support",
-          "program_name_fr": "Soutien aux opérations des Services de police contractuels et autochtones"
+          "program_name_en": "Operational Policing Support",
+          "program_name_fr": "Soutien policier opérationnel"
         }
       ],
       "service_type": [
@@ -76393,8 +76393,8 @@
       "programs": [
         {
           "program_id": "BXI04",
-          "program_name_en": "Contract and Indigenous Policing Operations Support",
-          "program_name_fr": "Soutien aux opérations des Services de police contractuels et autochtones"
+          "program_name_en": "Operational Policing Support",
+          "program_name_fr": "Soutien policier opérationnel"
         }
       ],
       "service_type": [
@@ -76445,8 +76445,8 @@
       "programs": [
         {
           "program_id": "BXI04",
-          "program_name_en": "Contract and Indigenous Policing Operations Support",
-          "program_name_fr": "Soutien aux opérations des Services de police contractuels et autochtones"
+          "program_name_en": "Operational Policing Support",
+          "program_name_fr": "Soutien policier opérationnel"
         }
       ],
       "service_type": [
@@ -76708,8 +76708,8 @@
       "programs": [
         {
           "program_id": "BXG03",
-          "program_name_en": "Protective Services",
-          "program_name_fr": "Services de protection"
+          "program_name_en": "Protective Operations",
+          "program_name_fr": "Opérations de protection"
         }
       ],
       "service_type": [
@@ -76780,8 +76780,8 @@
       "programs": [
         {
           "program_id": "BXG05",
-          "program_name_en": "International Policing",
-          "program_name_fr": "Police internationale"
+          "program_name_en": "International Operations",
+          "program_name_fr": "Opérations internationales"
         }
       ],
       "service_type": [
@@ -76832,8 +76832,8 @@
       "programs": [
         {
           "program_id": "BXG05",
-          "program_name_en": "International Policing",
-          "program_name_fr": "Police internationale"
+          "program_name_en": "International Operations",
+          "program_name_fr": "Opérations internationales"
         }
       ],
       "service_type": [
@@ -76889,8 +76889,8 @@
       "programs": [
         {
           "program_id": "BXG05",
-          "program_name_en": "International Policing",
-          "program_name_fr": "Police internationale"
+          "program_name_en": "International Operations",
+          "program_name_fr": "Opérations internationales"
         }
       ],
       "service_type": [
@@ -76951,8 +76951,8 @@
       "programs": [
         {
           "program_id": "BXG05",
-          "program_name_en": "International Policing",
-          "program_name_fr": "Police internationale"
+          "program_name_en": "International Operations",
+          "program_name_fr": "Opérations internationales"
         }
       ],
       "service_type": [
@@ -77023,8 +77023,8 @@
       "programs": [
         {
           "program_id": "BXG03",
-          "program_name_en": "Protective Services",
-          "program_name_fr": "Services de protection"
+          "program_name_en": "Protective Operations",
+          "program_name_fr": "Opérations de protection"
         }
       ],
       "service_type": [
@@ -77085,8 +77085,8 @@
       "programs": [
         {
           "program_id": "BXG03",
-          "program_name_en": "Protective Services",
-          "program_name_fr": "Services de protection"
+          "program_name_en": "Protective Operations",
+          "program_name_fr": "Opérations de protection"
         }
       ],
       "service_type": [
@@ -77152,8 +77152,8 @@
       "programs": [
         {
           "program_id": "BXG05",
-          "program_name_en": "International Policing",
-          "program_name_fr": "Police internationale"
+          "program_name_en": "International Operations",
+          "program_name_fr": "Opérations internationales"
         }
       ],
       "service_type": [
@@ -77296,8 +77296,8 @@
       "programs": [
         {
           "program_id": "BXG02",
-          "program_name_en": "Intelligence",
-          "program_name_fr": "Renseignement"
+          "program_name_en": "Federal Policing Intelligence",
+          "program_name_fr": "Renseignement de la Police fédérale"
         }
       ],
       "service_type": [
@@ -77378,8 +77378,8 @@
       "programs": [
         {
           "program_id": "BXG02",
-          "program_name_en": "Intelligence",
-          "program_name_fr": "Renseignement"
+          "program_name_en": "Federal Policing Intelligence",
+          "program_name_fr": "Renseignement de la Police fédérale"
         }
       ],
       "service_type": [
@@ -77507,8 +77507,8 @@
       "programs": [
         {
           "program_id": "BXG05",
-          "program_name_en": "International Policing",
-          "program_name_fr": "Police internationale"
+          "program_name_en": "International Operations",
+          "program_name_fr": "Opérations internationales"
         }
       ],
       "service_type": [
@@ -77901,8 +77901,8 @@
       "programs": [
         {
           "program_id": "BXG05",
-          "program_name_en": "International Policing",
-          "program_name_fr": "Police internationale"
+          "program_name_en": "International Operations",
+          "program_name_fr": "Opérations internationales"
         }
       ],
       "service_type": [
@@ -77953,8 +77953,8 @@
       "programs": [
         {
           "program_id": "BXH09",
-          "program_name_en": "Firearms Licensing and Registration",
-          "program_name_fr": "Délivrance de permis et enregistrement des armes à feu"
+          "program_name_en": "Canadian Firearms Licensing and Registration",
+          "program_name_fr": "Délivrance de permis et enregistrement des armes à feu au Canada"
         }
       ],
       "service_type": [
@@ -78000,8 +78000,8 @@
       "programs": [
         {
           "program_id": "BXH09",
-          "program_name_en": "Firearms Licensing and Registration",
-          "program_name_fr": "Délivrance de permis et enregistrement des armes à feu"
+          "program_name_en": "Canadian Firearms Licensing and Registration",
+          "program_name_fr": "Délivrance de permis et enregistrement des armes à feu au Canada"
         }
       ],
       "service_type": [
@@ -78047,8 +78047,8 @@
       "programs": [
         {
           "program_id": "BXH09",
-          "program_name_en": "Firearms Licensing and Registration",
-          "program_name_fr": "Délivrance de permis et enregistrement des armes à feu"
+          "program_name_en": "Canadian Firearms Licensing and Registration",
+          "program_name_fr": "Délivrance de permis et enregistrement des armes à feu au Canada"
         }
       ],
       "service_type": [
@@ -78099,8 +78099,8 @@
       "programs": [
         {
           "program_id": "BXH09",
-          "program_name_en": "Firearms Licensing and Registration",
-          "program_name_fr": "Délivrance de permis et enregistrement des armes à feu"
+          "program_name_en": "Canadian Firearms Licensing and Registration",
+          "program_name_fr": "Délivrance de permis et enregistrement des armes à feu au Canada"
         }
       ],
       "service_type": [
@@ -78488,8 +78488,8 @@
       "programs": [
         {
           "program_id": "BXI04",
-          "program_name_en": "Contract and Indigenous Policing Operations Support",
-          "program_name_fr": "Soutien aux opérations des Services de police contractuels et autochtones"
+          "program_name_en": "Operational Policing Support",
+          "program_name_fr": "Soutien policier opérationnel"
         }
       ],
       "service_type": [
@@ -78954,8 +78954,8 @@
       "programs": [
         {
           "program_id": "BXH06",
-          "program_name_en": "RCMP Specialized Technical Investigative Services",
-          "program_name_fr": "Services spécialisés d'enquêtes techniques de la GRC"
+          "program_name_en": "Specialized Technical Investigative Services",
+          "program_name_fr": "Services spécialisés d'enquêtes techniques"
         }
       ],
       "service_type": [
@@ -79016,8 +79016,8 @@
       "programs": [
         {
           "program_id": "BXH06",
-          "program_name_en": "RCMP Specialized Technical Investigative Services",
-          "program_name_fr": "Services spécialisés d'enquêtes techniques de la GRC"
+          "program_name_en": "Specialized Technical Investigative Services",
+          "program_name_fr": "Services spécialisés d'enquêtes techniques"
         }
       ],
       "service_type": [
@@ -79078,8 +79078,8 @@
       "programs": [
         {
           "program_id": "BXH06",
-          "program_name_en": "RCMP Specialized Technical Investigative Services",
-          "program_name_fr": "Services spécialisés d'enquêtes techniques de la GRC"
+          "program_name_en": "Specialized Technical Investigative Services",
+          "program_name_fr": "Services spécialisés d'enquêtes techniques"
         }
       ],
       "service_type": [
@@ -79135,8 +79135,8 @@
       "programs": [
         {
           "program_id": "BXH06",
-          "program_name_en": "RCMP Specialized Technical Investigative Services",
-          "program_name_fr": "Services spécialisés d'enquêtes techniques de la GRC"
+          "program_name_en": "Specialized Technical Investigative Services",
+          "program_name_fr": "Services spécialisés d'enquêtes techniques"
         }
       ],
       "service_type": [
@@ -79217,8 +79217,8 @@
       "programs": [
         {
           "program_id": "BXH06",
-          "program_name_en": "RCMP Specialized Technical Investigative Services",
-          "program_name_fr": "Services spécialisés d'enquêtes techniques de la GRC"
+          "program_name_en": "Specialized Technical Investigative Services",
+          "program_name_fr": "Services spécialisés d'enquêtes techniques"
         }
       ],
       "service_type": [
@@ -79289,8 +79289,8 @@
       "programs": [
         {
           "program_id": "BXH06",
-          "program_name_en": "RCMP Specialized Technical Investigative Services",
-          "program_name_fr": "Services spécialisés d'enquêtes techniques de la GRC"
+          "program_name_en": "Specialized Technical Investigative Services",
+          "program_name_fr": "Services spécialisés d'enquêtes techniques"
         }
       ],
       "service_type": [
@@ -79366,8 +79366,8 @@
       "programs": [
         {
           "program_id": "BXH06",
-          "program_name_en": "RCMP Specialized Technical Investigative Services",
-          "program_name_fr": "Services spécialisés d'enquêtes techniques de la GRC"
+          "program_name_en": "Specialized Technical Investigative Services",
+          "program_name_fr": "Services spécialisés d'enquêtes techniques"
         }
       ],
       "service_type": [
@@ -79428,8 +79428,8 @@
       "programs": [
         {
           "program_id": "BXH06",
-          "program_name_en": "RCMP Specialized Technical Investigative Services",
-          "program_name_fr": "Services spécialisés d'enquêtes techniques de la GRC"
+          "program_name_en": "Specialized Technical Investigative Services",
+          "program_name_fr": "Services spécialisés d'enquêtes techniques"
         }
       ],
       "service_type": [
@@ -79485,8 +79485,8 @@
       "programs": [
         {
           "program_id": "BXH06",
-          "program_name_en": "RCMP Specialized Technical Investigative Services",
-          "program_name_fr": "Services spécialisés d'enquêtes techniques de la GRC"
+          "program_name_en": "Specialized Technical Investigative Services",
+          "program_name_fr": "Services spécialisés d'enquêtes techniques"
         }
       ],
       "service_type": [
@@ -80117,8 +80117,8 @@
       "programs": [
         {
           "program_id": "BXH10",
-          "program_name_en": "National Cybercrime Coordination Unit",
-          "program_name_fr": "Groupe national de coordination contre la cybercriminalité"
+          "program_name_en": "National Cybercrime Coordination Centre",
+          "program_name_fr": "Centre National de coordination contre la cybercriminalite"
         }
       ],
       "service_type": [
@@ -84077,7 +84077,7 @@
       "service_uri_fr": null,
       "programs": [
         {
-          "program_id": "BSJ03",
+          "program_id": "BSJ03-INV",
           "program_name_en": "Access to information and privacy",
           "program_name_fr": "Accès à l'information et protection des renseignements personnels"
         }
@@ -84312,7 +84312,7 @@
       "service_uri_fr": null,
       "programs": [
         {
-          "program_id": "BRF01",
+          "program_id": "BRF01-INV",
           "program_name_en": "Compliance with access to information obligations",
           "program_name_fr": "Conformité avec les obligations prévues à la Loi sur l'accès à l'information"
         }
@@ -84426,17 +84426,17 @@
       "service_uri_fr": null,
       "programs": [
         {
-          "program_id": "ISS02",
+          "program_id": "ISS02-INV",
           "program_name_en": "Communications Services",
           "program_name_fr": "Services de communication"
         },
         {
-          "program_id": "ISS12",
+          "program_id": "ISS12-INV",
           "program_name_en": "Communications Services",
           "program_name_fr": "Services de communication"
         },
         {
-          "program_id": "ISSA2",
+          "program_id": "ISSA2-INV",
           "program_name_en": "Communications Services",
           "program_name_fr": "Services de communication"
         }
@@ -84550,7 +84550,7 @@
       "service_uri_fr": null,
       "programs": [
         {
-          "program_id": "BTD01",
+          "program_id": "BTD01-INV",
           "program_name_en": "Stakeholder Engagement",
           "program_name_fr": "Mobilisation des parties prenantes"
         }
@@ -92773,8 +92773,8 @@
       "programs": [
         {
           "program_id": "BWI07",
-          "program_name_en": "Transition Services",
-          "program_name_fr": "Services de transition"
+          "program_name_en": "Transition Support",
+          "program_name_fr": "Soutient à la transition"
         }
       ],
       "service_type": [
@@ -93048,8 +93048,8 @@
       "programs": [
         {
           "program_id": "BWI07",
-          "program_name_en": "Transition Services",
-          "program_name_fr": "Services de transition"
+          "program_name_en": "Transition Support",
+          "program_name_fr": "Soutient à la transition"
         }
       ],
       "service_type": [
@@ -93100,8 +93100,8 @@
         },
         {
           "program_id": "BWI07",
-          "program_name_en": "Transition Services",
-          "program_name_fr": "Services de transition"
+          "program_name_en": "Transition Support",
+          "program_name_fr": "Soutient à la transition"
         },
         {
           "program_id": "BWI08",
@@ -93172,8 +93172,8 @@
       "programs": [
         {
           "program_id": "BWI07",
-          "program_name_en": "Transition Services",
-          "program_name_fr": "Services de transition"
+          "program_name_en": "Transition Support",
+          "program_name_fr": "Soutient à la transition"
         }
       ],
       "service_type": [
@@ -93365,8 +93365,8 @@
       "programs": [
         {
           "program_id": "BWI07",
-          "program_name_en": "Transition Services",
-          "program_name_fr": "Services de transition"
+          "program_name_en": "Transition Support",
+          "program_name_fr": "Soutient à la transition"
         }
       ],
       "service_type": [
@@ -93464,8 +93464,8 @@
         },
         {
           "program_id": "BWI07",
-          "program_name_en": "Transition Services",
-          "program_name_fr": "Services de transition"
+          "program_name_en": "Transition Support",
+          "program_name_fr": "Soutient à la transition"
         },
         {
           "program_id": "BWI08",
@@ -93541,8 +93541,8 @@
         },
         {
           "program_id": "BWI07",
-          "program_name_en": "Transition Services",
-          "program_name_fr": "Services de transition"
+          "program_name_en": "Transition Support",
+          "program_name_fr": "Soutient à la transition"
         },
         {
           "program_id": "BWI08",
