@@ -268,7 +268,7 @@ def update_generated_at(records: list[dict], path: Path) -> str:
     if path.exists():
         try:
             existing = json.loads(path.read_text(encoding="utf-8"))
-        except (json.JSONDecodeError, OSError):
+        except json.JSONDecodeError, OSError:
             existing = {}
         if existing.get("services") == records and existing.get("generated_at"):
             return existing["generated_at"]
