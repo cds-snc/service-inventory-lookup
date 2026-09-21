@@ -22,7 +22,7 @@ provider "aws" {
 }
 
 module "website" {
-  source = "github.com/cds-snc/terraform-modules//simple_static_website?ref=v11.4.7"
+  source = "github.com/cds-snc/terraform-modules//simple_static_website?ref=v12.0.0"
 
   domain_name_source    = "service-inventory-lookup.gcorgs.cdssandbox.xyz"
   billing_tag_value     = "service-inventory-lookup"
@@ -38,7 +38,7 @@ module "website" {
 }
 
 module "program_website" {
-  source = "github.com/cds-snc/terraform-modules//simple_static_website?ref=v11.4.7"
+  source = "github.com/cds-snc/terraform-modules//simple_static_website?ref=v12.0.0"
 
   domain_name_source    = "program-code-lookup.gcorgs.cdssandbox.xyz"
   billing_tag_value     = "program-code-lookup"
