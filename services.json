@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-07T11:03:04.163451+00:00",
+  "generated_at": "2026-10-26T11:03:32.081772+00:00",
   "source": {
     "fiscal_year": "2024-2025",
     "dataset_url": "https://open.canada.ca/data/en/dataset/3ac0d080-6149-499a-8b06-7ce5f00ec56c",
@@ -18905,53 +18905,6 @@
           "code": "PTC",
           "name_en": "Provinces, Territories or Communities",
           "name_fr": "Provinces, territoires et collectivités"
-        }
-      ],
-      "service_recipient_type": [
-        {
-          "code": "CLIENT",
-          "name_en": "Targeted, Client-based service",
-          "name_fr": "Service ciblé axé sur les clients"
-        }
-      ]
-    },
-    {
-      "service_id": "1129",
-      "service_en": "Access to Information and Privacy",
-      "service_fr": "Loi sur l’accès à l’information et Loi sur la protection des renseignements personnels",
-      "gc_orgID": 2307,
-      "org_name_en": "Canadian Institutes of Health Research",
-      "org_name_fr": "Instituts de recherche en santé du Canada",
-      "acronym_en": "CIHR",
-      "acronym_fr": "IRSC",
-      "service_uri_en": "https://cihr-irsc.gc.ca/e/51258.html",
-      "service_uri_fr": "https://cihr-irsc.gc.ca/f/51258.html",
-      "programs": [
-        {
-          "program_id": "ISS01",
-          "program_name_en": "Management and Oversight Services",
-          "program_name_fr": "Services de gestion et de surveillance"
-        }
-      ],
-      "service_type": [
-        {
-          "code": "INFO",
-          "name_en": "Information",
-          "name_fr": "Informations"
-        }
-      ],
-      "service_scope": [
-        {
-          "code": "EXTERN",
-          "name_en": "External Service",
-          "name_fr": "Service externe"
-        }
-      ],
-      "client_target_groups": [
-        {
-          "code": "PERSON",
-          "name_en": "Persons",
-          "name_fr": "Particuliers"
         }
       ],
       "service_recipient_type": [
