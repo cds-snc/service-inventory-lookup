@@ -46,7 +46,7 @@ locals {
 module "gh_oidc_role" {
   source = "github.com/cds-snc/terraform-modules//gh_oidc_role?ref=v12.1.2"
 
-  billing_tag_value = "service-inventory-lookup"
+  billing_tag_value = "lookup"
   org_name          = "cds-snc"
   oidc_exists       = true
 

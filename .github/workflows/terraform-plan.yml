@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - "infra/**"
+      - "index.html"
       - "service_en.html"
       - "service_fr.html"
       - "service.js"

@@ -5,12 +5,12 @@ department:
 
 - **Service Inventory Lookup** - finds a service inventory ID by department
   and service name
-  ([en](https://service-inventory-lookup.gcorgs.cdssandbox.xyz/en) /
-  [fr](https://service-inventory-lookup.gcorgs.cdssandbox.xyz/fr))
+  ([en](https://lookup.gcorgs.cdssandbox.xyz/service/en) /
+  [fr](https://lookup.gcorgs.cdssandbox.xyz/service/fr))
 - **Program Code Lookup** - finds a program code identifier by department and program 
    name
-  ([en](https://program-code-lookup.gcorgs.cdssandbox.xyz/en) /
-  [fr](https://program-code-lookup.gcorgs.cdssandbox.xyz/fr))
+  ([en](https://lookup.gcorgs.cdssandbox.xyz/program/en) /
+  [fr](https://lookup.gcorgs.cdssandbox.xyz/program/fr))
 
 ## How They Work
 
