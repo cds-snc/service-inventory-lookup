@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-26T11:03:32.081772+00:00",
+  "generated_at": "2026-11-16T11:02:57.666730+00:00",
   "source": {
     "fiscal_year": "2024-2025",
     "dataset_url": "https://open.canada.ca/data/en/dataset/3ac0d080-6149-499a-8b06-7ce5f00ec56c",
@@ -80192,8 +80192,8 @@
     },
     {
       "service_id": "192",
-      "service_en": "Contract & Indigenous Policing (C&IP)",
-      "service_fr": "Services de police contractuels et autochtones (SPCA)",
+      "service_en": "Indigenous, Provincial, Territorial & Municipal Policing (IPTMP)",
+      "service_fr": "Services de police autochtones, provinciaux, territoriaux et municipaux (SPAPTM)",
       "gc_orgID": 2288,
       "org_name_en": "Royal Canadian Mounted Police",
       "org_name_fr": "Gendarmerie royale du Canada",
@@ -80210,9 +80210,9 @@
       ],
       "service_type": [
         {
-          "code": "REG_VOL",
-          "name_en": "High Volume Regulatory Transactions",
-          "name_fr": "Opérations réglementaires à demande élevée"
+          "code": "INFO",
+          "name_en": "Information",
+          "name_fr": "Informations"
         }
       ],
       "service_scope": [
