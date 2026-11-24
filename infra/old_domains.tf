@@ -22,6 +22,11 @@ data "aws_cloudfront_cache_policy" "caching_disabled" {
   name = "Managed-CachingDisabled"
 }
 
+# The module does not output its WAF ARN, so read it off the lookup distribution
+data "aws_cloudfront_distribution" "lookup" {
+  id = module.lookup.cloudfront_distribution_id
+}
+
 resource "aws_acm_certificate" "old_domain" {
   for_each = local.old_domains
   provider = aws.us-east-1
@@ -68,6 +73,7 @@ resource "aws_cloudfront_distribution" "old_domain" {
   enabled      = true
   comment      = "Redirects ${each.value} to lookup.gcorgs.cdssandbox.xyz"
   aliases      = [each.value]
+  web_acl_id   = data.aws_cloudfront_distribution.lookup.web_acl_id
   http_version = "http2"
   price_class  = "PriceClass_100"
 
