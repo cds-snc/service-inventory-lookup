@@ -76,69 +76,6 @@ resource "aws_s3_object" "site" {
   tags         = local.common_tags
 }
 
-# Old per-tool domains, kept as redirects to lookup.gcorgs.cdssandbox.xyz
-# until 2026-12-16. Delete this block and the redirect template to retire them.
-locals {
-  old_domains = {
-    service = "service-inventory-lookup.gcorgs.cdssandbox.xyz"
-    program = "program-code-lookup.gcorgs.cdssandbox.xyz"
-  }
-
-  redirect_text = {
-    en = {
-      title   = "This page has moved"
-      message = "This page has moved. You will be redirected to"
-    }
-    fr = {
-      title   = "Cette page a déménagé"
-      message = "Cette page a déménagé. Vous serez redirigé vers"
-    }
-  }
-
-  # "<tool>/<lang>" => S3 key and redirect page
-  redirect_objects = merge([
-    for tool, _ in local.old_domains : {
-      for lang, text in local.redirect_text : "${tool}/${lang}" => {
-        tool = tool
-        key  = lang
-        content = templatefile("${path.module}/redirect.html.tftpl", {
-          lang    = lang
-          target  = "https://lookup.gcorgs.cdssandbox.xyz/${tool}/${lang}"
-          title   = text.title
-          message = text.message
-        })
-      }
-    }
-  ]...)
-}
-
-module "old_domain" {
-  for_each = local.old_domains
-  source   = "github.com/cds-snc/terraform-modules//simple_static_website?ref=v12.1.2"
-
-  domain_name_source    = each.value
-  billing_tag_value     = "lookup"
-  index_document        = "en"
-  hosted_zone_id        = "Z01243811HX0ZVPGI6SN0"
-  is_create_hosted_zone = false
-
-  providers = {
-    aws           = aws
-    aws.dns       = aws.dns
-    aws.us-east-1 = aws.us-east-1
-  }
-}
-
-resource "aws_s3_object" "old_domain_redirect" {
-  for_each = local.redirect_objects
-
-  bucket       = module.old_domain[each.value.tool].s3_bucket_id
-  key          = each.value.key
-  content      = each.value.content
-  content_type = local.html
-  tags         = local.common_tags
-}
-
 output "website_url" {
   value = "https://lookup.gcorgs.cdssandbox.xyz"
 }
