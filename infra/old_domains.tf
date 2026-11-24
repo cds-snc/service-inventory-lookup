@@ -194,3 +194,12 @@ moved {
   from = module.old_domain["program"].aws_route53_record.cloudfront_alias
   to   = aws_route53_record.old_domain_alias["program"]
 }
+
+# The distributions must be updated before these can be deleted, so Terraform forgets them instead
+removed {
+  from = module.old_domain
+
+  lifecycle {
+    destroy = false
+  }
+}
